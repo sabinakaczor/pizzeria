@@ -33,10 +33,7 @@ public class Project_pizzeria extends javax.swing.JFrame {
             stmt = con.createStatement();
             result = stmt.executeQuery(
                   "select * from PRACOWNICY"
-            ); 
-           /* result1 = stmt.executeQuery(
-                  "select * from PRACOWNICY"
-            ); */
+            );           
         }catch(Exception e){
             
         }
@@ -49,7 +46,6 @@ public class Project_pizzeria extends javax.swing.JFrame {
             Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        //Project_pizzeria project_pizzeria=new Project_pizzeria();
     }
 
     /**
@@ -108,6 +104,11 @@ public class Project_pizzeria extends javax.swing.JFrame {
         jMenu1.setText("Menu");
 
         jMenuItem1.setText("Dodaj nowego pracownika");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem1);
 
         jMenuItem2.setText("Zamknij program");
@@ -218,33 +219,20 @@ public class Project_pizzeria extends javax.swing.JFrame {
         
     }//GEN-LAST:event_loginActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        Nowy_pracownik nowy_pracownik = new Nowy_pracownik();
+        nowy_pracownik.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) throws SQLException {
-      /* Connection con;
-    Statement stmt;
-    ResultSet result;
-    try{
-            con = DriverManager.getConnection(
-            "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
-            );
-            stmt = con.createStatement();
-            result = stmt.executeQuery(
-                  "select * from PRACOWNICY where login like 'Sowerda Wiktoria'"
-            ); 
-            while(result.next()) {
-                String b = result.getString("haslo");
-                System.out.println(b);
-            }
-        }catch(Exception e){
-            
-        } */
-        
-    
-        
-      
-        
+          
+           
+              
         
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

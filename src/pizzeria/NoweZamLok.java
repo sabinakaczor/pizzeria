@@ -10,8 +10,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 
 /**
  *
@@ -23,14 +26,37 @@ public class NoweZamLok extends javax.swing.JFrame {
      * Creates new form NoweZamLok
      */
     Connection con;
-    Statement stmt;
-    ResultSet result;
+    Statement stmt1, stmt2, stmt3, stmt4, stmt7, stmt5, stmt6, stmt8, stmt9, stmt10;
+    ResultSet res1, res2, res3, res4, res5, res6, res7, res8, res9, res10;
+    ArrayList wyswietlSkladniki = new ArrayList();
+    JList listaa = new JList(wyswietlSkladniki.toArray());
+    DefaultListModel<String> model = new DefaultListModel<>();
+
     public NoweZamLok() {
         initComponents();
         panelpizza.setVisible(false);
-   
-        
-       
+        listaa.setVisible(true);
+        listaa.setBounds(50, 50, 50, 50);
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt4 = con.createStatement();
+            res4 = stmt4.executeQuery(
+                    "select * from SKLADNIKI where id_skladnika <= 37 or id_skladnika >= 40"
+            );
+        } catch (Exception e) {
+
+        }
+        initComponents();
+        try {
+            while (res4.next()) {
+                dodajs.addItem(res4.getString("nazwa"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     /**
@@ -50,14 +76,14 @@ public class NoweZamLok extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         listapr = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        listaskl = new javax.swing.JList();
         jLabel4 = new javax.swing.JLabel();
         listapc = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
         usuns = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         dodajs = new javax.swing.JComboBox();
-        usuns1 = new javax.swing.JButton();
+        dodajw = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1200, 700));
@@ -80,12 +106,12 @@ public class NoweZamLok extends javax.swing.JFrame {
 
         listapr.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+        listaskl.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(listaskl);
 
         jLabel4.setText("Składniki:");
 
@@ -102,12 +128,12 @@ public class NoweZamLok extends javax.swing.JFrame {
 
         jLabel6.setText("Dodaj składnik:");
 
-        dodajs.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        dodajs.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
 
-        usuns1.setText("Dodaj wybrany");
-        usuns1.addActionListener(new java.awt.event.ActionListener() {
+        dodajw.setText("Dodaj wybrany");
+        dodajw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                usuns1ActionPerformed(evt);
+                dodajwActionPerformed(evt);
             }
         });
 
@@ -130,7 +156,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(usuns1)
+                            .addComponent(dodajw)
                             .addComponent(dodajs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelpizzaLayout.createSequentialGroup()
@@ -162,7 +188,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                     .addGroup(panelpizzaLayout.createSequentialGroup()
                         .addComponent(dodajs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(usuns1))
+                        .addComponent(dodajw))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(usuns)
@@ -196,7 +222,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(panelpizza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(174, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         pack();
@@ -205,38 +231,74 @@ public class NoweZamLok extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         panelpizza.setVisible(true);
-       try{
+
+        try {
             con = DriverManager.getConnection(
-            "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
             );
-            stmt = con.createStatement();
-            result = stmt.executeQuery(
-                  "select * from MENU_PIZZA"
-            ); 
-          
-        }catch(Exception e){
-            
+            stmt1 = con.createStatement();
+            stmt2 = con.createStatement();
+            stmt3 = con.createStatement();
+            res1 = stmt1.executeQuery(
+                    "select distinct(nazwa) from MENU_PIZZA"
+            );
+            res2 = stmt2.executeQuery(
+                    "select distinct(rozmiar) from MENU_PIZZA"
+            );
+            res3 = stmt3.executeQuery(
+                    "select distinct(ciasto) from MENU_PIZZA"
+            );
+
+        } catch (Exception e) {
+
         }
         try {
-            while(result.next()){
-                listap.addItem(result.getString("nazwa"));
-                listapr.addItem(result.getString("rozmiar"));
-                listapc.addItem(result.getString("ciasto"));
+            while (res1.next()) {
+                listap.addItem(res1.getString("nazwa"));
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
+        try {
+            while (res2.next()) {
+
+                listapr.addItem(res2.getString("rozmiar"));
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        try {
+            while (res3.next()) {
+                listapc.addItem(res3.getString("ciasto"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void usunsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usunsActionPerformed
-        // TODO add your handling code here:
+
+        int index = listaskl.getSelectedIndex();
+        model.removeElementAt(index);
+        listaskl.setModel(model);
+
+// TODO add your handling code here:
     }//GEN-LAST:event_usunsActionPerformed
 
-    private void usuns1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuns1ActionPerformed
+    private void dodajwActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajwActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_usuns1ActionPerformed
+
+        String wybr = dodajs.getSelectedItem().toString();
+        int i = model.getSize();
+        model.add(i, wybr);
+        listaskl.setModel(model);
+
+    }//GEN-LAST:event_dodajwActionPerformed
 
     /**
      * @param args the command line arguments
@@ -269,15 +331,16 @@ public class NoweZamLok extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new NoweZamLok().setVisible(true);
-                 NoweZamLok nzl = new NoweZamLok();
-              nzl.setVisible(false);              
-             
+                NoweZamLok nzl = new NoweZamLok();
+                nzl.setVisible(false);
+
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox dodajs;
+    private javax.swing.JButton dodajw;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -285,13 +348,12 @@ public class NoweZamLok extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox listap;
     private javax.swing.JComboBox listapc;
     private javax.swing.JComboBox listapr;
+    private javax.swing.JList listaskl;
     private javax.swing.JPanel panelpizza;
     private javax.swing.JButton usuns;
-    private javax.swing.JButton usuns1;
     // End of variables declaration//GEN-END:variables
 }

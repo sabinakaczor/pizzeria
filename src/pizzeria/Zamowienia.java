@@ -16,8 +16,7 @@ public class Zamowienia extends javax.swing.JFrame {
      */
     public Zamowienia() {
         initComponents();
-        ///panel.setVisible(false);
-    }
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
