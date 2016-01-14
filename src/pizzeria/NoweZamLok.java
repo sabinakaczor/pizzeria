@@ -10,8 +10,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
 
 /**
  *
@@ -23,14 +26,18 @@ public class NoweZamLok extends javax.swing.JFrame {
      * Creates new form NoweZamLok
      */
     Connection con;
-    Statement stmt;
-    ResultSet result;
+    Statement stmt1, stmt2, stmt3, stmt4, stmt7, stmt5, stmt6, stmt8, stmt9, stmt10;
+    ResultSet res1, res2, res3, res4, res5, res6, res7, res8, res9, res10;
+    ArrayList wyswietlSkladniki = new ArrayList();
+    JList listaa = new JList(wyswietlSkladniki.toArray());
+    DefaultListModel<String> model = new DefaultListModel<>();
+
     public NoweZamLok() {
         initComponents();
         panelpizza.setVisible(false);
-   
-        
-       
+
+        panelnapoj.setVisible(false);
+
     }
 
     /**
@@ -42,56 +49,108 @@ public class NoweZamLok extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        buttonGroupmiejsce = new javax.swing.ButtonGroup();
+        buttonGroupoplata = new javax.swing.ButtonGroup();
+        napistytul = new javax.swing.JLabel();
+        pokazpanelpizza = new javax.swing.JToggleButton();
         panelpizza = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        listap = new javax.swing.JComboBox();
-        jLabel3 = new javax.swing.JLabel();
-        listapr = new javax.swing.JComboBox();
+        napisnazwapizzy = new javax.swing.JLabel();
+        listawybpizzy = new javax.swing.JComboBox();
+        napisrozmiarpizzy = new javax.swing.JLabel();
+        listawybrozmpizzy = new javax.swing.JComboBox();
+        listawybciastapizzy = new javax.swing.JComboBox();
+        napisrodzajciasta = new javax.swing.JLabel();
+        panelskladniki = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
-        jLabel4 = new javax.swing.JLabel();
-        listapc = new javax.swing.JComboBox();
-        jLabel5 = new javax.swing.JLabel();
+        listaskladnikow = new javax.swing.JList();
+        napisdodwybskl = new javax.swing.JLabel();
         usuns = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
         dodajs = new javax.swing.JComboBox();
-        usuns1 = new javax.swing.JButton();
+        dodajw = new javax.swing.JButton();
+        zobskl = new javax.swing.JToggleButton();
+        dodajdomenup = new javax.swing.JButton();
+        cena = new javax.swing.JTextField();
+        napis_zl = new javax.swing.JLabel();
+        napisilepizz = new javax.swing.JLabel();
+        poleilep = new javax.swing.JTextField();
+        pokazpanelnapoj = new javax.swing.JToggleButton();
+        napiszamowiono = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listazamowien = new javax.swing.JList();
+        wlokalu = new javax.swing.JRadioButton();
+        wdostawie = new javax.swing.JRadioButton();
+        gotowka = new javax.swing.JRadioButton();
+        formazam = new javax.swing.JLabel();
+        karta = new javax.swing.JRadioButton();
+        formaoplaty = new javax.swing.JLabel();
+        napis_zl1 = new javax.swing.JLabel();
+        cena1 = new javax.swing.JTextField();
+        powrot = new javax.swing.JButton();
+        panelnapoj = new javax.swing.JPanel();
+        napisrodzajnapoju = new javax.swing.JLabel();
+        listawybrodznap = new javax.swing.JComboBox();
+        napisnazwanapoju = new javax.swing.JLabel();
+        listawybnazwynap = new javax.swing.JComboBox();
+        dlapelnoletnich = new javax.swing.JLabel();
+        pokazopisnapoju = new javax.swing.JToggleButton();
+        dodajdomenunap = new javax.swing.JButton();
+        cena2 = new javax.swing.JTextField();
+        napis_zl2 = new javax.swing.JLabel();
+        napisilenap = new javax.swing.JLabel();
+        poleilenap = new javax.swing.JTextField();
+        panelopisnap = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        opisnapoju = new javax.swing.JTextArea();
+        buttonpotwierdz = new javax.swing.JButton();
+        buttonwyczysc = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1200, 700));
+        setPreferredSize(new java.awt.Dimension(1370, 720));
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Nowe zamówienie");
+        napistytul.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        napistytul.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        napistytul.setText("Nowe zamówienie");
 
-        jButton1.setText("Pizza");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        pokazpanelpizza.setText("Pizza");
+        pokazpanelpizza.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                pokazpanelpizzaActionPerformed(evt);
             }
         });
 
-        jLabel2.setText("Nazwa pizzy:");
+        panelpizza.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        panelpizza.setPreferredSize(new java.awt.Dimension(390, 540));
 
-        listap.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
+        napisnazwapizzy.setText("Nazwa pizzy:");
 
-        jLabel3.setText("Rozmiar:");
+        listawybpizzy.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
+        listawybpizzy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listawybpizzyActionPerformed(evt);
+            }
+        });
 
-        listapr.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
+        napisrozmiarpizzy.setText("Rozmiar:");
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+        listawybrozmpizzy.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
+        listawybrozmpizzy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listawybrozmpizzyActionPerformed(evt);
+            }
+        });
+
+        listawybciastapizzy.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
+
+        napisrodzajciasta.setText("Rodzaj ciasta:");
+
+        listaskladnikow.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(listaskladnikow);
 
-        jLabel4.setText("Składniki:");
-
-        listapc.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
-
-        jLabel5.setText("Rodzaj ciasta:");
+        napisdodwybskl.setText("Dodaj składnik:");
 
         usuns.setText("Usuń składnik");
         usuns.addActionListener(new java.awt.event.ActionListener() {
@@ -100,16 +159,74 @@ public class NoweZamLok extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("Dodaj składnik:");
-
-        dodajs.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        usuns1.setText("Dodaj wybrany");
-        usuns1.addActionListener(new java.awt.event.ActionListener() {
+        dodajs.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
+        dodajs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                usuns1ActionPerformed(evt);
+                dodajsActionPerformed(evt);
             }
         });
+
+        dodajw.setText("Dodaj wybrany");
+        dodajw.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dodajwActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelskladnikiLayout = new javax.swing.GroupLayout(panelskladniki);
+        panelskladniki.setLayout(panelskladnikiLayout);
+        panelskladnikiLayout.setHorizontalGroup(
+            panelskladnikiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelskladnikiLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(panelskladnikiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelskladnikiLayout.createSequentialGroup()
+                        .addGroup(panelskladnikiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(usuns, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dodajw, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                            .addComponent(dodajs, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
+                    .addComponent(napisdodwybskl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        panelskladnikiLayout.setVerticalGroup(
+            panelskladnikiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelskladnikiLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelskladnikiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelskladnikiLayout.createSequentialGroup()
+                        .addComponent(napisdodwybskl, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(dodajs, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(13, 13, 13)
+                        .addComponent(dodajw, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)
+                        .addComponent(usuns, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        zobskl.setText("Zobacz składniki:");
+        zobskl.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zobsklActionPerformed(evt);
+            }
+        });
+
+        dodajdomenup.setText("Dodaj do menu");
+        dodajdomenup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dodajdomenupActionPerformed(evt);
+            }
+        });
+
+        cena.setEditable(false);
+
+        napis_zl.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        napis_zl.setText("zl.");
+
+        napisilepizz.setText("Ile:");
 
         javax.swing.GroupLayout panelpizzaLayout = new javax.swing.GroupLayout(panelpizza);
         panelpizza.setLayout(panelpizzaLayout);
@@ -118,125 +235,436 @@ public class NoweZamLok extends javax.swing.JFrame {
             .addGroup(panelpizzaLayout.createSequentialGroup()
                 .addGroup(panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelpizzaLayout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addGroup(panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(listap, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                            .addComponent(listapr, 0, 150, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                            .addComponent(listapc, 0, 150, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addGroup(panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(usuns1)
-                            .addComponent(dodajs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(20, 20, 20)
+                        .addComponent(napisnazwapizzy, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelpizzaLayout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(usuns)))
-                .addContainerGap(42, Short.MAX_VALUE))
+                        .addGap(20, 20, 20)
+                        .addComponent(listawybpizzy, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelpizzaLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(napisrozmiarpizzy, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelpizzaLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(listawybrozmpizzy, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelpizzaLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(napisrodzajciasta, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelpizzaLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(panelskladniki, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelpizzaLayout.createSequentialGroup()
+                                .addGroup(panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelpizzaLayout.createSequentialGroup()
+                                        .addComponent(napisilepizz)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(poleilep, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(55, 55, 55))
+                                    .addGroup(panelpizzaLayout.createSequentialGroup()
+                                        .addComponent(cena, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(napis_zl, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(dodajdomenup, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(panelpizzaLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(listawybciastapizzy, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(33, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelpizzaLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(zobskl, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(96, 96, 96))
         );
         panelpizzaLayout.setVerticalGroup(
             panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelpizzaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
+                .addGap(10, 10, 10)
+                .addComponent(napisnazwapizzy)
+                .addGap(6, 6, 6)
+                .addComponent(listawybpizzy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(napisrozmiarpizzy)
+                .addGap(6, 6, 6)
+                .addComponent(listawybrozmpizzy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(napisrodzajciasta)
+                .addGap(6, 6, 6)
+                .addComponent(listawybciastapizzy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(listap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(zobskl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(listapr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(listapc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
-                .addGroup(panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(panelskladniki, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelpizzaLayout.createSequentialGroup()
-                        .addComponent(dodajs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(poleilep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(napisilepizz))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(usuns1))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(usuns)
+                        .addGroup(panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(napis_zl)))
+                    .addComponent(dodajdomenup, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(61, Short.MAX_VALUE))
+        );
+
+        pokazpanelnapoj.setText("Napój");
+        pokazpanelnapoj.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        pokazpanelnapoj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pokazpanelnapojActionPerformed(evt);
+            }
+        });
+
+        napiszamowiono.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        napiszamowiono.setText("Zamowiono:");
+
+        jScrollPane2.setViewportView(listazamowien);
+
+        buttonGroupmiejsce.add(wlokalu);
+        wlokalu.setText("w lokalu");
+
+        buttonGroupmiejsce.add(wdostawie);
+        wdostawie.setText("w dostawie");
+
+        buttonGroupoplata.add(gotowka);
+        gotowka.setText("gotówka");
+
+        formazam.setText("Forma zamówienia:");
+
+        buttonGroupoplata.add(karta);
+        karta.setText("karta");
+
+        formaoplaty.setText("Forma opłaty:");
+
+        napis_zl1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        napis_zl1.setText("zl.");
+
+        cena1.setEditable(false);
+
+        powrot.setText("Powrót");
+        powrot.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                powrotActionPerformed(evt);
+            }
+        });
+
+        panelnapoj.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        panelnapoj.setPreferredSize(new java.awt.Dimension(248, 540));
+
+        napisrodzajnapoju.setText("Rodzaj napoju:");
+
+        listawybrodznap.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
+
+        napisnazwanapoju.setText("Nazwa napoju:");
+
+        listawybnazwynap.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
+
+        pokazopisnapoju.setText("Zobacz opis:");
+        pokazopisnapoju.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pokazopisnapojuActionPerformed(evt);
+            }
+        });
+
+        dodajdomenunap.setText("Dodaj do menu");
+        dodajdomenunap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dodajdomenunapActionPerformed(evt);
+            }
+        });
+
+        cena2.setEditable(false);
+
+        napis_zl2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        napis_zl2.setText("zl.");
+
+        napisilenap.setText("Ile:");
+
+        opisnapoju.setColumns(20);
+        opisnapoju.setRows(5);
+        opisnapoju.setText("kutfk  tf    ftyf f  tf tuf l\n f tf o fy uf uf f gvgjcki kuf ku fu llp \n fyt t ft   kutfk  tf    ftyf f  tf tuf l\n f tf o fy uf uf f gvgjcki kuf ku fu llp \n fyt t ft  kutfk  tf    ftyf f  tf tuf l\n f tf o fy uf uf f gvgjcki kuf ku fu llp \n fyt t ft  kutfk  tf    ftyf f  tf tuf l\n f tf o fy uf uf f gvgjcki kuf ku fu llp \n fyt t ft  kutfk  tf    ftyf f  tf tuf l\n f tf o fy uf uf f gvgjcki kuf ku fu llp \n fyt t ft  kutfk  tf    ftyf f  tf tuf l\n f tf o fy uf uf f gvgjcki kuf ku fu llp \n fyt t ft  kutfk  tf    ftyf f  tf tuf l\n f tf o fy uf uf f gvgjcki kuf ku fu llp \n fyt t ft  kutfk  tf    ftyf f  tf tuf l\n f tf o fy uf uf f gvgjcki kuf ku fu llp \n fyt t ft  ");
+        jScrollPane3.setViewportView(opisnapoju);
+
+        javax.swing.GroupLayout panelopisnapLayout = new javax.swing.GroupLayout(panelopisnap);
+        panelopisnap.setLayout(panelopisnapLayout);
+        panelopisnapLayout.setHorizontalGroup(
+            panelopisnapLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelopisnapLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+        panelopisnapLayout.setVerticalGroup(
+            panelopisnapLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelopisnapLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        javax.swing.GroupLayout panelnapojLayout = new javax.swing.GroupLayout(panelnapoj);
+        panelnapoj.setLayout(panelnapojLayout);
+        panelnapojLayout.setHorizontalGroup(
+            panelnapojLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelnapojLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(panelnapojLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(listawybnazwynap, 0, 150, Short.MAX_VALUE)
+                    .addComponent(napisnazwanapoju)
+                    .addComponent(listawybrodznap, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(napisrodzajnapoju))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addComponent(dlapelnoletnich, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(panelnapojLayout.createSequentialGroup()
+                .addGap(92, 92, 92)
+                .addComponent(pokazopisnapoju, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(77, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelnapojLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelnapojLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelnapojLayout.createSequentialGroup()
+                        .addGroup(panelnapojLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelnapojLayout.createSequentialGroup()
+                                .addComponent(napisilenap)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(poleilenap, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelnapojLayout.createSequentialGroup()
+                                .addComponent(cena2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(napis_zl2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(dodajdomenunap, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(39, 39, 39))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelnapojLayout.createSequentialGroup()
+                        .addComponent(panelopisnap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
+        );
+        panelnapojLayout.setVerticalGroup(
+            panelnapojLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelnapojLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(napisrodzajnapoju)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(listawybrodznap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(napisnazwanapoju)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelnapojLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(dlapelnoletnich, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(listawybnazwynap))
+                .addGap(18, 18, 18)
+                .addComponent(pokazopisnapoju)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelopisnap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelnapojLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(napisilenap, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(poleilenap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelnapojLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cena2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(napis_zl2))
+                .addGap(18, 18, 18)
+                .addComponent(dodajdomenunap, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
+        );
+
+        buttonpotwierdz.setText("Potwierdź");
+
+        buttonwyczysc.setText("Wyczyść");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(535, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(448, 448, 448))
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(111, 111, 111)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
-                        .addComponent(panelpizza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(88, 88, 88)
+                        .addComponent(pokazpanelpizza, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(panelpizza, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pokazpanelnapoj, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelnapoj, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(napiszamowiono, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(22, 22, 22))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cena1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(formazam, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(formaoplaty, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(wdostawie)
+                            .addComponent(wlokalu)
+                            .addComponent(karta)
+                            .addComponent(napis_zl1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(gotowka))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(buttonpotwierdz)
+                        .addGap(80, 80, 80))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(buttonwyczysc)
+                        .addGap(96, 96, 96))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(powrot, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 511, Short.MAX_VALUE)
+                .addComponent(napistytul, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(312, 312, 312))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(napiszamowiono, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(78, 78, 78)
+                        .addComponent(wlokalu)
+                        .addGap(4, 4, 4)
+                        .addComponent(wdostawie))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cena1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(napis_zl1))
+                        .addGap(36, 36, 36)
+                        .addComponent(formazam, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(formaoplaty, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(gotowka)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(karta)))
+                .addGap(73, 73, 73)
+                .addComponent(buttonpotwierdz)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonwyczysc)
+                .addGap(114, 114, 114))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(panelpizza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(174, Short.MAX_VALUE))
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(napistytul, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(powrot))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pokazpanelnapoj, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pokazpanelpizza, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panelpizza, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
+                    .addComponent(panelnapoj, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        panelpizza.setVisible(true);
-       try{
-            con = DriverManager.getConnection(
-            "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
-            );
-            stmt = con.createStatement();
-            result = stmt.executeQuery(
-                  "select * from MENU_PIZZA"
-            ); 
-          
-        }catch(Exception e){
-            
-        }
-        try {
-            while(result.next()){
-                listap.addItem(result.getString("nazwa"));
-                listapr.addItem(result.getString("rozmiar"));
-                listapc.addItem(result.getString("ciasto"));
-
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void usunsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usunsActionPerformed
-        // TODO add your handling code here:
+
+        if (!listaskladnikow.isSelectionEmpty()) {
+            int index = listaskladnikow.getSelectedIndex();
+            model.removeElementAt(index);
+            listaskladnikow.setModel(model);
+        }
+// TODO add your handling code here:
     }//GEN-LAST:event_usunsActionPerformed
 
-    private void usuns1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuns1ActionPerformed
+    private void dodajwActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajwActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_usuns1ActionPerformed
+
+        String wybr = dodajs.getSelectedItem().toString();
+        int i = model.getSize();
+        model.add(i, wybr);
+        listaskladnikow.setModel(model);
+
+    }//GEN-LAST:event_dodajwActionPerformed
+
+    private void pokazpanelpizzaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pokazpanelpizzaActionPerformed
+        if (pokazpanelpizza.isSelected() == true) {
+            panelpizza.setVisible(true);
+            zamowpizze();
+
+        } else {
+            panelpizza.setVisible(false);
+        }
+
+
+    }//GEN-LAST:event_pokazpanelpizzaActionPerformed
+
+    private void zobsklActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zobsklActionPerformed
+        if (zobskl.isSelected() == true) {
+
+            panelskladniki.setVisible(true);
+            wypiszskladniki();
+        } else {
+            panelskladniki.setVisible(false);
+        }
+    }//GEN-LAST:event_zobsklActionPerformed
+
+    private void dodajdomenupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajdomenupActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dodajdomenupActionPerformed
+
+    private void powrotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_powrotActionPerformed
+        Zamowienia zamowienia = new Zamowienia();
+        zamowienia.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_powrotActionPerformed
+
+    private void pokazpanelnapojActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pokazpanelnapojActionPerformed
+        if (pokazpanelnapoj.isSelected() == true) {
+            panelnapoj.setVisible(true);
+            panelopisnap.setVisible(false);
+
+        } else {
+            panelnapoj.setVisible(false);
+        }
+    }//GEN-LAST:event_pokazpanelnapojActionPerformed
+
+    private void dodajdomenunapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajdomenunapActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dodajdomenunapActionPerformed
+
+    private void pokazopisnapojuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pokazopisnapojuActionPerformed
+        if (pokazopisnapoju.isSelected() == true) {
+
+            panelopisnap.setVisible(true);
+
+        } else {
+
+            panelopisnap.setVisible(false);
+        }
+    }//GEN-LAST:event_pokazopisnapojuActionPerformed
+
+    private void dodajsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dodajsActionPerformed
+
+    private void listawybpizzyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listawybpizzyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listawybpizzyActionPerformed
+
+    private void listawybrozmpizzyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listawybrozmpizzyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listawybrozmpizzyActionPerformed
 
     /**
      * @param args the command line arguments
@@ -254,44 +682,241 @@ public class NoweZamLok extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NoweZamLok.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NoweZamLok.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NoweZamLok.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(NoweZamLok.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
+        //</editor-fold>
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new NoweZamLok().setVisible(true);
-                 NoweZamLok nzl = new NoweZamLok();
-              nzl.setVisible(false);              
-             
+                NoweZamLok nzl = new NoweZamLok();
+                nzl.setVisible(false);
+
             }
+
         });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroupmiejsce;
+    private javax.swing.ButtonGroup buttonGroupoplata;
+    private javax.swing.JButton buttonpotwierdz;
+    private javax.swing.JButton buttonwyczysc;
+    private javax.swing.JTextField cena;
+    private javax.swing.JTextField cena1;
+    private javax.swing.JTextField cena2;
+    private javax.swing.JLabel dlapelnoletnich;
+    private javax.swing.JButton dodajdomenunap;
+    private javax.swing.JButton dodajdomenup;
     private javax.swing.JComboBox dodajs;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JList jList1;
+    private javax.swing.JButton dodajw;
+    private javax.swing.JLabel formaoplaty;
+    private javax.swing.JLabel formazam;
+    private javax.swing.JRadioButton gotowka;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JComboBox listap;
-    private javax.swing.JComboBox listapc;
-    private javax.swing.JComboBox listapr;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JRadioButton karta;
+    private javax.swing.JList listaskladnikow;
+    private javax.swing.JComboBox listawybciastapizzy;
+    private javax.swing.JComboBox listawybnazwynap;
+    private javax.swing.JComboBox listawybpizzy;
+    private javax.swing.JComboBox listawybrodznap;
+    private javax.swing.JComboBox listawybrozmpizzy;
+    private javax.swing.JList listazamowien;
+    private javax.swing.JLabel napis_zl;
+    private javax.swing.JLabel napis_zl1;
+    private javax.swing.JLabel napis_zl2;
+    private javax.swing.JLabel napisdodwybskl;
+    private javax.swing.JLabel napisilenap;
+    private javax.swing.JLabel napisilepizz;
+    private javax.swing.JLabel napisnazwanapoju;
+    private javax.swing.JLabel napisnazwapizzy;
+    private javax.swing.JLabel napisrodzajciasta;
+    private javax.swing.JLabel napisrodzajnapoju;
+    private javax.swing.JLabel napisrozmiarpizzy;
+    private javax.swing.JLabel napistytul;
+    private javax.swing.JLabel napiszamowiono;
+    private javax.swing.JTextArea opisnapoju;
+    private javax.swing.JPanel panelnapoj;
+    private javax.swing.JPanel panelopisnap;
     private javax.swing.JPanel panelpizza;
+    private javax.swing.JPanel panelskladniki;
+    private javax.swing.JToggleButton pokazopisnapoju;
+    private javax.swing.JToggleButton pokazpanelnapoj;
+    private javax.swing.JToggleButton pokazpanelpizza;
+    private javax.swing.JTextField poleilenap;
+    private javax.swing.JTextField poleilep;
+    private javax.swing.JButton powrot;
     private javax.swing.JButton usuns;
-    private javax.swing.JButton usuns1;
+    private javax.swing.JRadioButton wdostawie;
+    private javax.swing.JRadioButton wlokalu;
+    private javax.swing.JToggleButton zobskl;
     // End of variables declaration//GEN-END:variables
+
+    void zamowpizze() {
+        listaa.setVisible(true);
+        listaa.setBounds(50, 50, 50, 50);
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt1 = con.createStatement();
+            stmt2 = con.createStatement();
+            stmt3 = con.createStatement();
+            res1 = stmt1.executeQuery(
+                    "select distinct(nazwa) from MENU_PIZZA"
+            );
+            res2 = stmt2.executeQuery(
+                    "select distinct(rozmiar) from MENU_PIZZA"
+            );
+            res3 = stmt3.executeQuery(
+                    "select distinct(ciasto) from MENU_PIZZA"
+            );
+
+        } catch (Exception e) {
+
+        }
+        try {
+            if (listawybpizzy.getItemCount() == 1) {
+                while (res1.next()) {
+
+                    listawybpizzy.addItem(res1.getString("nazwa"));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            if (listawybrozmpizzy.getItemCount() == 1) {
+                while (res2.next()) {
+
+                    listawybrozmpizzy.addItem(res2.getString("rozmiar"));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        try {
+            if (listawybciastapizzy.getItemCount() == 1) {
+                while (res3.next()) {
+
+                    listawybciastapizzy.addItem(res3.getString("ciasto"));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
+
+    }
+
+    void wypiszskladniki() {
+        model.removeAllElements();
+        dodajs.removeAllItems();
+        String nazwapizzy = listawybpizzy.getSelectedItem().toString();
+        String rozmpizzy = listawybrozmpizzy.getSelectedItem().toString();
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt4 = con.createStatement();
+            res4 = stmt4.executeQuery(
+                    "select * from SKLADNIKI where id_skladnika <= 37 or id_skladnika >= 40"
+            );
+        } catch (Exception e) {
+
+        }
+        try {
+            while (res4.next()) {
+
+                if (rozmpizzy.equals("mała")) {
+                    dodajs.addItem(res4.getString("nazwa") + " + " + res4.getString("cena_skl_mala") + " zł");
+                } else if (rozmpizzy.equals("srednia")) {
+                    dodajs.addItem(res4.getString("nazwa") + " + " + res4.getString("cena_skl_srednia") + " zł");
+                } else if (rozmpizzy.equals("duża")) {
+                    dodajs.addItem(res4.getString("nazwa") + " + " + res4.getString("cena_skl_duza") + " zł");
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt5 = con.createStatement();
+            res5 = stmt5.executeQuery(
+                    "select * from menu_pizza"
+            );
+        } catch (Exception e) {
+
+        }
+        int l = 1;
+        try {
+            while (res5.next()) {
+
+                if (nazwapizzy.equals(res5.getString("nazwa")) && l == 1) {
+                    l++;
+                    String wiersz_skladnikow = res5.getString("skladniki");
+                    String[] skladniki = rozdzielString(wiersz_skladnikow);
+                    int dl = skladniki.length;
+
+                    for (int k = 0; k < dl; k++) {
+                        int i = model.getSize();
+                        model.add(i, skladniki[k]);
+                    }
+                    listaskladnikow.setModel(model);
+                    System.out.println(res5.getString("skladniki"));
+                }
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    String[] rozdzielString(String str) {
+        int dlugosc = str.length();
+        int ile = 0;
+        for (int i = 0; i < dlugosc; i++) {
+            char znak = str.charAt(i);
+            if (znak == ',') {
+                ile++;
+            }
+        }
+        ile++;
+        String[] skladniki = new String[ile];
+
+        int pocz = 0;
+        int i = 0;
+        for (int nr = 0; nr < dlugosc; nr++) {
+            char znak = str.charAt(nr);
+            if (znak == ',') {
+                String skl = str.substring(pocz, nr);
+                if (skl.charAt(0) == ' ') {
+                    skl = skl.substring(1);
+                }
+                skladniki[i] = skl;
+                i++;
+                pocz = nr + 1;
+            }
+        }
+        String ostatni = str.substring(pocz);
+        if (ostatni.charAt(0) == ' ') {
+            ostatni = ostatni.substring(1);
+        }
+        skladniki[i] = ostatni;
+        return skladniki;
+    }
 }

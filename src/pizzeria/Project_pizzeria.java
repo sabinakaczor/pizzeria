@@ -5,15 +5,14 @@
  */
 package pizzeria;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,8 +21,9 @@ import java.util.logging.Logger;
 public class Project_pizzeria extends javax.swing.JFrame {
 
     Connection con;
-    Statement stmt;
-    ResultSet result;
+    Statement stmt, stmt2;
+    ResultSet result, result2;
+
     public Project_pizzeria() {
         
         try{
@@ -33,23 +33,29 @@ public class Project_pizzeria extends javax.swing.JFrame {
             stmt = con.createStatement();
             result = stmt.executeQuery(
                   "select * from PRACOWNICY"
-            ); 
-           /* result1 = stmt.executeQuery(
+            );   
+            stmt2 = con.createStatement();
+            result2 = stmt2.executeQuery(
                   "select * from PRACOWNICY"
-            ); */
+            );         
         }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
             
         }
-        initComponents();
+        initComponents();        
         try {
             while(result.next()){
                 login.addItem(result.getString("login"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(NullPointerException npe){
+            
+        }
+        if(login.getItemCount()<1){
+            przyciskzalogujsie.setEnabled(false);
         }
         
-        //Project_pizzeria project_pizzeria=new Project_pizzeria();
     }
 
     /**
@@ -61,25 +67,20 @@ public class Project_pizzeria extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        napislogowanie = new javax.swing.JLabel();
         login = new javax.swing.JComboBox();
         password = new javax.swing.JPasswordField();
-        jButton2 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        info = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        przyciskzalogujsie = new javax.swing.JButton();
+        napiswybuz = new javax.swing.JLabel();
+        naphaslo = new javax.swing.JLabel();
+        napisnazwapizzerii = new javax.swing.JLabel();
+        komunikat = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Logowanie pracownika");
+        napislogowanie.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        napislogowanie.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        napislogowanie.setText("Logowanie pracownika");
 
         login.setToolTipText("");
         login.addActionListener(new java.awt.event.ActionListener() {
@@ -88,42 +89,21 @@ public class Project_pizzeria extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Zaloguj się do systemu");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        przyciskzalogujsie.setText("Zaloguj się do systemu");
+        przyciskzalogujsie.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                przyciskzalogujsieActionPerformed(evt);
             }
         });
 
-        jLabel2.setText("Wybierz użytkownika");
+        napiswybuz.setText("Wybierz użytkownika");
 
-        jLabel3.setText("Wprowadź hasło");
+        naphaslo.setText("Wprowadź hasło");
 
-        jLabel4.setFont(new java.awt.Font("Tempus Sans ITC", 3, 18)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Pizzeria \"Finezja\"");
+        napisnazwapizzerii.setFont(new java.awt.Font("Tempus Sans ITC", 3, 18)); // NOI18N
+        napisnazwapizzerii.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        info.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-
-        jMenu1.setText("Menu");
-
-        jMenuItem1.setText("Dodaj nowego pracownika");
-        jMenu1.add(jMenuItem1);
-
-        jMenuItem2.setText("Zamknij program");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
-            }
-        });
-        jMenu1.add(jMenuItem2);
-
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
-
-        setJMenuBar(jMenuBar1);
+        komunikat.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -132,8 +112,8 @@ public class Project_pizzeria extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 131, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(napiswybuz, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                    .addComponent(naphaslo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(login, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -144,35 +124,35 @@ public class Project_pizzeria extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(225, 225, 225)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(napislogowanie, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(napisnazwapizzerii, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(32, 32, 32)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(przyciskzalogujsie, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(226, 226, 226)
-                        .addComponent(info, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(komunikat, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                .addComponent(napisnazwapizzerii, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(napislogowanie, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(login, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 17, Short.MAX_VALUE)
+                    .addComponent(napiswybuz, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 28, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(naphaslo, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(password))
                 .addGap(28, 28, 28)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(przyciskzalogujsie, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(info, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(komunikat, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(187, 187, 187))
         );
 
@@ -181,37 +161,42 @@ public class Project_pizzeria extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    private void przyciskzalogujsieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przyciskzalogujsieActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
+            
             String nazwa=login.getSelectedItem().toString();
             String haslo = password.getText();
         try {
             ResultSet pobHaslo = stmt.executeQuery(
                     "select * from PRACOWNICY where login like '" + nazwa + "'"
             ); 
+            ResultSet pobStanowisko = stmt2.executeQuery(
+                    "select * from PRACOWNICY where login like '" + nazwa + "'"
+            ); 
+            String stan="";
+            while(pobStanowisko.next()) {
+             stan =  pobStanowisko.getString("stanowisko");
+            }
             while(pobHaslo.next()) {
                 String popr = pobHaslo.getString("haslo");
                 if(haslo.equals(popr)) {
                     Zamowienia zam =new Zamowienia();
-                    zam.genUser(nazwa);
+                    zam.genUser(nazwa,stan);
                     zam.setVisible(true);
                     dispose(); 
                 } else {
-                    info.setText("Podane hasło jest niepoprawne.");
+                    komunikat.setText("Podane hasło jest niepoprawne.");
                 }
             }
         } catch (SQLException ex) {
             Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
                    
             
        
         
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_przyciskzalogujsieActionPerformed
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
        
@@ -220,31 +205,13 @@ public class Project_pizzeria extends javax.swing.JFrame {
 
     /**
      * @param args the command line arguments
+     * @throws java.sql.SQLException
      */
-    public static void main(String args[]) throws SQLException {
-      /* Connection con;
-    Statement stmt;
-    ResultSet result;
-    try{
-            con = DriverManager.getConnection(
-            "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
-            );
-            stmt = con.createStatement();
-            result = stmt.executeQuery(
-                  "select * from PRACOWNICY where login like 'Sowerda Wiktoria'"
-            ); 
-            while(result.next()) {
-                String b = result.getString("haslo");
-                System.out.println(b);
-            }
-        }catch(Exception e){
-            
-        } */
-        
-    
-        
-      
-        
+    @SuppressWarnings("empty-statement")
+    public static void main(String args[]) throws SQLException{
+          
+           
+              
         
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -258,20 +225,16 @@ public class Project_pizzeria extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Project_pizzeria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Project_pizzeria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Project_pizzeria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Project_pizzeria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 ;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
+                
                 new Project_pizzeria().setVisible(true);
                 
             }
@@ -280,22 +243,20 @@ public class Project_pizzeria extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel info;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JLabel komunikat;
     private javax.swing.JComboBox login;
+    private javax.swing.JLabel naphaslo;
+    private javax.swing.JLabel napislogowanie;
+    private javax.swing.JLabel napisnazwapizzerii;
+    private javax.swing.JLabel napiswybuz;
     private javax.swing.JPasswordField password;
+    private javax.swing.JButton przyciskzalogujsie;
     // End of variables declaration//GEN-END:variables
 
     private void close() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    void genNazwa(String nazwa) {
+        napisnazwapizzerii.setText("Pizzeria \""+ nazwa + "\""); //To change body of generated methods, choose Tools | Templates.
     }
 }

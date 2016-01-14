@@ -1,23 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package pizzeria;
+
+
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
  * @author sk
  */
 public class Zamowienia extends javax.swing.JFrame {
-
-    /**
-     * Creates new form Zamowienia
-     */
     public Zamowienia() {
         initComponents();
-        ///panel.setVisible(false);
-    }
+        PanelOstZam.setVisible(false);
+        panelHistoriaLogowan.setVisible(false);
+        panelHistoriaZam.setVisible(false);
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,32 +26,191 @@ public class Zamowienia extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        tytul = new javax.swing.JLabel();
         jesteszalog = new javax.swing.JLabel();
-        wyloguj = new javax.swing.JButton();
-        zlozzam = new javax.swing.JButton();
-        ostzam = new javax.swing.JButton();
+        przyciskwyloguj = new javax.swing.JButton();
+        przyciskzlozzam = new javax.swing.JButton();
+        PanelOstZam = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        listaostzam = new javax.swing.JList();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        szczegolyzam = new javax.swing.JTextArea();
+        pokazszczegoly = new javax.swing.JButton();
+        powtorzzam = new javax.swing.JButton();
+        histzam = new javax.swing.JToggleButton();
+        histlog = new javax.swing.JToggleButton();
+        panelHistoriaZam = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        polehistoriazam = new javax.swing.JTextArea();
+        panelHistoriaLogowan = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        listahistoriilogowan = new javax.swing.JList();
+        ostzam = new javax.swing.JToggleButton();
+        menuglowne = new javax.swing.JMenuBar();
+        pracownicy = new javax.swing.JMenu();
+        dodajprac = new javax.swing.JMenuItem();
+        menu = new javax.swing.JMenu();
+        menu_pizza = new javax.swing.JMenuItem();
+        program = new javax.swing.JMenu();
+        zamknij = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        tytul.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        tytul.setText("Pizzeria \"Finezja\"");
-
-        wyloguj.setText("Wyloguj się");
-        wyloguj.addActionListener(new java.awt.event.ActionListener() {
+        przyciskwyloguj.setText("Wyloguj się");
+        przyciskwyloguj.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                wylogujActionPerformed(evt);
+                przyciskwylogujActionPerformed(evt);
             }
         });
 
-        zlozzam.setText("Złóż zamówienie");
-        zlozzam.addActionListener(new java.awt.event.ActionListener() {
+        przyciskzlozzam.setText("Złóż nowe zamówienie");
+        przyciskzlozzam.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                zlozzamActionPerformed(evt);
+                przyciskzlozzamActionPerformed(evt);
             }
         });
+
+        jScrollPane1.setViewportView(listaostzam);
+
+        szczegolyzam.setColumns(20);
+        szczegolyzam.setRows(5);
+        jScrollPane2.setViewportView(szczegolyzam);
+
+        pokazszczegoly.setText("Pokaż szczegóły");
+
+        powtorzzam.setText("Powtórz zamówienie");
+
+        javax.swing.GroupLayout PanelOstZamLayout = new javax.swing.GroupLayout(PanelOstZam);
+        PanelOstZam.setLayout(PanelOstZamLayout);
+        PanelOstZamLayout.setHorizontalGroup(
+            PanelOstZamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelOstZamLayout.createSequentialGroup()
+                .addGroup(PanelOstZamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelOstZamLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PanelOstZamLayout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addComponent(pokazszczegoly))
+                    .addGroup(PanelOstZamLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PanelOstZamLayout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(powtorzzam)))
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+        PanelOstZamLayout.setVerticalGroup(
+            PanelOstZamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelOstZamLayout.createSequentialGroup()
+                .addGap(4, 4, 4)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13)
+                .addComponent(pokazszczegoly)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(powtorzzam)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        histzam.setText("Historia zamówień");
+        histzam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                histzamActionPerformed(evt);
+            }
+        });
+
+        histlog.setText("Historia logowań");
+        histlog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                histlogActionPerformed(evt);
+            }
+        });
+
+        polehistoriazam.setColumns(20);
+        polehistoriazam.setRows(5);
+        jScrollPane3.setViewportView(polehistoriazam);
+
+        javax.swing.GroupLayout panelHistoriaZamLayout = new javax.swing.GroupLayout(panelHistoriaZam);
+        panelHistoriaZam.setLayout(panelHistoriaZamLayout);
+        panelHistoriaZamLayout.setHorizontalGroup(
+            panelHistoriaZamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelHistoriaZamLayout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelHistoriaZamLayout.setVerticalGroup(
+            panelHistoriaZamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelHistoriaZamLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(105, Short.MAX_VALUE))
+        );
+
+        jScrollPane4.setViewportView(listahistoriilogowan);
+
+        javax.swing.GroupLayout panelHistoriaLogowanLayout = new javax.swing.GroupLayout(panelHistoriaLogowan);
+        panelHistoriaLogowan.setLayout(panelHistoriaLogowanLayout);
+        panelHistoriaLogowanLayout.setHorizontalGroup(
+            panelHistoriaLogowanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelHistoriaLogowanLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelHistoriaLogowanLayout.setVerticalGroup(
+            panelHistoriaLogowanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelHistoriaLogowanLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(89, Short.MAX_VALUE))
+        );
 
         ostzam.setText("Ostatnie zamówienie");
+        ostzam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ostzamActionPerformed(evt);
+            }
+        });
+
+        pracownicy.setText("Pracownicy");
+
+        dodajprac.setText("Dodaj nowego pracownika");
+        dodajprac.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dodajpracActionPerformed(evt);
+            }
+        });
+        pracownicy.add(dodajprac);
+
+        menuglowne.add(pracownicy);
+
+        menu.setText("Menu");
+
+        menu_pizza.setText("Pizza");
+        menu_pizza.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_pizzaActionPerformed(evt);
+            }
+        });
+        menu.add(menu_pizza);
+
+        menuglowne.add(menu);
+
+        program.setText("Program");
+
+        zamknij.setText("Zamknij program");
+        zamknij.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zamknijActionPerformed(evt);
+            }
+        });
+        program.add(zamknij);
+
+        menuglowne.add(program);
+
+        setJMenuBar(menuglowne);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -63,52 +220,132 @@ public class Zamowienia extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(tytul, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(134, 134, 134)
-                        .addComponent(wyloguj))
-                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(PanelOstZam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(panelHistoriaZam, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(panelHistoriaLogowan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(139, 139, 139)
+                        .addComponent(jesteszalog, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jesteszalog, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(przyciskzlozzam)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(zlozzam)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ostzam)))
-                        .addGap(0, 374, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addGap(312, 312, 312)
+                                .addComponent(przyciskwyloguj)))
+                        .addContainerGap())))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(68, 68, 68)
+                .addComponent(ostzam)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(histzam)
+                .addGap(138, 138, 138)
+                .addComponent(histlog)
+                .addGap(112, 112, 112))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(przyciskwyloguj)
+                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tytul, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(wyloguj))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jesteszalog, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(zlozzam)
-                    .addComponent(ostzam))
-                .addContainerGap(330, Short.MAX_VALUE))
+                    .addComponent(jesteszalog, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(przyciskzlozzam))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(ostzam))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(histzam)
+                            .addComponent(histlog))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(panelHistoriaZam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(PanelOstZam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(76, 76, 76))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(panelHistoriaLogowan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(119, 119, 119))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void wylogujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wylogujActionPerformed
+    private void przyciskwylogujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przyciskwylogujActionPerformed
         Project_pizzeria project_pizzeria=new Project_pizzeria();
         project_pizzeria.setVisible(true);
         dispose();
         // TODO add your handling code here:
-    }//GEN-LAST:event_wylogujActionPerformed
+    }//GEN-LAST:event_przyciskwylogujActionPerformed
 
-    private void zlozzamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zlozzamActionPerformed
+    private void przyciskzlozzamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przyciskzlozzamActionPerformed
        // panel.setVisible(true);
          NoweZamLok nzl = new NoweZamLok();
         nzl.setVisible(true);
+        
+        
+        
 // TODO add your handling code here:
-    }//GEN-LAST:event_zlozzamActionPerformed
+    }//GEN-LAST:event_przyciskzlozzamActionPerformed
+
+    private void ostzamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ostzamActionPerformed
+        // TODO add your handling code here:
+        if(ostzam.isSelected()) {
+            PanelOstZam.setVisible(true);
+        } else {
+            PanelOstZam.setVisible(false);
+        }
+        
+    }//GEN-LAST:event_ostzamActionPerformed
+
+    private void histzamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_histzamActionPerformed
+        // TODO add your handling code here:
+        if(histzam.isSelected()) {
+           panelHistoriaZam.setVisible(true);
+        } else {
+           panelHistoriaZam.setVisible(false);
+        } 
+    }//GEN-LAST:event_histzamActionPerformed
+
+    private void histlogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_histlogActionPerformed
+        // TODO add your handling code here:
+        if(histlog.isSelected()) {
+           panelHistoriaLogowan.setVisible(true);
+        } else {
+           panelHistoriaLogowan.setVisible(false);
+        } 
+    }//GEN-LAST:event_histlogActionPerformed
+
+    private void dodajpracActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajpracActionPerformed
+        // TODO add your handling code here:
+       
+        String zalog = jesteszalog.getText(); 
+       if(zalog.contains("admin")) {
+           Nowy_pracownik nowy_pracownik = new Nowy_pracownik();
+        nowy_pracownik.setVisible(true);
+        dispose();
+       } else {
+           JOptionPane.showMessageDialog(null, "Brak dostępu");
+       }
+       
+    }//GEN-LAST:event_dodajpracActionPerformed
+
+    private void menu_pizzaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_pizzaActionPerformed
+        Edycja_pizzy edycja_pizzy = new Edycja_pizzy();
+        edycja_pizzy.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_menu_pizzaActionPerformed
+
+    private void zamknijActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zamknijActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_zamknijActionPerformed
 
     /**
      * @param args the command line arguments
@@ -126,19 +363,16 @@ public class Zamowienia extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Zamowienia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Zamowienia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Zamowienia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Zamowienia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Zamowienia().setVisible(true);
             }
@@ -146,14 +380,39 @@ public class Zamowienia extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel PanelOstZam;
+    private javax.swing.JMenuItem dodajprac;
+    private javax.swing.JToggleButton histlog;
+    private javax.swing.JToggleButton histzam;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel jesteszalog;
-    private javax.swing.JButton ostzam;
-    private javax.swing.JLabel tytul;
-    private javax.swing.JButton wyloguj;
-    private javax.swing.JButton zlozzam;
+    private javax.swing.JList listahistoriilogowan;
+    private javax.swing.JList listaostzam;
+    private javax.swing.JMenu menu;
+    private javax.swing.JMenuItem menu_pizza;
+    private javax.swing.JMenuBar menuglowne;
+    private javax.swing.JToggleButton ostzam;
+    private javax.swing.JPanel panelHistoriaLogowan;
+    private javax.swing.JPanel panelHistoriaZam;
+    private javax.swing.JButton pokazszczegoly;
+    private javax.swing.JTextArea polehistoriazam;
+    private javax.swing.JButton powtorzzam;
+    private javax.swing.JMenu pracownicy;
+    private javax.swing.JMenu program;
+    private javax.swing.JButton przyciskwyloguj;
+    private javax.swing.JButton przyciskzlozzam;
+    private javax.swing.JTextArea szczegolyzam;
+    private javax.swing.JMenuItem zamknij;
     // End of variables declaration//GEN-END:variables
 
-    void genUser(String nazwa) {
-        jesteszalog.setText("Jesteś zalogowany jako:  "+ nazwa); //To change body of generated methods, choose Tools | Templates.
+    void genUser(String nazwa,String stanowisko) {
+        String stan="";
+        if(stanowisko.contains("Admin")) {
+            stan = " (admin)";
+        }
+        jesteszalog.setText("Jesteś zalogowany jako:  "+ nazwa +""+ stan);
     }
 }
