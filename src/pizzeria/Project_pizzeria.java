@@ -51,6 +51,7 @@ public class Project_pizzeria extends javax.swing.JFrame {
         
         
         try {
+             login.addItem("");
             while(result.next()){
                 login.addItem(result.getString("login"));
             }

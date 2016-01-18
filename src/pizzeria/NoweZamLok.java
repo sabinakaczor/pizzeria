@@ -106,6 +106,7 @@ public class NoweZamLok extends javax.swing.JFrame {
         opisnapoju = new javax.swing.JTextArea();
         buttonpotwierdz = new javax.swing.JButton();
         buttonwyczysc = new javax.swing.JButton();
+        usunpozycje = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1370, 720));
@@ -492,10 +493,23 @@ public class NoweZamLok extends javax.swing.JFrame {
         getContentPane().add(panelnapoj, new org.netbeans.lib.awtextra.AbsoluteConstraints(468, 120, 322, 549));
 
         buttonpotwierdz.setText("Potwierdź");
-        getContentPane().add(buttonpotwierdz, new org.netbeans.lib.awtextra.AbsoluteConstraints(937, 591, -1, -1));
+        getContentPane().add(buttonpotwierdz, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 540, 110, 60));
 
         buttonwyczysc.setText("Wyczyść");
-        getContentPane().add(buttonwyczysc, new org.netbeans.lib.awtextra.AbsoluteConstraints(925, 620, -1, -1));
+        buttonwyczysc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonwyczyscActionPerformed(evt);
+            }
+        });
+        getContentPane().add(buttonwyczysc, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 570, 100, -1));
+
+        usunpozycje.setText("Usuń pozycję");
+        usunpozycje.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usunpozycjeActionPerformed(evt);
+            }
+        });
+        getContentPane().add(usunpozycje, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 540, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -565,12 +579,12 @@ public class NoweZamLok extends javax.swing.JFrame {
         if (t.length() > 0) {
             double cp = Double.parseDouble(t);
             try {
-            Integer.parseInt(poleilep.getText());
-            dodajzampizzy();
-            zliczcene(cp);
-            czyscpanelpizza();
-            } catch(NumberFormatException nfe) {
-                 JOptionPane.showMessageDialog(null, "Niepoprawne dane!");
+                Integer.parseInt(poleilep.getText());
+                dodajzampizzy();
+                zliczcene(cp);
+                czyscpanelpizza();
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(null, "Niepoprawne dane!");
             }
         } else if (nazwa.length() > 1 && rozmiar.length() > 1 && ciasto.length() > 1) {
             try {
@@ -753,6 +767,32 @@ public class NoweZamLok extends javax.swing.JFrame {
         zobskl.setSelected(false);
     }//GEN-LAST:event_listawybciastapizzyItemStateChanged
 
+    private void usunpozycjeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usunpozycjeActionPerformed
+        if (!listazamowien.isSelectionEmpty()) {
+            int index = listazamowien.getSelectedIndex();
+            modelzam.removeElementAt(index);
+            listazamowien.setModel(modelzam);
+        } else {
+            JOptionPane.showMessageDialog(null, "Wybierz pozycję!");
+        }
+    }//GEN-LAST:event_usunpozycjeActionPerformed
+
+    private void buttonwyczyscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonwyczyscActionPerformed
+
+        String[] opcje = new String[2];
+        opcje[0] = new String("Tak");
+        opcje[1] = new String("Nie");
+        int res = JOptionPane.showOptionDialog(null, "Czy chcesz wyczyścić wszystkie pozycje?", "Potwierdzenie", 0, JOptionPane.QUESTION_MESSAGE, null, opcje, null);
+        switch (res) {
+            case JOptionPane.YES_OPTION:
+                modelzam.removeAllElements();
+                listazamowien.setModel(modelzam);
+                break;
+            case JOptionPane.NO_OPTION:
+                break;
+        }
+    }//GEN-LAST:event_buttonwyczyscActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -841,6 +881,7 @@ public class NoweZamLok extends javax.swing.JFrame {
     private javax.swing.JTextField poleilenap;
     private javax.swing.JTextField poleilep;
     private javax.swing.JButton powrot;
+    private javax.swing.JButton usunpozycje;
     private javax.swing.JButton usuns;
     private javax.swing.JRadioButton wdostawie;
     private javax.swing.JRadioButton wlokalu;
@@ -914,7 +955,7 @@ public class NoweZamLok extends javax.swing.JFrame {
             );
             stmt4 = con.createStatement();
             res4 = stmt4.executeQuery(
-                    "select * from SKLADNIKI where id_skladnika <= 37 or id_skladnika >= 40"
+                    "select * from SKLADNIKI"
             );
         } catch (Exception e) {
 
@@ -924,7 +965,7 @@ public class NoweZamLok extends javax.swing.JFrame {
 
                 if (rozmpizzy.equals("mała")) {
                     dodajs.addItem(res4.getString("nazwa") + " + " + res4.getString("cena_skl_mala") + " zł");
-                } else if (rozmpizzy.equals("srednia")) {
+                } else if (rozmpizzy.equals("średnia")) {
                     dodajs.addItem(res4.getString("nazwa") + " + " + res4.getString("cena_skl_srednia") + " zł");
                 } else if (rozmpizzy.equals("duża")) {
                     dodajs.addItem(res4.getString("nazwa") + " + " + res4.getString("cena_skl_duza") + " zł");

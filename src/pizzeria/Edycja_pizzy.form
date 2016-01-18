@@ -271,11 +271,7 @@
             <Component class="javax.swing.JComboBox" name="POLECIASTO">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="3">
-                    <StringItem index="0" value=""/>
-                    <StringItem index="1" value="cienkie"/>
-                    <StringItem index="2" value="grube"/>
-                  </StringArray>
+                  <StringArray count="0"/>
                 </Property>
               </Properties>
               <Events>
@@ -290,12 +286,7 @@
             <Component class="javax.swing.JComboBox" name="POLEROZMIAR">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value=""/>
-                    <StringItem index="1" value="ma&#x142;a"/>
-                    <StringItem index="2" value="&#x15b;rednia"/>
-                    <StringItem index="3" value="du&#x17c;a"/>
-                  </StringArray>
+                  <StringArray count="0"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -307,11 +298,7 @@
             <Component class="javax.swing.JComboBox" name="POLEDOST">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="3">
-                    <StringItem index="0" value=""/>
-                    <StringItem index="1" value="tak"/>
-                    <StringItem index="2" value="nie"/>
-                  </StringArray>
+                  <StringArray count="0"/>
                 </Property>
               </Properties>
               <Events>

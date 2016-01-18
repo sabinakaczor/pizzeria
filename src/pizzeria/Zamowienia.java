@@ -387,7 +387,7 @@ public class Zamowienia extends javax.swing.JFrame {
     }//GEN-LAST:event_menu_skladnikiActionPerformed
 
     private void nowe_klienciActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nowe_klienciActionPerformed
-       Edycja_klientow edycja_klientow = new Edycja_klientow();
+       Edycja_klientow edycja_klientow = new Edycja_klientow(this);
         edycja_klientow.setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_nowe_klienciActionPerformed

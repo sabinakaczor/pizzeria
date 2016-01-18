@@ -23,14 +23,16 @@ import static pizzeria.Edycja_pizzy.zam;
  * @author Wika
  */
 public class Edycja_skladnikow extends javax.swing.JFrame {
-     Connection con;
-    Statement stmt1, stmt2, stmt3, stmt4, stmt5;
-    ResultSet res1, res2, res3, res4, res5;
+
+    Connection con;
+    Statement stmt1, stmt2, stmt3, stmt4, stmt5, stmt6;
+    ResultSet res1, res2, res3, res4, res5, res6;
     DefaultTableModel model;
     static Zamowienia zam;
     float cenam = 0;
     float cenas = 0;
     float cenad = 0;
+
     //DefaultListModel<String> model1 = new DefaultListModel<>();
     /**
      * Creates new form Edycja_skladnikow
@@ -38,9 +40,9 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
     public Edycja_skladnikow(Zamowienia zam) {
         this.zam = zam;
         initComponents();
-         model = (DefaultTableModel) tabelka.getModel();
+        model = (DefaultTableModel) tabelka.getModel();
         panel_edycji.setVisible(false);
-        POLE_NOWY_RODZAJ.setVisible(false);
+        POLE_NOWA_DOST.setVisible(false);
         panel_tabelka_skl.setVisible(false);
     }
 
@@ -76,12 +78,16 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
         nazwa = new javax.swing.JLabel();
         POLE_NUMER = new javax.swing.JTextField();
         POLE_NAZWA = new javax.swing.JTextField();
-        POLE_NOWY_RODZAJ = new javax.swing.JTextField();
+        POLE_NOWA_DOST = new javax.swing.JTextField();
         POLE_CENA_MALA = new javax.swing.JTextField();
         POLE_CENA_SREDNIA = new javax.swing.JTextField();
         POLE_CENA_DUZA = new javax.swing.JTextField();
         POLE_RODZAJ = new javax.swing.JComboBox();
-        nowa_opcja = new javax.swing.JToggleButton();
+        nowa_opcja_skl = new javax.swing.JToggleButton();
+        pole_dost_skl = new javax.swing.JComboBox<>();
+        rodzaj1 = new javax.swing.JLabel();
+        nowa_opcja1 = new javax.swing.JToggleButton();
+        POLE_NOWY_RODZAJ1 = new javax.swing.JTextField();
         komunikat = new javax.swing.JLabel();
         przegladaj = new javax.swing.JToggleButton();
 
@@ -101,20 +107,20 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
 
         tabelka.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Nr", "Nazwa", "Rodzaj", "Cena dla małej pizzy", "Cena dla średniej pizzy", "Cena dla dużej pizzy"
+                "Nr", "Nazwa", "Rodzaj", "Cena dla małej pizzy", "Cena dla średniej pizzy", "Cena dla dużej pizzy", "Dostępność"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -132,9 +138,10 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
             tabelka.getColumnModel().getColumn(0).setMaxWidth(30);
             tabelka.getColumnModel().getColumn(2).setResizable(false);
             tabelka.getColumnModel().getColumn(4).setResizable(false);
+            tabelka.getColumnModel().getColumn(6).setPreferredWidth(30);
         }
 
-        panel_tabelka_skl.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 980, 200));
+        panel_tabelka_skl.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 980, 200));
 
         usuń.setText("Usuń");
         usuń.addActionListener(new java.awt.event.ActionListener() {
@@ -196,10 +203,10 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
         panel_edycji.add(cena_srednia, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 30, -1, -1));
 
         cena_duza.setText("Cena dla dużej pizzy");
-        panel_edycji.add(cena_duza, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 30, -1, -1));
+        panel_edycji.add(cena_duza, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 30, -1, -1));
 
-        rodzaj.setText("Rodzaj");
-        panel_edycji.add(rodzaj, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, -1, -1));
+        rodzaj.setText("Dostępność");
+        panel_edycji.add(rodzaj, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 30, -1, -1));
 
         nazwa.setText("Nazwa");
         panel_edycji.add(nazwa, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, -1, -1));
@@ -213,15 +220,15 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
         panel_edycji.add(POLE_NUMER, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 43, 30));
         panel_edycji.add(POLE_NAZWA, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, 110, 30));
 
-        POLE_NOWY_RODZAJ.addActionListener(new java.awt.event.ActionListener() {
+        POLE_NOWA_DOST.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                POLE_NOWY_RODZAJActionPerformed(evt);
+                POLE_NOWA_DOSTActionPerformed(evt);
             }
         });
-        panel_edycji.add(POLE_NOWY_RODZAJ, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, 130, 30));
+        panel_edycji.add(POLE_NOWA_DOST, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 120, 120, 30));
         panel_edycji.add(POLE_CENA_MALA, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 50, 102, 30));
-        panel_edycji.add(POLE_CENA_SREDNIA, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 50, 100, 30));
-        panel_edycji.add(POLE_CENA_DUZA, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 50, 100, 30));
+        panel_edycji.add(POLE_CENA_SREDNIA, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 50, 100, 30));
+        panel_edycji.add(POLE_CENA_DUZA, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 50, 100, 30));
 
         POLE_RODZAJ.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
         POLE_RODZAJ.addActionListener(new java.awt.event.ActionListener() {
@@ -231,18 +238,38 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
         });
         panel_edycji.add(POLE_RODZAJ, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 50, 130, 30));
 
-        nowa_opcja.setText("Nowa opcja");
-        nowa_opcja.addActionListener(new java.awt.event.ActionListener() {
+        nowa_opcja_skl.setText("Nowa opcja");
+        nowa_opcja_skl.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nowa_opcjaActionPerformed(evt);
+                nowa_opcja_sklActionPerformed(evt);
             }
         });
-        panel_edycji.add(nowa_opcja, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, 130, -1));
-        panel_edycji.add(komunikat, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 90, 270, 50));
+        panel_edycji.add(nowa_opcja_skl, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 90, 110, -1));
 
-        panel_tabelka_skl.add(panel_edycji, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 990, 160));
+        panel_edycji.add(pole_dost_skl, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 50, 100, 30));
 
-        getContentPane().add(panel_tabelka_skl, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 1010, 470));
+        rodzaj1.setText("Rodzaj");
+        panel_edycji.add(rodzaj1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 30, -1, -1));
+
+        nowa_opcja1.setText("Nowa opcja");
+        nowa_opcja1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nowa_opcja1ActionPerformed(evt);
+            }
+        });
+        panel_edycji.add(nowa_opcja1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 90, 130, -1));
+
+        POLE_NOWY_RODZAJ1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                POLE_NOWY_RODZAJ1ActionPerformed(evt);
+            }
+        });
+        panel_edycji.add(POLE_NOWY_RODZAJ1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, 130, 30));
+        panel_edycji.add(komunikat, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 570, 270, 50));
+
+        panel_tabelka_skl.add(panel_edycji, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 1020, 260));
+
+        getContentPane().add(panel_tabelka_skl, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 1030, 560));
 
         przegladaj.setText("Przeglądaj składniki");
         przegladaj.addActionListener(new java.awt.event.ActionListener() {
@@ -256,23 +283,23 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void powrotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_powrotActionPerformed
-       zam.genUser2();
+        zam.genUser2();
         zam.setVisible(true);
         dispose();
     }//GEN-LAST:event_powrotActionPerformed
 
-    private void POLE_NOWY_RODZAJActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_POLE_NOWY_RODZAJActionPerformed
+    private void POLE_NOWA_DOSTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_POLE_NOWA_DOSTActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_POLE_NOWY_RODZAJActionPerformed
+    }//GEN-LAST:event_POLE_NOWA_DOSTActionPerformed
 
     private void przegladajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przegladajActionPerformed
         if (przegladaj.isSelected() == true) {
-            
+
             panel_tabelka_skl.setVisible(true);
             czysctabelke();
             przegladaj(model);
         } else {
-            
+
             panel_tabelka_skl.setVisible(false);
 
         }
@@ -286,17 +313,17 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_POLE_RODZAJActionPerformed
 
-    private void nowa_opcjaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nowa_opcjaActionPerformed
-        if (nowa_opcja.isSelected() == true) {
-            POLE_NOWY_RODZAJ.setVisible(true);
-            POLE_RODZAJ.setEnabled(false);
-            POLE_RODZAJ.setSelectedIndex(0);
+    private void nowa_opcja_sklActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nowa_opcja_sklActionPerformed
+        if (nowa_opcja_skl.isSelected() == true) {
+            POLE_NOWA_DOST.setVisible(true);
+            pole_dost_skl.setEnabled(false);
+            pole_dost_skl.setSelectedIndex(0);
         } else {
-            POLE_NOWY_RODZAJ.setVisible(false);
-            POLE_RODZAJ.setEnabled(true);
-
+            POLE_NOWA_DOST.setVisible(false);
+            pole_dost_skl.setEnabled(true);
+            POLE_NOWA_DOST.setText("");
         }
-    }//GEN-LAST:event_nowa_opcjaActionPerformed
+    }//GEN-LAST:event_nowa_opcja_sklActionPerformed
 
     private void usuńActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuńActionPerformed
         int j = tabelka.getRowCount();
@@ -338,19 +365,28 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
     }//GEN-LAST:event_usuńActionPerformed
 
     private void edytujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edytujActionPerformed
-         if (tabelka.getSelectedRowCount() > 0) {
-              POLE_NAZWA.setText("");
-              komunikat.setText("");
-       POLE_NOWY_RODZAJ.setText("");
-       POLE_RODZAJ.setSelectedIndex(0);
-       POLE_CENA_DUZA.setText("");
-       POLE_CENA_SREDNIA.setText("");
-       POLE_CENA_MALA.setText(""); 
+        if (tabelka.getSelectedRowCount() > 0) {
+             wypiszrodzajdostepnosc();
+            POLE_NAZWA.setText("");
+            komunikat.setText("");
+            POLE_NOWA_DOST.setText("");
+            POLE_NOWY_RODZAJ1.setText("");
+            POLE_RODZAJ.setSelectedIndex(0);
+            pole_dost_skl.setSelectedIndex(0);
+            POLE_CENA_DUZA.setText("");
+            POLE_CENA_SREDNIA.setText("");
+            POLE_CENA_MALA.setText("");
             panel_edycji.setVisible(true);
+            nowa_opcja1.setSelected(false);
+            nowa_opcja_skl.setSelected(false);
+            POLE_NOWY_RODZAJ1.setVisible(false);
+            POLE_NOWA_DOST.setVisible(false);
+            POLE_RODZAJ.setEnabled(true);
+            pole_dost_skl.setEnabled(true);
             int wybrwiersz = tabelka.getSelectedRow();
             int numer = Integer.parseInt(tabelka.getValueAt(wybrwiersz, 0).toString());
             POLE_NUMER.setText(numer + "");
-            wypisznazwyrodzajow();
+           
         } else {
             JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");
         }
@@ -359,59 +395,62 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
 
     private void dodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajActionPerformed
         POLE_NAZWA.setText("");
-       POLE_NOWY_RODZAJ.setText("");
+        POLE_NOWA_DOST.setText("");
+        POLE_NOWY_RODZAJ1.setText("");
         komunikat.setText("");
-       POLE_RODZAJ.setSelectedIndex(0);
-       POLE_CENA_DUZA.setText("");
-       POLE_CENA_SREDNIA.setText("");
-       POLE_CENA_MALA.setText(""); 
+        POLE_CENA_DUZA.setText("");
+        POLE_CENA_SREDNIA.setText("");
+        POLE_CENA_MALA.setText("");
         panel_edycji.setVisible(true);
+        POLE_NOWY_RODZAJ1.setVisible(false);
+        POLE_NOWA_DOST.setVisible(false);
         int numer = tabelka.getRowCount() + 1;
         POLE_NUMER.setText(numer + "");
-        wypisznazwyrodzajow();
+        wypiszrodzajdostepnosc();       
+        POLE_RODZAJ.setSelectedIndex(0);
+        pole_dost_skl.setSelectedIndex(0);
+        nowa_opcja1.setSelected(false);
+        nowa_opcja_skl.setSelected(false);
+        POLE_RODZAJ.setEnabled(true);
+        pole_dost_skl.setEnabled(true);
     }//GEN-LAST:event_dodajActionPerformed
 
     private void anulujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anulujActionPerformed
-         panel_edycji.setVisible(false);
+        panel_edycji.setVisible(false);
+        czyscpola();
     }//GEN-LAST:event_anulujActionPerformed
 
     private void wyczyscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wyczyscActionPerformed
-       POLE_NAZWA.setText("");
-       POLE_NOWY_RODZAJ.setText("");
-        komunikat.setText("");
-       POLE_RODZAJ.setSelectedIndex(0);
-       POLE_CENA_DUZA.setText("");
-       POLE_CENA_SREDNIA.setText("");
-       POLE_CENA_MALA.setText("");
+        czyscpola();
     }//GEN-LAST:event_wyczyscActionPerformed
 
     private void zapiszActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zapiszActionPerformed
         int numer = tabelka.getRowCount() + 1;
-
-        String nazwa = POLE_NAZWA.getText();
-        //String skladniki = pobierzwybraneskladniki();
-        String rodzaj;
-        if (nowa_opcja.isSelected()) {
-            rodzaj = POLE_NOWY_RODZAJ.getText();
+        String nazwa = POLE_NAZWA.getText() + "";
+        String dost = "";
+        if (nowa_opcja_skl.isSelected()) {
+            dost += POLE_NOWA_DOST.getText();
         } else {
-            rodzaj = POLE_RODZAJ.getSelectedItem().toString();
+            dost += pole_dost_skl.getSelectedItem().toString();
         }
-        
-        if ((POLE_CENA_MALA.getText() != null && POLE_CENA_MALA.getText().length() > 0) || (POLE_CENA_DUZA.getText() != null && POLE_CENA_DUZA.getText().length() > 0) ||(POLE_CENA_SREDNIA.getText() != null && POLE_CENA_SREDNIA.getText().length() > 0)) {
+        String rodzaj = "";
+        if (nowa_opcja1.isSelected()) {
+            rodzaj += POLE_NOWY_RODZAJ1.getText();
+        } else {
+            rodzaj += POLE_RODZAJ.getSelectedItem().toString();
+        }
+        if ((POLE_CENA_MALA.getText() != null && POLE_CENA_MALA.getText().length() > 0) && (POLE_CENA_DUZA.getText() != null && POLE_CENA_DUZA.getText().length() > 0) && (POLE_CENA_SREDNIA.getText() != null && POLE_CENA_SREDNIA.getText().length() > 0)) {
             try {
                 cenam = Float.parseFloat(POLE_CENA_MALA.getText());
                 cenas = Float.parseFloat(POLE_CENA_SREDNIA.getText());
-                 cenad = Float.parseFloat(POLE_CENA_DUZA.getText());
+                cenad = Float.parseFloat(POLE_CENA_DUZA.getText());
             } catch (NumberFormatException nfe) {
                 JOptionPane.showMessageDialog(null, "Niepoprawny format ceny!");
-                
             }
         }
-       
-        if (nazwa.equals("") || rodzaj.equals("") ||  cenam == 0 ||  cenas == 0 ||  cenad == 0 ) {
+        if (nazwa.equals("") || rodzaj.equals("") || cenam == 0 || cenas == 0 || cenad == 0 || dost.equals("")) {
             komunikat.setText("Brak  danych!");
             komunikat.setForeground(Color.red);
-
         } else {
             try {
                 con = DriverManager.getConnection(
@@ -420,33 +459,44 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
                 stmt4 = con.createStatement();
                 String insert = "";
                 if (tabelka.getSelectedRow() < 0) {
-                    insert = "INSERT INTO skladniki VALUES(" + numer + "," + cenam + "," + cenas + "," + cenad + ",'" + rodzaj + "','" + nazwa + "')";
+                    insert = "INSERT INTO skladniki VALUES(" + numer + "," + cenam + "," + cenas + "," + cenad + ",'" + rodzaj + "','" + nazwa + "','" + dost + "')";
                 } else {
-
                     int wiersz = tabelka.getSelectedRow();
                     String s = tabelka.getValueAt(wiersz, 0).toString();
-
                     insert = "UPDATE skladniki SET cena_skl_mala=" + cenam + ", cena_skl_srednia=" + cenas + ", cena_skl_duza=" + cenad
-                            + ", rodzaj='" + rodzaj + "', nazwa='" + nazwa + "' WHERE id_skladnika=" + s;
+                            + ", rodzaj='" + rodzaj + "', nazwa='" + nazwa + "', dostepnosc='" + dost +"' WHERE id_skladnika=" + s;
                 }
                 stmt3.executeUpdate(insert);
                 komunikat.setText("Nowy składnik został dodany do bazy systemu");
                 komunikat.setForeground(Color.DARK_GRAY);
+                czyscpola();
+                numer++;
+                POLE_NUMER.setText(numer + "");
             } catch (Exception e) {
                 // JOptionPane.showMessageDialog(null, "Błąd zapisu - brak połączenia z bazą danych");
             }
-             POLE_NAZWA.setText("");
-       POLE_NOWY_RODZAJ.setText("");
-       
-       POLE_RODZAJ.setSelectedIndex(0);
-       POLE_CENA_DUZA.setText("");
-       POLE_CENA_SREDNIA.setText("");
-       POLE_CENA_MALA.setText("");
+
             czysctabelke();
             przegladaj(model);
         }
-            
+
     }//GEN-LAST:event_zapiszActionPerformed
+
+    private void nowa_opcja1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nowa_opcja1ActionPerformed
+        if (nowa_opcja1.isSelected() == true) {
+            POLE_NOWY_RODZAJ1.setVisible(true);
+            POLE_RODZAJ.setEnabled(false);
+            POLE_RODZAJ.setSelectedIndex(0);
+        } else {
+            POLE_NOWY_RODZAJ1.setVisible(false);
+            POLE_RODZAJ.setEnabled(true);
+            POLE_NOWY_RODZAJ1.setText("");
+        }
+    }//GEN-LAST:event_nowa_opcja1ActionPerformed
+
+    private void POLE_NOWY_RODZAJ1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_POLE_NOWY_RODZAJ1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_POLE_NOWY_RODZAJ1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -478,11 +528,14 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Edycja_skladnikow().setVisible(true);
+                new Edycja_skladnikow(zam).setVisible(true);
             }
         });
     }
-     void wypisznazwyrodzajow() {
+
+    void wypiszrodzajdostepnosc() {
+        POLE_RODZAJ.removeAllItems();
+        pole_dost_skl.removeAllItems();
         try {
             con = DriverManager.getConnection(
                     "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
@@ -491,13 +544,25 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
             res3 = stmt3.executeQuery(
                     "select distinct(rodzaj) from SKLADNIKI"
             );
-
+            stmt6 = con.createStatement();
+            res6 = stmt6.executeQuery(
+                    "select distinct(dostepnosc) from SKLADNIKI"
+            );
         } catch (Exception e) {
 
         }
         try {
-            while (res3.next()) {
-                POLE_RODZAJ.addItem(res3.getString("rodzaj"));
+            if (POLE_RODZAJ.getItemCount() == 0) {
+                POLE_RODZAJ.addItem("");
+                while (res3.next()) {
+                    POLE_RODZAJ.addItem(res3.getString("rodzaj"));
+                }
+            }
+            if (pole_dost_skl.getItemCount() == 0) {
+                pole_dost_skl.addItem("");
+                while (res6.next()) {
+                    pole_dost_skl.addItem(res6.getString("dostepnosc"));
+                }
             }
 
         } catch (SQLException ex) {
@@ -505,6 +570,7 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
         }
 
     }
+
     void przegladaj(DefaultTableModel model) {
 
         try {
@@ -532,8 +598,9 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
                 String cena_duza = res1.getString("cena_skl_duza") + " zł";
                 String rodzaj = res1.getString("rodzaj");
                 String nazwa = res1.getString("nazwa");
-                
-                Object[] row = {nr, nazwa, rodzaj, cena_mala, cena_srednia, cena_duza};
+                String dost = res1.getString("dostepnosc");
+
+                Object[] row = {nr, nazwa, rodzaj, cena_mala, cena_srednia, cena_duza, dost};
                 model.addRow(row);
 
             }
@@ -544,17 +611,37 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
         tabelka.setModel(model);
 
     }
- void czysctabelke() {
+
+    void czysctabelke() {
         for (int i = model.getRowCount() - 1; i >= 0; i--) {
             model.removeRow(i);
         }
+    }
+
+    void czyscpola() {
+        POLE_NAZWA.setText("");
+        POLE_NOWA_DOST.setText("");
+        POLE_NOWY_RODZAJ1.setText("");
+        komunikat.setText("");
+        POLE_CENA_DUZA.setText("");
+        POLE_CENA_SREDNIA.setText("");
+        POLE_CENA_MALA.setText("");
+        POLE_RODZAJ.setSelectedIndex(0);
+        pole_dost_skl.setSelectedIndex(0);
+        nowa_opcja1.setSelected(false);
+        nowa_opcja_skl.setSelected(false);
+        POLE_RODZAJ.setEnabled(true);
+        pole_dost_skl.setEnabled(true);
+        POLE_NOWA_DOST.setVisible(false);
+        POLE_NOWY_RODZAJ1.setVisible(false);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField POLE_CENA_DUZA;
     private javax.swing.JTextField POLE_CENA_MALA;
     private javax.swing.JTextField POLE_CENA_SREDNIA;
     private javax.swing.JTextField POLE_NAZWA;
-    private javax.swing.JTextField POLE_NOWY_RODZAJ;
+    private javax.swing.JTextField POLE_NOWA_DOST;
+    private javax.swing.JTextField POLE_NOWY_RODZAJ1;
     private javax.swing.JTextField POLE_NUMER;
     private javax.swing.JComboBox POLE_RODZAJ;
     private javax.swing.JButton anuluj;
@@ -566,13 +653,16 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel komunikat;
     private javax.swing.JLabel nazwa;
-    private javax.swing.JToggleButton nowa_opcja;
+    private javax.swing.JToggleButton nowa_opcja1;
+    private javax.swing.JToggleButton nowa_opcja_skl;
     private javax.swing.JLabel nr;
     private javax.swing.JPanel panel_edycji;
     private javax.swing.JPanel panel_tabelka_skl;
+    private javax.swing.JComboBox<String> pole_dost_skl;
     private javax.swing.JButton powrot;
     private javax.swing.JToggleButton przegladaj;
     private javax.swing.JLabel rodzaj;
+    private javax.swing.JLabel rodzaj1;
     private javax.swing.JTable tabelka;
     private javax.swing.JButton usuń;
     private javax.swing.JButton wyczysc;
