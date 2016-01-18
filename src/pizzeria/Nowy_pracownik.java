@@ -11,7 +11,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,14 +23,20 @@ import javax.swing.JOptionPane;
 public class Nowy_pracownik extends javax.swing.JFrame {
 
     Connection con;
-    Statement stmtnp1, stmtnp2;
-    ResultSet resnp1, resnp2;
+    Statement stmtnp1, stmtnp2,stmtnp3,stmtnp4,stmtnp5;
+    ResultSet resnp1, resnp2,resnp3,resnp4,resnp5;
+    DefaultTableModel model;
+    static Zamowienia zam;
 
     /**
      * Creates new form Nowy_pracownik
      */
-    public Nowy_pracownik() {
+    public Nowy_pracownik(Zamowienia zam) {
+        this.zam=zam;
         initComponents();
+        panel_pacownikow.setVisible(false);
+        paneledycji.setVisible(false);
+        model = (DefaultTableModel) tabelka_pracownikow.getModel();
     }
 
     /**
@@ -40,41 +49,44 @@ public class Nowy_pracownik extends javax.swing.JFrame {
     private void initComponents() {
 
         przyciskpowrot = new javax.swing.JButton();
-        napisnazwaokienka = new javax.swing.JLabel();
-        polenazwisko = new javax.swing.JTextField();
-        napisnazwisko = new javax.swing.JLabel();
-        poleimie = new javax.swing.JTextField();
-        napisimie = new javax.swing.JLabel();
-        przyciskdodaj = new javax.swing.JButton();
-        napishaslo = new javax.swing.JLabel();
-        napispowtorzhaslo = new javax.swing.JLabel();
-        polePasswordhaslo1 = new javax.swing.JPasswordField();
-        napisadres = new javax.swing.JLabel();
-        polePasswordhaslo2 = new javax.swing.JPasswordField();
+        przegladaj_pracownikow = new javax.swing.JToggleButton();
+        panel_pacownikow = new javax.swing.JPanel();
+        paneledycji = new javax.swing.JPanel();
         napisnumertelefonu = new javax.swing.JLabel();
+        napisadres = new javax.swing.JLabel();
+        napishaslo = new javax.swing.JLabel();
         napispesel = new javax.swing.JLabel();
         napisemail = new javax.swing.JLabel();
+        napisimie = new javax.swing.JLabel();
         napisstanowisko = new javax.swing.JLabel();
-        wybierzstanowisko = new javax.swing.JComboBox();
-        nadpis_dla_hasla = new javax.swing.JLabel();
-        nadpis_pesel = new javax.swing.JLabel();
-        poletelefon = new javax.swing.JTextField();
+        napisnazwisko = new javax.swing.JLabel();
         poleadres = new javax.swing.JTextField();
         polepesel = new javax.swing.JTextField();
         poleemail = new javax.swing.JTextField();
+        polenazwisko = new javax.swing.JTextField();
+        poleimie = new javax.swing.JTextField();
+        poletelefon = new javax.swing.JTextField();
+        wybierzstanowisko = new javax.swing.JComboBox();
+        polePasswordhaslo1 = new javax.swing.JPasswordField();
+        przyciskwyczysc = new javax.swing.JButton();
+        nadpis_pesel = new javax.swing.JLabel();
         nadpis_telefon = new javax.swing.JLabel();
         komunikat = new javax.swing.JLabel();
-        przyciskwyczysc = new javax.swing.JButton();
-        panellogowanie = new javax.swing.JPanel();
-        napiszaloguj = new javax.swing.JLabel();
-        napiskierownik = new javax.swing.JLabel();
-        napisHaslo = new javax.swing.JLabel();
-        imienazwkier = new javax.swing.JComboBox();
-        haslokier = new javax.swing.JPasswordField();
-        zaloguj = new javax.swing.JButton();
+        przyciskzapisz = new javax.swing.JButton();
+        anuluj = new javax.swing.JButton();
+        polenr = new javax.swing.JTextField();
+        napisnumer = new javax.swing.JLabel();
+        usun = new javax.swing.JButton();
+        edytuj = new javax.swing.JButton();
+        dodaj = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tabelka_pracownikow = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1370, 720));
+        setMaximumSize(new java.awt.Dimension(900, 750));
+        setMinimumSize(new java.awt.Dimension(900, 677));
+        setPreferredSize(new java.awt.Dimension(1400, 740));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         przyciskpowrot.setText("Powrót");
         przyciskpowrot.addActionListener(new java.awt.event.ActionListener() {
@@ -82,49 +94,77 @@ public class Nowy_pracownik extends javax.swing.JFrame {
                 przyciskpowrotActionPerformed(evt);
             }
         });
+        getContentPane().add(przyciskpowrot, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 12, 160, 40));
 
-        napisnazwaokienka.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        napisnazwaokienka.setText("Dodaj nowego pracownika:");
-
-        napisnazwisko.setText("Nazwisko:");
-
-        napisimie.setText("Imię:");
-
-        przyciskdodaj.setText("Dodaj");
-        przyciskdodaj.addActionListener(new java.awt.event.ActionListener() {
+        przegladaj_pracownikow.setText("Przeglądaj wszystkich pracowników");
+        przegladaj_pracownikow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                przyciskdodajActionPerformed(evt);
+                przegladaj_pracownikowActionPerformed(evt);
             }
         });
+        getContentPane().add(przegladaj_pracownikow, new org.netbeans.lib.awtextra.AbsoluteConstraints(79, 11, 232, 41));
 
-        napishaslo.setText("Hasło:");
+        panel_pacownikow.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        napispowtorzhaslo.setText("Powtórz hasło:");
-
-        polePasswordhaslo1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                polePasswordhaslo1ActionPerformed(evt);
-            }
-        });
-
-        napisadres.setText("Adres:");
+        paneledycji.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         napisnumertelefonu.setText("Numer telefonu:");
+        paneledycji.add(napisnumertelefonu, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 143, 25));
+
+        napisadres.setText("Adres:");
+        paneledycji.add(napisadres, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 143, 25));
+
+        napishaslo.setText("Hasło:");
+        paneledycji.add(napishaslo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 143, 27));
 
         napispesel.setText("Pesel:");
+        paneledycji.add(napispesel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 143, 25));
 
         napisemail.setText("E-mail:");
+        paneledycji.add(napisemail, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 143, 25));
+
+        napisimie.setText("Imię:");
+        paneledycji.add(napisimie, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 143, 30));
 
         napisstanowisko.setText("Twoje stanowisko:");
+        paneledycji.add(napisstanowisko, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 330, 143, 25));
 
-        wybierzstanowisko.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Kierownik", "Pracownik", "Administrator" }));
-        wybierzstanowisko.setToolTipText("");
+        napisnazwisko.setText("Nazwisko:");
+        paneledycji.add(napisnazwisko, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 143, 27));
+        paneledycji.add(poleadres, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 210, 159, 30));
 
         polepesel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 polepeselActionPerformed(evt);
             }
         });
+        paneledycji.add(polepesel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 250, 159, 30));
+        paneledycji.add(poleemail, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 290, 159, 30));
+        paneledycji.add(polenazwisko, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 90, 159, 27));
+
+        poleimie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                poleimieActionPerformed(evt);
+            }
+        });
+        paneledycji.add(poleimie, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 50, 159, 30));
+        paneledycji.add(poletelefon, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 170, 159, 30));
+
+        wybierzstanowisko.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Kierownik", "Pracownik", "Administrator" }));
+        wybierzstanowisko.setToolTipText("");
+        wybierzstanowisko.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                wybierzstanowiskoActionPerformed(evt);
+            }
+        });
+        paneledycji.add(wybierzstanowisko, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, 160, 25));
+
+        polePasswordhaslo1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                polePasswordhaslo1ActionPerformed(evt);
+            }
+        });
+        paneledycji.add(polePasswordhaslo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 130, 159, 27));
 
         przyciskwyczysc.setText("Wyczyść");
         przyciskwyczysc.addActionListener(new java.awt.event.ActionListener() {
@@ -132,197 +172,115 @@ public class Nowy_pracownik extends javax.swing.JFrame {
                 przyciskwyczyscActionPerformed(evt);
             }
         });
+        paneledycji.add(przyciskwyczysc, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 30, 126, 50));
+        paneledycji.add(nadpis_pesel, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 250, 240, 30));
+        paneledycji.add(nadpis_telefon, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 170, 280, 30));
+        paneledycji.add(komunikat, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 220, 370, 60));
 
-        panellogowanie.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        przyciskzapisz.setText("Zapisz");
+        przyciskzapisz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                przyciskzapiszActionPerformed(evt);
+            }
+        });
+        paneledycji.add(przyciskzapisz, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 90, 130, 50));
 
-        napiszaloguj.setText("Żeby dodać nowego pracownika zaloguj się jako kierownik:");
+        anuluj.setText("Anuluj");
+        anuluj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                anulujActionPerformed(evt);
+            }
+        });
+        paneledycji.add(anuluj, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 150, 130, 50));
 
-        napiskierownik.setText("Kierownik");
+        polenr.setEditable(false);
+        paneledycji.add(polenr, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 10, 160, 30));
 
-        napisHaslo.setText("Hasło");
+        napisnumer.setText("Nr:");
+        paneledycji.add(napisnumer, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 50, 20));
 
-        imienazwkier.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        panel_pacownikow.add(paneledycji, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 265, 1010, 360));
 
-        haslokier.setText("jPasswordField1");
+        usun.setText("Usuń");
+        usun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usunActionPerformed(evt);
+            }
+        });
+        panel_pacownikow.add(usun, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 216, 124, 43));
 
-        zaloguj.setText("Zaloguj się");
+        edytuj.setText("Edytuj");
+        edytuj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                edytujActionPerformed(evt);
+            }
+        });
+        panel_pacownikow.add(edytuj, new org.netbeans.lib.awtextra.AbsoluteConstraints(291, 216, 117, 43));
 
-        javax.swing.GroupLayout panellogowanieLayout = new javax.swing.GroupLayout(panellogowanie);
-        panellogowanie.setLayout(panellogowanieLayout);
-        panellogowanieLayout.setHorizontalGroup(
-            panellogowanieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panellogowanieLayout.createSequentialGroup()
-                .addGroup(panellogowanieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panellogowanieLayout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(napiszaloguj, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panellogowanieLayout.createSequentialGroup()
-                        .addGap(67, 67, 67)
-                        .addGroup(panellogowanieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(napiskierownik, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(napisHaslo))
-                        .addGap(34, 34, 34)
-                        .addGroup(panellogowanieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(haslokier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(imienazwkier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(panellogowanieLayout.createSequentialGroup()
-                        .addGap(155, 155, 155)
-                        .addComponent(zaloguj, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(29, Short.MAX_VALUE))
-        );
-        panellogowanieLayout.setVerticalGroup(
-            panellogowanieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panellogowanieLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(napiszaloguj, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(panellogowanieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(napiskierownik, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(imienazwkier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(panellogowanieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(napisHaslo)
-                    .addComponent(haslokier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(51, 51, 51)
-                .addComponent(zaloguj, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(124, Short.MAX_VALUE))
-        );
+        dodaj.setText("Dodaj");
+        dodaj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dodajActionPerformed(evt);
+            }
+        });
+        panel_pacownikow.add(dodaj, new org.netbeans.lib.awtextra.AbsoluteConstraints(418, 216, 111, 43));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(komunikat, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
-                .addComponent(przyciskdodaj, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(przyciskwyczysc, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(410, 410, 410))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(napisemail, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(56, 56, 56)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(napisnazwaokienka, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(46, 46, 46)
-                                .addComponent(przyciskpowrot, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(poleemail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
-                                    .addComponent(polepesel, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(26, 26, 26)
-                                .addComponent(nadpis_pesel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(napisstanowisko, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
-                                .addComponent(wybierzstanowisko, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(napispesel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(napisnumertelefonu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
-                                    .addComponent(napisadres, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(napisnazwisko, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(napishaslo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(napispowtorzhaslo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(napisimie, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(56, 56, 56)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(poletelefon)
-                                    .addComponent(poleimie, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
-                                    .addComponent(polenazwisko)
-                                    .addComponent(polePasswordhaslo1)
-                                    .addComponent(polePasswordhaslo2)
-                                    .addComponent(poleadres))
-                                .addGap(8, 8, 8)))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(nadpis_dla_hasla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(nadpis_telefon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(69, 69, 69)
-                .addComponent(panellogowanie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(425, 425, 425))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(napisnazwaokienka, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(przyciskpowrot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(poleimie, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(napisimie, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(napisnazwisko, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(polenazwisko, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(napishaslo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(polePasswordhaslo1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(42, 42, 42)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(polePasswordhaslo2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(napispowtorzhaslo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(30, 30, 30)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(napisnumertelefonu, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(poletelefon, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(nadpis_telefon, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(nadpis_dla_hasla, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(napisadres, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(poleadres, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(napispesel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(polepesel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(nadpis_pesel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(panellogowanie, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(napisemail, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(poleemail, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(napisstanowisko, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(wybierzstanowisko, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(przyciskdodaj, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(komunikat, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(przyciskwyczysc, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(58, 58, 58))
-        );
+        tabelka_pracownikow.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "NR", "LOGIN", "HASŁO", "TELEFON", "ADRES", "PESEL", "STANOWISKO", "E-MAIL"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Long.class, java.lang.String.class, java.lang.Long.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tabelka_pracownikow);
+        if (tabelka_pracownikow.getColumnModel().getColumnCount() > 0) {
+            tabelka_pracownikow.getColumnModel().getColumn(0).setMinWidth(30);
+            tabelka_pracownikow.getColumnModel().getColumn(0).setPreferredWidth(30);
+            tabelka_pracownikow.getColumnModel().getColumn(0).setMaxWidth(30);
+            tabelka_pracownikow.getColumnModel().getColumn(2).setMinWidth(100);
+            tabelka_pracownikow.getColumnModel().getColumn(2).setPreferredWidth(100);
+            tabelka_pracownikow.getColumnModel().getColumn(2).setMaxWidth(100);
+            tabelka_pracownikow.getColumnModel().getColumn(3).setMinWidth(100);
+            tabelka_pracownikow.getColumnModel().getColumn(3).setPreferredWidth(100);
+            tabelka_pracownikow.getColumnModel().getColumn(3).setMaxWidth(100);
+            tabelka_pracownikow.getColumnModel().getColumn(5).setMinWidth(120);
+            tabelka_pracownikow.getColumnModel().getColumn(5).setPreferredWidth(120);
+            tabelka_pracownikow.getColumnModel().getColumn(5).setMaxWidth(120);
+        }
+
+        panel_pacownikow.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 1230, 200));
+
+        getContentPane().add(panel_pacownikow, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 1240, 730));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void przyciskpowrotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przyciskpowrotActionPerformed
-        Zamowienia zam = new Zamowienia();
+        zam.genUser2();
         zam.setVisible(true);
         dispose();
     }//GEN-LAST:event_przyciskpowrotActionPerformed
 
-    private void przyciskdodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przyciskdodajActionPerformed
+    private void przyciskzapiszActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przyciskzapiszActionPerformed
         String HASLO = polenazwisko.getText() + ' ' + poleimie.getText();
-        String haslo1 = polePasswordhaslo1.getText();
-        String haslo2 = polePasswordhaslo2.getText();
+        String haslo = polePasswordhaslo1.getText();
+        int numer = tabelka_pracownikow.getRowCount() + 1;
         String TELEFON = poletelefon.getText();
         String ADRES = poleadres.getText();
         String PESEL = polepesel.getText();
@@ -331,17 +289,6 @@ public class Nowy_pracownik extends javax.swing.JFrame {
         boolean bledy = false;
         int licznikbledow = 0;
         if (bledy == false) {
-            if (haslo1.equals(haslo2)) {
-                nadpis_dla_hasla.setText("OK");
-                nadpis_dla_hasla.setForeground(Color.DARK_GRAY);
-
-            } else {
-                nadpis_dla_hasla.setText("Hasło jest błędne");
-                nadpis_dla_hasla.setForeground(Color.red);
-                komunikat.setText("Sprawdź wprowadzone dane!");
-                komunikat.setForeground(Color.red);
-                licznikbledow++;
-            }
             int j = 0;
             boolean TylkoLiczbyTelefon = true;
             while ((TylkoLiczbyTelefon == true) && (j < TELEFON.length())) {
@@ -389,19 +336,31 @@ public class Nowy_pracownik extends javax.swing.JFrame {
                 resnp1 = stmtnp1.executeQuery(
                         "select * from PRACOWNICY"
                 );
-
-                stmtnp1.executeUpdate("INSERT INTO PIZZERIA.PRACOWNICY (ID_PRAC, LOGIN, HASLO, TELEFON, ADRES, PESEL, STANOWISKO, EMAIL) \n"
-                        + "	VALUES (" + id() + ",'" + HASLO + "', '" + haslo1 + "', " + TELEFON + ", '" + ADRES + "', " + PESEL + ", '" + STANOWISKO + "', '" + EMAIL + "')");
+                String insert = "";
+            if (tabelka_pracownikow.getSelectedRow() < 0) {
+               insert ="INSERT INTO PIZZERIA.PRACOWNICY (ID_PRAC, LOGIN, HASLO, TELEFON, ADRES, PESEL, STANOWISKO, EMAIL) \n"
+                        + "	VALUES (" + id()+ ",'" + HASLO + "', '" + haslo + "', " + TELEFON + ", '" + ADRES + "', " + PESEL + ", '" + STANOWISKO + "', '" + EMAIL + "')";
+            } else {
+       
+                int wiersz = tabelka_pracownikow.getSelectedRow();
+                String s = tabelka_pracownikow.getValueAt(wiersz, 0).toString();
+                insert = "UPDATE PIZZERIA.PRACOWNICY SET LOGIN='" + HASLO + "', haslo='" + haslo + "', telefon=" + TELEFON
+                        + ", ADRES='" + ADRES + "', PESEL=" + PESEL + ", STANOWISKO='" + STANOWISKO +"', EMAIL='" + EMAIL + "' WHERE id_prac=" + s;
+            }
+            stmtnp1.executeUpdate(insert);
+                
             komunikat.setText("Nowy pracownik został dodany do bazy systemu");
                 
             } catch (Exception e) {
-                System.out.println("nie udalo sie");                
+               //komunikat.setText("Nie udało się!");                
             }
             
             komunikat.setForeground(Color.DARK_GRAY);
             
         }
-    }//GEN-LAST:event_przyciskdodajActionPerformed
+        czysctabelke();
+        przegladaj(model);
+    }//GEN-LAST:event_przyciskzapiszActionPerformed
 
     private void polePasswordhaslo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_polePasswordhaslo1ActionPerformed
         // TODO add your handling code here:
@@ -415,18 +374,104 @@ public class Nowy_pracownik extends javax.swing.JFrame {
         polenazwisko.setText("");
         poleimie.setText("");
         polePasswordhaslo1.setText("");
-        polePasswordhaslo2.setText("");
         poletelefon.setText("");
         poleadres.setText("");
         polepesel.setText("");
         wybierzstanowisko.setSelectedIndex(0);
         poleemail.setText("");
         komunikat.setText("");
-        nadpis_dla_hasla.setText("");
+       
         nadpis_pesel.setText("");
         nadpis_telefon.setText("");
 
     }//GEN-LAST:event_przyciskwyczyscActionPerformed
+
+    private void wybierzstanowiskoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wybierzstanowiskoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_wybierzstanowiskoActionPerformed
+
+    private void poleimieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_poleimieActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_poleimieActionPerformed
+
+    private void przegladaj_pracownikowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przegladaj_pracownikowActionPerformed
+        if (przegladaj_pracownikow.isSelected() == true) {
+
+            panel_pacownikow.setVisible(true);
+            czysctabelke();
+            przegladaj(model);
+        } else {
+            panel_pacownikow.setVisible(false);
+
+        }
+    }//GEN-LAST:event_przegladaj_pracownikowActionPerformed
+
+    private void anulujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anulujActionPerformed
+         paneledycji.setVisible(false);
+    }//GEN-LAST:event_anulujActionPerformed
+
+    private void usunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usunActionPerformed
+ int j = tabelka_pracownikow.getRowCount();
+        String ostt = tabelka_pracownikow.getValueAt(j - 1, 0).toString();
+        int ost = Integer.parseInt(ostt);
+        if (tabelka_pracownikow.getSelectedRowCount() > 0) {
+            int wiersz = tabelka_pracownikow.getSelectedRow();
+            String s = tabelka_pracownikow.getValueAt(wiersz, 0).toString();
+
+            String usunwiersz = "delete from pizzeria.pracownicy where id_prac=" + s;
+            try {
+                con = DriverManager.getConnection(
+                        "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+                );
+            } catch (SQLException ex) {
+                Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                stmtnp5 = con.createStatement();
+                stmtnp5.executeUpdate(usunwiersz);
+                int id1 = Integer.parseInt(s);
+                id1++;
+                for (int i = id1; i <= ost; i++) {
+                    String naprawid = "UPDATE pracownicy SET id_prac =" + (i - 1) + " WHERE id_prac =" + i;
+                    stmtnp5.executeUpdate(naprawid);
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else {
+            JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");
+        }
+        czysctabelke();
+        przegladaj(model);
+
+    }//GEN-LAST:event_usunActionPerformed
+
+    private void edytujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edytujActionPerformed
+        
+        if(tabelka_pracownikow.getSelectedRowCount()>0) {
+            paneledycji.setVisible(true);
+         int numer = tabelka_pracownikow.getSelectedRow()+1;
+        polenr.setText(numer+"");
+        } else {
+            JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");
+        }
+    }//GEN-LAST:event_edytujActionPerformed
+
+    private void dodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajActionPerformed
+       paneledycji.setVisible(true);
+         int numer = tabelka_pracownikow.getRowCount() + 1;
+        polenr.setText(numer+"");
+        polenazwisko.setText("");
+        poleimie.setText("");
+        polePasswordhaslo1.setText("");
+        poletelefon.setText("");
+        poleadres.setText("");
+        polepesel.setText("");
+        wybierzstanowisko.setSelectedIndex(0);
+        poleemail.setText("");
+        komunikat.setText("");
+    }//GEN-LAST:event_dodajActionPerformed
 
     /**
      * @param args the command line arguments
@@ -456,47 +501,91 @@ public class Nowy_pracownik extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Nowy_pracownik().setVisible(true);
+                new Nowy_pracownik(zam).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPasswordField haslokier;
-    private javax.swing.JComboBox imienazwkier;
+    private javax.swing.JButton anuluj;
+    private javax.swing.JButton dodaj;
+    private javax.swing.JButton edytuj;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel komunikat;
-    private javax.swing.JLabel nadpis_dla_hasla;
     private javax.swing.JLabel nadpis_pesel;
     private javax.swing.JLabel nadpis_telefon;
-    private javax.swing.JLabel napisHaslo;
     private javax.swing.JLabel napisadres;
     private javax.swing.JLabel napisemail;
     private javax.swing.JLabel napishaslo;
     private javax.swing.JLabel napisimie;
-    private javax.swing.JLabel napiskierownik;
-    private javax.swing.JLabel napisnazwaokienka;
     private javax.swing.JLabel napisnazwisko;
+    private javax.swing.JLabel napisnumer;
     private javax.swing.JLabel napisnumertelefonu;
     private javax.swing.JLabel napispesel;
-    private javax.swing.JLabel napispowtorzhaslo;
     private javax.swing.JLabel napisstanowisko;
-    private javax.swing.JLabel napiszaloguj;
-    private javax.swing.JPanel panellogowanie;
+    private javax.swing.JPanel panel_pacownikow;
+    private javax.swing.JPanel paneledycji;
     private javax.swing.JPasswordField polePasswordhaslo1;
-    private javax.swing.JPasswordField polePasswordhaslo2;
     private javax.swing.JTextField poleadres;
     private javax.swing.JTextField poleemail;
     private javax.swing.JTextField poleimie;
     private javax.swing.JTextField polenazwisko;
+    private javax.swing.JTextField polenr;
     private javax.swing.JTextField polepesel;
     private javax.swing.JTextField poletelefon;
-    private javax.swing.JButton przyciskdodaj;
+    private javax.swing.JToggleButton przegladaj_pracownikow;
     private javax.swing.JButton przyciskpowrot;
     private javax.swing.JButton przyciskwyczysc;
+    private javax.swing.JButton przyciskzapisz;
+    private javax.swing.JTable tabelka_pracownikow;
+    private javax.swing.JButton usun;
     private javax.swing.JComboBox wybierzstanowisko;
-    private javax.swing.JButton zaloguj;
     // End of variables declaration//GEN-END:variables
+    void przegladaj(DefaultTableModel model) {
 
+        // model = (DefaultTableModel) tabelka.getModel();
+        // model.removeTableModelListener(tabelka);
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmtnp3 = con.createStatement();
+            resnp3 = stmtnp3.executeQuery(
+                    "select * from PRACOWNICY"
+            );
+            stmtnp4 = con.createStatement();
+            resnp4 = stmtnp4.executeQuery(
+                    "select count(*) from PRACOWNICY "
+            );
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
+        }
+        try {
+            while (resnp3.next()) {
+                int nr = resnp3 .getInt("id_prac");
+                String login = resnp3 .getString("login");
+                String haslo = resnp3 .getString("haslo");
+                long telefon = resnp3 .getLong("telefon");
+                String adres = resnp3 .getString("adres");
+                long pesel = resnp3 .getLong("pesel");
+                String stanowisko = resnp3 .getString("stanowisko");
+                String email = resnp3 .getString("email");
+                Object[] row = {nr, login, haslo, telefon, adres, pesel, stanowisko,email};
+                model.addRow(row);
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        tabelka_pracownikow.setModel(model);
+
+    }
+    void czysctabelke() {
+        for (int i = model.getRowCount() - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
+    }
     public long id() {
         try {
             con = DriverManager.getConnection(

@@ -10,12 +10,19 @@ import javax.swing.JPanel;
  * @author sk
  */
 public class Zamowienia extends javax.swing.JFrame {
-    public Zamowienia() {
+    
+    static Project_pizzeria pr;
+    
+    public Zamowienia(Project_pizzeria pr) {
+        this.pr = pr;
         initComponents();
         PanelOstZam.setVisible(false);
         panelHistoriaLogowan.setVisible(false);
         panelHistoriaZam.setVisible(false);
+        
         }
+    String nazwa_login="";
+    String nazwa_stanowisko="";
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -279,17 +286,19 @@ public class Zamowienia extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void przyciskwylogujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przyciskwylogujActionPerformed
-        Project_pizzeria project_pizzeria=new Project_pizzeria();
-        project_pizzeria.setVisible(true);
+       
+       // WybierzNazwe wn = new WybierzNazwe();
+       // wn.setVisible(false);
+        pr.genNazwa2();
+        pr.setVisible(true);
         dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_przyciskwylogujActionPerformed
 
     private void przyciskzlozzamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przyciskzlozzamActionPerformed
        // panel.setVisible(true);
-         NoweZamLok nzl = new NoweZamLok();
-        nzl.setVisible(true);
-        
+         NoweZamLok nzl = new NoweZamLok(this);
+        nzl.setVisible(true);      
         
         
 // TODO add your handling code here:
@@ -328,9 +337,9 @@ public class Zamowienia extends javax.swing.JFrame {
        
         String zalog = jesteszalog.getText(); 
        if(zalog.contains("admin")) {
-           Nowy_pracownik nowy_pracownik = new Nowy_pracownik();
+           Nowy_pracownik nowy_pracownik = new Nowy_pracownik(this);
         nowy_pracownik.setVisible(true);
-        dispose();
+        setVisible(false);
        } else {
            JOptionPane.showMessageDialog(null, "Brak dostępu");
        }
@@ -338,9 +347,9 @@ public class Zamowienia extends javax.swing.JFrame {
     }//GEN-LAST:event_dodajpracActionPerformed
 
     private void menu_pizzaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_pizzaActionPerformed
-        Edycja_pizzy edycja_pizzy = new Edycja_pizzy();
+        Edycja_pizzy edycja_pizzy = new Edycja_pizzy(this);
         edycja_pizzy.setVisible(true);
-        dispose();
+        setVisible(false);
     }//GEN-LAST:event_menu_pizzaActionPerformed
 
     private void zamknijActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zamknijActionPerformed
@@ -374,7 +383,7 @@ public class Zamowienia extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Zamowienia().setVisible(true);
+                new Zamowienia(pr).setVisible(true);
             }
         });
     }
@@ -413,6 +422,11 @@ public class Zamowienia extends javax.swing.JFrame {
         if(stanowisko.contains("Admin")) {
             stan = " (admin)";
         }
+        nazwa_login = nazwa;
+        nazwa_stanowisko = stan;
         jesteszalog.setText("Jesteś zalogowany jako:  "+ nazwa +""+ stan);
+    }
+    void genUser2(){
+        jesteszalog.setText("Jesteś› zalogowany jako:  "+ nazwa_login +""+ nazwa_stanowisko);
     }
 }

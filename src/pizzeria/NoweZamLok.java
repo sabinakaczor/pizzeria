@@ -5,6 +5,7 @@
  */
 package pizzeria;
 
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,6 +16,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+import static pizzeria.Nowy_pracownik.zam;
 
 /**
  *
@@ -22,22 +25,22 @@ import javax.swing.JList;
  */
 public class NoweZamLok extends javax.swing.JFrame {
 
-    /**
-     * Creates new form NoweZamLok
-     */
     Connection con;
-    Statement stmt1, stmt2, stmt3, stmt4, stmt7, stmt5, stmt6, stmt8, stmt9, stmt10;
-    ResultSet res1, res2, res3, res4, res5, res6, res7, res8, res9, res10;
-    ArrayList wyswietlSkladniki = new ArrayList();
-    JList listaa = new JList(wyswietlSkladniki.toArray());
+    Statement stmt1, stmt2, stmt3, stmt4, stmt7, stmt5, stmt6, stmt8, stmt9, stmt10, stmt11, stmt12, stmt13, stmt14;
+    ResultSet res1, res2, res3, res4, res5, res6, res7, res8, res9, res10, res11, res12, res13, res14;
     DefaultListModel<String> model = new DefaultListModel<>();
+    DefaultListModel<String> modelzam = new DefaultListModel<>();
+    static Zamowienia zam;
 
-    public NoweZamLok() {
+    public NoweZamLok(Zamowienia zam) {
+        this.zam = zam;
         initComponents();
         panelpizza.setVisible(false);
-
         panelnapoj.setVisible(false);
-
+        opisnapoju.setLineWrap(true);
+        //listazamowien.setLineWrap(true);
+        cena.setText("");
+        panelskladniki.setVisible(false);
     }
 
     /**
@@ -106,10 +109,12 @@ public class NoweZamLok extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1370, 720));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         napistytul.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         napistytul.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         napistytul.setText("Nowe zamówienie");
+        getContentPane().add(napistytul, new org.netbeans.lib.awtextra.AbsoluteConstraints(252, 4, 384, 42));
 
         pokazpanelpizza.setText("Pizza");
         pokazpanelpizza.addActionListener(new java.awt.event.ActionListener() {
@@ -117,31 +122,54 @@ public class NoweZamLok extends javax.swing.JFrame {
                 pokazpanelpizzaActionPerformed(evt);
             }
         });
+        getContentPane().add(pokazpanelpizza, new org.netbeans.lib.awtextra.AbsoluteConstraints(88, 64, 290, 50));
 
         panelpizza.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         panelpizza.setPreferredSize(new java.awt.Dimension(390, 540));
+        panelpizza.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         napisnazwapizzy.setText("Nazwa pizzy:");
+        panelpizza.add(napisnazwapizzy, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 11, 150, -1));
 
         listawybpizzy.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
+        listawybpizzy.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                listawybpizzyItemStateChanged(evt);
+            }
+        });
         listawybpizzy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 listawybpizzyActionPerformed(evt);
             }
         });
+        panelpizza.add(listawybpizzy, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 31, 150, -1));
 
         napisrozmiarpizzy.setText("Rozmiar:");
+        panelpizza.add(napisrozmiarpizzy, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 57, 150, -1));
 
         listawybrozmpizzy.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
+        listawybrozmpizzy.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                listawybrozmpizzyItemStateChanged(evt);
+            }
+        });
         listawybrozmpizzy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 listawybrozmpizzyActionPerformed(evt);
             }
         });
+        panelpizza.add(listawybrozmpizzy, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 77, 150, -1));
 
         listawybciastapizzy.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
+        listawybciastapizzy.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                listawybciastapizzyItemStateChanged(evt);
+            }
+        });
+        panelpizza.add(listawybciastapizzy, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 123, 150, -1));
 
         napisrodzajciasta.setText("Rodzaj ciasta:");
+        panelpizza.add(napisrodzajciasta, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 103, 150, -1));
 
         listaskladnikow.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "" };
@@ -150,7 +178,9 @@ public class NoweZamLok extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(listaskladnikow);
 
+        napisdodwybskl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         napisdodwybskl.setText("Dodaj składnik:");
+        napisdodwybskl.setToolTipText("");
 
         usuns.setText("Usuń składnik");
         usuns.addActionListener(new java.awt.event.ActionListener() {
@@ -160,6 +190,7 @@ public class NoweZamLok extends javax.swing.JFrame {
         });
 
         dodajs.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
+        dodajs.setToolTipText("");
         dodajs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dodajsActionPerformed(evt);
@@ -180,15 +211,23 @@ public class NoweZamLok extends javax.swing.JFrame {
             .addGroup(panelskladnikiLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(panelskladnikiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelskladnikiLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
                         .addGroup(panelskladnikiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(usuns, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(dodajw, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
-                            .addComponent(dodajs, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())
-                    .addComponent(napisdodwybskl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(napisdodwybskl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(panelskladnikiLayout.createSequentialGroup()
+                                .addComponent(dodajs, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelskladnikiLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(panelskladnikiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelskladnikiLayout.createSequentialGroup()
+                                .addComponent(dodajw)
+                                .addGap(50, 50, 50))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelskladnikiLayout.createSequentialGroup()
+                                .addComponent(usuns, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30))))))
         );
         panelskladnikiLayout.setVerticalGroup(
             panelskladnikiLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,12 +239,14 @@ public class NoweZamLok extends javax.swing.JFrame {
                         .addComponent(napisdodwybskl, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(dodajs, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(13, 13, 13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(dodajw, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44)
+                        .addGap(45, 45, 45)
                         .addComponent(usuns, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        panelpizza.add(panelskladniki, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 178, -1, 256));
 
         zobskl.setText("Zobacz składniki:");
         zobskl.addActionListener(new java.awt.event.ActionListener() {
@@ -213,6 +254,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 zobsklActionPerformed(evt);
             }
         });
+        panelpizza.add(zobskl, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 180, -1));
 
         dodajdomenup.setText("Dodaj do menu");
         dodajdomenup.addActionListener(new java.awt.event.ActionListener() {
@@ -220,92 +262,26 @@ public class NoweZamLok extends javax.swing.JFrame {
                 dodajdomenupActionPerformed(evt);
             }
         });
+        panelpizza.add(dodajdomenup, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 440, 197, 47));
 
         cena.setEditable(false);
+        panelpizza.add(cena, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 466, 110, -1));
 
         napis_zl.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         napis_zl.setText("zl.");
+        panelpizza.add(napis_zl, new org.netbeans.lib.awtextra.AbsoluteConstraints(125, 466, 31, -1));
 
         napisilepizz.setText("Ile:");
+        panelpizza.add(napisilepizz, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 443, -1, -1));
 
-        javax.swing.GroupLayout panelpizzaLayout = new javax.swing.GroupLayout(panelpizza);
-        panelpizza.setLayout(panelpizzaLayout);
-        panelpizzaLayout.setHorizontalGroup(
-            panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelpizzaLayout.createSequentialGroup()
-                .addGroup(panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelpizzaLayout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(napisnazwapizzy, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelpizzaLayout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(listawybpizzy, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelpizzaLayout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(napisrozmiarpizzy, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelpizzaLayout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(listawybrozmpizzy, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelpizzaLayout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(napisrodzajciasta, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelpizzaLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(panelskladniki, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panelpizzaLayout.createSequentialGroup()
-                                .addGroup(panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelpizzaLayout.createSequentialGroup()
-                                        .addComponent(napisilepizz)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(poleilep, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(55, 55, 55))
-                                    .addGroup(panelpizzaLayout.createSequentialGroup()
-                                        .addComponent(cena, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(napis_zl, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addComponent(dodajdomenup, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(panelpizzaLayout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(listawybciastapizzy, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(33, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelpizzaLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(zobskl, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(96, 96, 96))
-        );
-        panelpizzaLayout.setVerticalGroup(
-            panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelpizzaLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(napisnazwapizzy)
-                .addGap(6, 6, 6)
-                .addComponent(listawybpizzy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(napisrozmiarpizzy)
-                .addGap(6, 6, 6)
-                .addComponent(listawybrozmpizzy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(napisrodzajciasta)
-                .addGap(6, 6, 6)
-                .addComponent(listawybciastapizzy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(zobskl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelskladniki, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelpizzaLayout.createSequentialGroup()
-                        .addGroup(panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(poleilep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(napisilepizz))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelpizzaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(napis_zl)))
-                    .addComponent(dodajdomenup, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(61, Short.MAX_VALUE))
-        );
+        poleilep.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                poleilepKeyPressed(evt);
+            }
+        });
+        panelpizza.add(poleilep, new org.netbeans.lib.awtextra.AbsoluteConstraints(45, 440, 60, -1));
+
+        getContentPane().add(panelpizza, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 428, 549));
 
         pokazpanelnapoj.setText("Napój");
         pokazpanelnapoj.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -314,32 +290,44 @@ public class NoweZamLok extends javax.swing.JFrame {
                 pokazpanelnapojActionPerformed(evt);
             }
         });
+        getContentPane().add(pokazpanelnapoj, new org.netbeans.lib.awtextra.AbsoluteConstraints(468, 64, 322, 50));
 
         napiszamowiono.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         napiszamowiono.setText("Zamowiono:");
+        getContentPane().add(napiszamowiono, new org.netbeans.lib.awtextra.AbsoluteConstraints(861, 11, 165, 29));
 
         jScrollPane2.setViewportView(listazamowien);
 
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 50, 220, 277));
+
         buttonGroupmiejsce.add(wlokalu);
         wlokalu.setText("w lokalu");
+        getContentPane().add(wlokalu, new org.netbeans.lib.awtextra.AbsoluteConstraints(969, 401, -1, -1));
 
         buttonGroupmiejsce.add(wdostawie);
         wdostawie.setText("w dostawie");
+        getContentPane().add(wdostawie, new org.netbeans.lib.awtextra.AbsoluteConstraints(969, 428, -1, -1));
 
         buttonGroupoplata.add(gotowka);
         gotowka.setText("gotówka");
+        getContentPane().add(gotowka, new org.netbeans.lib.awtextra.AbsoluteConstraints(969, 472, -1, -1));
 
         formazam.setText("Forma zamówienia:");
+        getContentPane().add(formazam, new org.netbeans.lib.awtextra.AbsoluteConstraints(845, 409, 118, 29));
 
         buttonGroupoplata.add(karta);
         karta.setText("karta");
+        getContentPane().add(karta, new org.netbeans.lib.awtextra.AbsoluteConstraints(969, 495, -1, -1));
 
         formaoplaty.setText("Forma opłaty:");
+        getContentPane().add(formaoplaty, new org.netbeans.lib.awtextra.AbsoluteConstraints(845, 479, 118, 27));
 
         napis_zl1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         napis_zl1.setText("zl.");
+        getContentPane().add(napis_zl1, new org.netbeans.lib.awtextra.AbsoluteConstraints(969, 353, 31, -1));
 
         cena1.setEditable(false);
+        getContentPane().add(cena1, new org.netbeans.lib.awtextra.AbsoluteConstraints(853, 353, 110, -1));
 
         powrot.setText("Powrót");
         powrot.addActionListener(new java.awt.event.ActionListener() {
@@ -347,6 +335,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 powrotActionPerformed(evt);
             }
         });
+        getContentPane().add(powrot, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 16, 143, -1));
 
         panelnapoj.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         panelnapoj.setPreferredSize(new java.awt.Dimension(248, 540));
@@ -354,10 +343,25 @@ public class NoweZamLok extends javax.swing.JFrame {
         napisrodzajnapoju.setText("Rodzaj napoju:");
 
         listawybrodznap.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
+        listawybrodznap.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                listawybrodznapItemStateChanged(evt);
+            }
+        });
+        listawybrodznap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listawybrodznapActionPerformed(evt);
+            }
+        });
 
         napisnazwanapoju.setText("Nazwa napoju:");
 
         listawybnazwynap.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
+        listawybnazwynap.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                listawybnazwynapItemStateChanged(evt);
+            }
+        });
 
         pokazopisnapoju.setText("Zobacz opis:");
         pokazopisnapoju.addActionListener(new java.awt.event.ActionListener() {
@@ -380,9 +384,24 @@ public class NoweZamLok extends javax.swing.JFrame {
 
         napisilenap.setText("Ile:");
 
+        poleilenap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                poleilenapActionPerformed(evt);
+            }
+        });
+        poleilenap.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                poleilenapKeyPressed(evt);
+            }
+        });
+
+        opisnapoju.setEditable(false);
         opisnapoju.setColumns(20);
         opisnapoju.setRows(5);
-        opisnapoju.setText("kutfk  tf    ftyf f  tf tuf l\n f tf o fy uf uf f gvgjcki kuf ku fu llp \n fyt t ft   kutfk  tf    ftyf f  tf tuf l\n f tf o fy uf uf f gvgjcki kuf ku fu llp \n fyt t ft  kutfk  tf    ftyf f  tf tuf l\n f tf o fy uf uf f gvgjcki kuf ku fu llp \n fyt t ft  kutfk  tf    ftyf f  tf tuf l\n f tf o fy uf uf f gvgjcki kuf ku fu llp \n fyt t ft  kutfk  tf    ftyf f  tf tuf l\n f tf o fy uf uf f gvgjcki kuf ku fu llp \n fyt t ft  kutfk  tf    ftyf f  tf tuf l\n f tf o fy uf uf f gvgjcki kuf ku fu llp \n fyt t ft  kutfk  tf    ftyf f  tf tuf l\n f tf o fy uf uf f gvgjcki kuf ku fu llp \n fyt t ft  kutfk  tf    ftyf f  tf tuf l\n f tf o fy uf uf f gvgjcki kuf ku fu llp \n fyt t ft  ");
+        opisnapoju.setToolTipText("");
+        opisnapoju.setAutoscrolls(false);
+        opisnapoju.setMaximumSize(new java.awt.Dimension(40, 40));
+        opisnapoju.setName(""); // NOI18N
         jScrollPane3.setViewportView(opisnapoju);
 
         javax.swing.GroupLayout panelopisnapLayout = new javax.swing.GroupLayout(panelopisnap);
@@ -390,16 +409,16 @@ public class NoweZamLok extends javax.swing.JFrame {
         panelopisnapLayout.setHorizontalGroup(
             panelopisnapLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelopisnapLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         panelopisnapLayout.setVerticalGroup(
             panelopisnapLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelopisnapLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(panelopisnapLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelnapojLayout = new javax.swing.GroupLayout(panelnapoj);
@@ -409,21 +428,21 @@ public class NoweZamLok extends javax.swing.JFrame {
             .addGroup(panelnapojLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(panelnapojLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(listawybnazwynap, 0, 150, Short.MAX_VALUE)
                     .addComponent(napisnazwanapoju)
+                    .addComponent(napisrodzajnapoju)
+                    .addComponent(listawybnazwynap, 0, 202, Short.MAX_VALUE)
                     .addComponent(listawybrodznap, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(napisrodzajnapoju))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelnapojLayout.createSequentialGroup()
+                        .addComponent(pokazopisnapoju, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17)))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(dlapelnoletnich, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(panelnapojLayout.createSequentialGroup()
-                .addGap(92, 92, 92)
-                .addComponent(pokazopisnapoju, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(77, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelnapojLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelnapojLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelnapojLayout.createSequentialGroup()
+                .addGap(0, 11, Short.MAX_VALUE)
+                .addGroup(panelnapojLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(panelopisnap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelnapojLayout.createSequentialGroup()
                         .addGroup(panelnapojLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelnapojLayout.createSequentialGroup()
                                 .addComponent(napisilenap)
@@ -432,12 +451,13 @@ public class NoweZamLok extends javax.swing.JFrame {
                             .addGroup(panelnapojLayout.createSequentialGroup()
                                 .addComponent(cena2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(napis_zl2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(dodajdomenunap, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(39, 39, 39))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelnapojLayout.createSequentialGroup()
-                        .addComponent(panelopisnap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                                .addComponent(napis_zl2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(46, 46, 46)))
+                .addGap(39, 39, 39))
+            .addGroup(panelnapojLayout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addComponent(dodajdomenunap, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelnapojLayout.setVerticalGroup(
             panelnapojLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -456,7 +476,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 .addComponent(pokazopisnapoju)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelopisnap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
                 .addGroup(panelnapojLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(napisilenap, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(poleilenap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -464,115 +484,18 @@ public class NoweZamLok extends javax.swing.JFrame {
                 .addGroup(panelnapojLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cena2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(napis_zl2))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(dodajdomenunap, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addGap(30, 30, 30))
         );
+
+        getContentPane().add(panelnapoj, new org.netbeans.lib.awtextra.AbsoluteConstraints(468, 120, 322, 549));
 
         buttonpotwierdz.setText("Potwierdź");
+        getContentPane().add(buttonpotwierdz, new org.netbeans.lib.awtextra.AbsoluteConstraints(937, 591, -1, -1));
 
         buttonwyczysc.setText("Wyczyść");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(88, 88, 88)
-                        .addComponent(pokazpanelpizza, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(panelpizza, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pokazpanelnapoj, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelnapoj, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(napiszamowiono, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(22, 22, 22))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cena1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(formazam, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(formaoplaty, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(wdostawie)
-                            .addComponent(wlokalu)
-                            .addComponent(karta)
-                            .addComponent(napis_zl1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(gotowka))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(buttonpotwierdz)
-                        .addGap(80, 80, 80))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(buttonwyczysc)
-                        .addGap(96, 96, 96))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(powrot, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 511, Short.MAX_VALUE)
-                .addComponent(napistytul, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(312, 312, 312))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(napiszamowiono, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(78, 78, 78)
-                        .addComponent(wlokalu)
-                        .addGap(4, 4, 4)
-                        .addComponent(wdostawie))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cena1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(napis_zl1))
-                        .addGap(36, 36, 36)
-                        .addComponent(formazam, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(formaoplaty, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(gotowka)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(karta)))
-                .addGap(73, 73, 73)
-                .addComponent(buttonpotwierdz)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonwyczysc)
-                .addGap(114, 114, 114))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(napistytul, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(powrot))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(pokazpanelnapoj, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pokazpanelpizza, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelpizza, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE)
-                    .addComponent(panelnapoj, javax.swing.GroupLayout.DEFAULT_SIZE, 549, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        getContentPane().add(buttonwyczysc, new org.netbeans.lib.awtextra.AbsoluteConstraints(925, 620, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -583,17 +506,20 @@ public class NoweZamLok extends javax.swing.JFrame {
             int index = listaskladnikow.getSelectedIndex();
             model.removeElementAt(index);
             listaskladnikow.setModel(model);
+        } else {
+            JOptionPane.showMessageDialog(null, "Nie wybrano składnika!");
         }
-// TODO add your handling code here:
     }//GEN-LAST:event_usunsActionPerformed
 
     private void dodajwActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajwActionPerformed
-        // TODO add your handling code here:
-
         String wybr = dodajs.getSelectedItem().toString();
-        int i = model.getSize();
-        model.add(i, wybr);
-        listaskladnikow.setModel(model);
+        if (wybr.length() > 1) {
+            int i = model.getSize();
+            model.add(i, wybr);
+            listaskladnikow.setModel(model);
+        } else {
+            JOptionPane.showMessageDialog(null, "Nie wybrano składnika!");
+        }
 
     }//GEN-LAST:event_dodajwActionPerformed
 
@@ -601,9 +527,17 @@ public class NoweZamLok extends javax.swing.JFrame {
         if (pokazpanelpizza.isSelected() == true) {
             panelpizza.setVisible(true);
             zamowpizze();
-
         } else {
             panelpizza.setVisible(false);
+            panelskladniki.setVisible(false);
+            listawybpizzy.setSelectedIndex(0);
+            listawybrozmpizzy.setSelectedIndex(0);
+            listawybciastapizzy.setSelectedIndex(0);
+            poleilep.setText("");
+            cena.setText("");
+            model.removeAllElements();
+            listaskladnikow.setModel(model);
+            zobskl.setSelected(false);
         }
 
 
@@ -611,21 +545,54 @@ public class NoweZamLok extends javax.swing.JFrame {
 
     private void zobsklActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zobsklActionPerformed
         if (zobskl.isSelected() == true) {
-
+            listaskladnikow.setModel(model);
             panelskladniki.setVisible(true);
             wypiszskladniki();
         } else {
             panelskladniki.setVisible(false);
+            poleilep.setText("");
+            cena.setText("");
+            model.removeAllElements();
+            listaskladnikow.setModel(model);
         }
     }//GEN-LAST:event_zobsklActionPerformed
 
     private void dodajdomenupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajdomenupActionPerformed
-        // TODO add your handling code here:
+        String t = cena.getText();
+        String nazwa = listawybpizzy.getSelectedItem().toString();
+        String rozmiar = listawybrozmpizzy.getSelectedItem().toString();
+        String ciasto = listawybciastapizzy.getSelectedItem().toString();
+        if (t.length() > 0) {
+            double cp = Double.parseDouble(t);
+            try {
+            Integer.parseInt(poleilep.getText());
+            dodajzampizzy();
+            zliczcene(cp);
+            czyscpanelpizza();
+            } catch(NumberFormatException nfe) {
+                 JOptionPane.showMessageDialog(null, "Niepoprawne dane!");
+            }
+        } else if (nazwa.length() > 1 && rozmiar.length() > 1 && ciasto.length() > 1) {
+            try {
+                int ile = Integer.parseInt(poleilep.getText());
+                Double cenap = policzkosztpizzy();
+                cenap += policzkosztskladnikow();
+                cenap *= ile;
+                dodajzampizzy();
+                zliczcene(cenap);
+                czyscpanelpizza();
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(null, "Niepoprawne dane!");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Nic nie zamówiono!");
+        }
+
     }//GEN-LAST:event_dodajdomenupActionPerformed
 
     private void powrotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_powrotActionPerformed
-        Zamowienia zamowienia = new Zamowienia();
-        zamowienia.setVisible(true);
+        zam.genUser2();
+        zam.setVisible(true);
         dispose();
     }//GEN-LAST:event_powrotActionPerformed
 
@@ -633,24 +600,57 @@ public class NoweZamLok extends javax.swing.JFrame {
         if (pokazpanelnapoj.isSelected() == true) {
             panelnapoj.setVisible(true);
             panelopisnap.setVisible(false);
-
+            wypiszrodzaje();
         } else {
             panelnapoj.setVisible(false);
+            listawybnazwynap.removeAllItems();
+            listawybrodznap.setSelectedIndex(0);
+            poleilenap.setText("");
+            cena2.setText("");
         }
     }//GEN-LAST:event_pokazpanelnapojActionPerformed
 
     private void dodajdomenunapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajdomenunapActionPerformed
-        // TODO add your handling code here:
+        String t = cena2.getText();
+        if (t.length() > 0) {
+            double cp = Double.parseDouble(t);
+            try {
+                Integer.parseInt(poleilenap.getText());
+                dodajzamnapoju();
+                zliczcene(cp);
+                czyscpanelnapoje();
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(null, "Niepoprawne dane!");
+            }
+        } else if (listawybnazwynap.getSelectedIndex() != -1) {
+            String nazwanap = listawybnazwynap.getSelectedItem().toString();
+            if (nazwanap.length() > 1) {
+                try {
+                    int ile = Integer.parseInt(poleilenap.getText());
+                    double cenanapoju = podajcenenap(nazwanap);
+                    cenanapoju *= ile;
+                    dodajzamnapoju();
+                    zliczcene(cenanapoju);
+                    czyscpanelnapoje();
+                } catch (NumberFormatException nfe) {
+                    JOptionPane.showMessageDialog(null, "Niepoprawne dane!");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Nic nie zamówiono!");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Nic nie zamówiono!");
+        }
     }//GEN-LAST:event_dodajdomenunapActionPerformed
 
     private void pokazopisnapojuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pokazopisnapojuActionPerformed
         if (pokazopisnapoju.isSelected() == true) {
-
+            String nazwa = listawybnazwynap.getSelectedItem().toString();
+            dodajopis(nazwa);
             panelopisnap.setVisible(true);
-
         } else {
-
             panelopisnap.setVisible(false);
+            opisnapoju.setText("");
         }
     }//GEN-LAST:event_pokazopisnapojuActionPerformed
 
@@ -665,6 +665,93 @@ public class NoweZamLok extends javax.swing.JFrame {
     private void listawybrozmpizzyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listawybrozmpizzyActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_listawybrozmpizzyActionPerformed
+
+    private void listawybrodznapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listawybrodznapActionPerformed
+
+
+    }//GEN-LAST:event_listawybrodznapActionPerformed
+
+    private void listawybrodznapItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listawybrodznapItemStateChanged
+        //  if(listawybrodznap.getSelectedIndex() > 0) {
+        listawybnazwynap.removeAllItems();
+        listawybnazwynap.addItem(" ");
+        String rodzaj = listawybrodznap.getSelectedItem().toString();
+        pokaznazwynapojow(rodzaj);
+
+    }//GEN-LAST:event_listawybrodznapItemStateChanged
+
+    private void listawybnazwynapItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listawybnazwynapItemStateChanged
+        pokazopisnapoju.setSelected(false);
+        panelopisnap.setVisible(false);
+        opisnapoju.setText("");
+    }//GEN-LAST:event_listawybnazwynapItemStateChanged
+
+    private void poleilepKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_poleilepKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+
+            try {
+                String nazwa = listawybpizzy.getSelectedItem().toString();
+                String rozmiar = listawybrozmpizzy.getSelectedItem().toString();
+                String ciasto = listawybciastapizzy.getSelectedItem().toString();
+                int ile = Integer.parseInt(poleilep.getText());
+                if (nazwa.length() > 1 && rozmiar.length() > 1 && ciasto.length() > 1) {
+                    Double cenap = policzkosztpizzy();
+                    cenap += policzkosztskladnikow();
+                    cenap *= ile;
+                    cena.setText(cenap + "");
+                } else {
+                    cena.setText("");
+                    JOptionPane.showMessageDialog(null, "Niepełne dane!");
+                }
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(null, "Niepoprawne dane!");
+            }
+        }
+    }//GEN-LAST:event_poleilepKeyPressed
+
+    private void poleilenapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_poleilenapKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            try {
+                int ile = Integer.parseInt(poleilenap.getText());
+                if (listawybnazwynap.getSelectedIndex() != -1) {
+                    String nazwanap = listawybnazwynap.getSelectedItem().toString();
+                    if (nazwanap.length() > 1) {
+                        double cenanapoju = podajcenenap(nazwanap);
+                        cenanapoju *= ile;
+                        cena2.setText(cenanapoju + "");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Nie wybrano napoju!");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Nie wybrano napoju!");
+                }
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(null, "Niepoprawne dane!");
+            }
+        }
+    }//GEN-LAST:event_poleilenapKeyPressed
+
+    private void poleilenapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_poleilenapActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_poleilenapActionPerformed
+
+    private void listawybpizzyItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listawybpizzyItemStateChanged
+        model.removeAllElements();
+        listaskladnikow.setModel(model);
+        zobskl.setSelected(false);
+    }//GEN-LAST:event_listawybpizzyItemStateChanged
+
+    private void listawybrozmpizzyItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listawybrozmpizzyItemStateChanged
+        model.removeAllElements();
+        listaskladnikow.setModel(model);
+        zobskl.setSelected(false);
+    }//GEN-LAST:event_listawybrozmpizzyItemStateChanged
+
+    private void listawybciastapizzyItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listawybciastapizzyItemStateChanged
+        model.removeAllElements();
+        listaskladnikow.setModel(model);
+        zobskl.setSelected(false);
+    }//GEN-LAST:event_listawybciastapizzyItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -693,8 +780,8 @@ public class NoweZamLok extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new NoweZamLok().setVisible(true);
-                NoweZamLok nzl = new NoweZamLok();
+                new NoweZamLok(zam).setVisible(true);
+                NoweZamLok nzl = new NoweZamLok(zam);
                 nzl.setVisible(false);
 
             }
@@ -761,8 +848,6 @@ public class NoweZamLok extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     void zamowpizze() {
-        listaa.setVisible(true);
-        listaa.setBounds(50, 50, 50, 50);
         try {
             con = DriverManager.getConnection(
                     "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
@@ -815,13 +900,12 @@ public class NoweZamLok extends javax.swing.JFrame {
             Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        
-
     }
 
     void wypiszskladniki() {
         model.removeAllElements();
         dodajs.removeAllItems();
+        dodajs.addItem("");
         String nazwapizzy = listawybpizzy.getSelectedItem().toString();
         String rozmpizzy = listawybrozmpizzy.getSelectedItem().toString();
         try {
@@ -876,12 +960,35 @@ public class NoweZamLok extends javax.swing.JFrame {
                         model.add(i, skladniki[k]);
                     }
                     listaskladnikow.setModel(model);
-                    System.out.println(res5.getString("skladniki"));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    void wypiszrodzaje() {
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt6 = con.createStatement();
+            res6 = stmt6.executeQuery(
+                    "select distinct(rodzaj) from MENU_NAPOJE"
+            );
+
+        } catch (Exception e) {
+
+        }
+        try {
+            if (listawybrodznap.getItemCount() == 1) {
+                while (res6.next()) {
+                    listawybrodznap.addItem(res6.getString("rodzaj"));
                 }
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -897,7 +1004,6 @@ public class NoweZamLok extends javax.swing.JFrame {
         }
         ile++;
         String[] skladniki = new String[ile];
-
         int pocz = 0;
         int i = 0;
         for (int nr = 0; nr < dlugosc; nr++) {
@@ -918,5 +1024,190 @@ public class NoweZamLok extends javax.swing.JFrame {
         }
         skladniki[i] = ostatni;
         return skladniki;
+    }
+
+    void pokaznazwynapojow(String rodzaj) {
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt7 = con.createStatement();
+            res7 = stmt7.executeQuery(
+                    "select distinct(nazwa) from MENU_NAPOJE where rodzaj like '" + rodzaj + "'"
+            );
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            if (listawybnazwynap.getItemCount() == 1) {
+                while (res7.next()) {
+                    listawybnazwynap.addItem(res7.getString("nazwa"));
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    void dodajopis(String nazwa) {
+        String opis = "";
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt8 = con.createStatement();
+            res8 = stmt8.executeQuery(
+                    "select * from MENU_NAPOJE where nazwa like '" + nazwa + "'"
+            );
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            while (res8.next()) {
+                opis += "Objętość: ";
+                opis += res8.getString("objetosc");
+                opis += "\nDla pełnoletnich: ";
+                String dlapeln = res8.getString("dla_pelnoletnich");
+                if (dlapeln.contains("T")) {
+                    opis += "tak";
+                } else {
+                    opis += "nie";
+                }
+                if (res8.getString("opis") != null) {
+                    opis += "\nDodatkowe informacje: ";
+                    opis += res8.getString("opis");
+                }
+            }
+            opisnapoju.setText(opis);
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    double policzkosztpizzy() {
+        double cenaa = 0;
+        String nazwa = listawybpizzy.getSelectedItem().toString();
+        String rozmiar = listawybrozmpizzy.getSelectedItem().toString();
+        String ciasto = listawybciastapizzy.getSelectedItem().toString();
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt9 = con.createStatement();
+            res9 = stmt9.executeQuery(
+                    "select cena_pizza from MENU_PIZZA where nazwa like '%" + nazwa + "%' and rozmiar like '%" + rozmiar
+                    + "%' and ciasto like '%" + ciasto + "%'"
+            );
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            while (res9.next()) {
+                cenaa += res9.getDouble("cena_pizza");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cenaa;
+    }
+
+    double policzkosztskladnikow() {
+        double cenaskl = 0;
+        int ile = model.getSize();
+        for (int i = 0; i < ile; i++) {
+            String skl = model.getElementAt(i);
+            if (skl.contains("+")) {
+                char[] znaki = skl.toCharArray();
+                int dl = znaki.length;
+                for (int k = 0; k < dl; k++) {
+                    char j = znaki[k];
+                    if (j == '+') {
+                        String cn = skl.substring(k + 1, k + 5);
+                        double cn1 = Double.parseDouble(cn);
+                        cenaskl += cn1;
+                        break;
+                    }
+                }
+            }
+        }
+        return cenaskl;
+    }
+
+    double podajcenenap(String nazwa) {
+        double cenanap = 0;
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt10 = con.createStatement();
+            res10 = stmt10.executeQuery(
+                    "select cena from MENU_NAPOJE where nazwa like '" + nazwa + "'"
+            );
+
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            while (res10.next()) {
+                cenanap += res10.getDouble("cena");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cenanap;
+    }
+
+    void zliczcene(Double c) {
+        String stcena = cena1.getText();
+        if (stcena.length() > 0) {
+            Double cenarazem = Double.parseDouble(stcena);
+            cenarazem += c;
+            cena1.setText(cenarazem + "");
+        } else {
+            cena1.setText(c + "");
+        }
+    }
+
+    void dodajzampizzy() {
+        String nazwa = listawybpizzy.getSelectedItem().toString();
+        String rozmiar = listawybrozmpizzy.getSelectedItem().toString();
+        String ciasto = listawybciastapizzy.getSelectedItem().toString();
+        String ilerazy = poleilep.getText();
+        String zampizza = ilerazy + "x " + nazwa + " " + rozmiar + ", " + ciasto + " ciasto";
+        int i = modelzam.getSize();
+        modelzam.add(i, zampizza);
+        listazamowien.setModel(modelzam);
+    }
+
+    void dodajzamnapoju() {
+        String nazwa = listawybnazwynap.getSelectedItem().toString();
+        String ilerazy = poleilenap.getText();
+        String zampizza = ilerazy + "x " + nazwa;
+        int i = modelzam.getSize();
+        modelzam.add(i, zampizza);
+        listazamowien.setModel(modelzam);
+
+    }
+
+    void czyscpanelpizza() {
+        listawybpizzy.setSelectedIndex(0);
+        listawybrozmpizzy.setSelectedIndex(0);
+        listawybciastapizzy.setSelectedIndex(0);
+        dodajs.setSelectedIndex(0);
+        cena.setText("");
+        poleilep.setText("");
+        panelskladniki.setVisible(false);
+        pokazpanelpizza.setSelected(false);
+        panelpizza.setVisible(false);
+        model.removeAllElements();
+        listaskladnikow.setModel(model);
+    }
+
+    void czyscpanelnapoje() {
+        listawybrodznap.setSelectedIndex(0);
+        poleilenap.setText("");
+        cena2.setText("");
+        pokazpanelnapoj.setSelected(false);
+        panelnapoj.setVisible(false);
     }
 }

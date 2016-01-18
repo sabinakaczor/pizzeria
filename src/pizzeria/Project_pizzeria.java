@@ -23,8 +23,10 @@ public class Project_pizzeria extends javax.swing.JFrame {
     Connection con;
     Statement stmt, stmt2;
     ResultSet result, result2;
+    static WybierzNazwe wyb;
 
-    public Project_pizzeria() {
+    public Project_pizzeria(WybierzNazwe wyb) {
+        this.wyb = wyb;
         
         try{
             con = DriverManager.getConnection(
@@ -42,7 +44,12 @@ public class Project_pizzeria extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
             
         }
-        initComponents();        
+        initComponents();
+        
+       //genNazwa(nazwapizzerii);
+        
+        
+        
         try {
             while(result.next()){
                 login.addItem(result.getString("login"));
@@ -57,6 +64,7 @@ public class Project_pizzeria extends javax.swing.JFrame {
         }
         
     }
+     String nazwa_pizzerii="";
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -180,7 +188,7 @@ public class Project_pizzeria extends javax.swing.JFrame {
             while(pobHaslo.next()) {
                 String popr = pobHaslo.getString("haslo");
                 if(haslo.equals(popr)) {
-                    Zamowienia zam =new Zamowienia();
+                    Zamowienia zam =new Zamowienia(this);
                     zam.genUser(nazwa,stan);
                     zam.setVisible(true);
                     dispose(); 
@@ -235,7 +243,7 @@ public class Project_pizzeria extends javax.swing.JFrame {
             @Override
             public void run() {
                 
-                new Project_pizzeria().setVisible(true);
+                new Project_pizzeria(wyb).setVisible(true);
                 
             }
         });
@@ -257,6 +265,11 @@ public class Project_pizzeria extends javax.swing.JFrame {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     void genNazwa(String nazwa) {
-        napisnazwapizzerii.setText("Pizzeria \""+ nazwa + "\""); //To change body of generated methods, choose Tools | Templates.
+        napisnazwapizzerii.setText("Pizzeria \""+ nazwa + "\""); 
+        nazwa_pizzerii = nazwa;
     }
+    void genNazwa2() {
+        napisnazwapizzerii.setText("Pizzeria \""+ nazwa_pizzerii + "\""); 
+    }
+    //void 
 }

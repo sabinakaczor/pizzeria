@@ -5,6 +5,7 @@
  */
 package pizzeria;
 
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,10 +15,12 @@ import java.sql.Statement;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import static pizzeria.Nowy_pracownik.zam;
 
 /**
  *
@@ -29,15 +32,22 @@ public class Edycja_pizzy extends javax.swing.JFrame {
     Statement stmt1, stmt2, stmt3, stmt4, stmt5;
     ResultSet res1, res2, res3, res4, res5;
     DefaultTableModel model;
+    DefaultListModel<String> model1 = new DefaultListModel<>();
     float cena = 0;
+    static Zamowienia zam;
     //int usunieto = 0;
 
     /**
      * Creates new form Edycja_pizzy
      */
-    public Edycja_pizzy() {
+    public Edycja_pizzy(Zamowienia zam) {
+        this.zam = zam;
         initComponents();
-        panel_edycja.setVisible(false);
+        panel_tabelka.setVisible(false);
+        paneledytujdodaj.setVisible(false);
+        pole_dost_nowa.setVisible(false);
+        pole_ciasto_nowe.setVisible(false);
+        pole_rozm_nowy.setVisible(false);
         model = (DefaultTableModel) tabelka.getModel();
     }
 
@@ -51,31 +61,45 @@ public class Edycja_pizzy extends javax.swing.JFrame {
     private void initComponents() {
 
         przegladaj = new javax.swing.JToggleButton();
+        panel_tabelka = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelka = new javax.swing.JTable();
-        dodajdobazy = new javax.swing.JButton();
-        usun = new javax.swing.JButton();
-        edytuj = new javax.swing.JButton();
-        panel_edycja = new javax.swing.JPanel();
+        paneledytujdodaj = new javax.swing.JPanel();
         POLENR = new javax.swing.JTextField();
         NUMER = new javax.swing.JLabel();
+        CIASTO = new javax.swing.JLabel();
+        DOSTEPNOSC = new javax.swing.JLabel();
+        POLECENA = new javax.swing.JTextField();
+        SKLADNIKI = new javax.swing.JLabel();
         POLENAZWA = new javax.swing.JTextField();
         NAZWA = new javax.swing.JLabel();
-        SKLADNIKI = new javax.swing.JLabel();
-        POLESKLADNIKI = new javax.swing.JTextField();
-        POLECIASTO = new javax.swing.JTextField();
-        POLEROZMIAR = new javax.swing.JTextField();
-        POLECENA = new javax.swing.JTextField();
-        POLEDOST = new javax.swing.JTextField();
-        CIASTO = new javax.swing.JLabel();
-        ROZMIAR = new javax.swing.JLabel();
         CENA = new javax.swing.JLabel();
-        DOSTEPNOSC = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        ROZMIAR = new javax.swing.JLabel();
         zapisz = new javax.swing.JButton();
+        anuluj = new javax.swing.JButton();
+        POLECIASTO = new javax.swing.JComboBox();
+        POLEROZMIAR = new javax.swing.JComboBox();
+        POLEDOST = new javax.swing.JComboBox();
+        komunikat = new javax.swing.JLabel();
+        nowa_opcja_dostepnosc = new javax.swing.JToggleButton();
+        nowa_opcja_rozmiar = new javax.swing.JToggleButton();
+        nowa_opcja_ciasto = new javax.swing.JToggleButton();
+        pole_dost_nowa = new javax.swing.JTextField();
+        pole_rozm_nowy = new javax.swing.JTextField();
+        pole_ciasto_nowe = new javax.swing.JTextField();
+        combobox_skladniki = new javax.swing.JComboBox();
+        dodajw = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        lista_skladnikow = new javax.swing.JList();
+        usunw = new javax.swing.JButton();
+        edytuj = new javax.swing.JButton();
+        usun = new javax.swing.JButton();
+        dodajdobazy = new javax.swing.JButton();
         powrot = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1239, 720));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         przegladaj.setText("Przeglądaj menu");
         przegladaj.addActionListener(new java.awt.event.ActionListener() {
@@ -83,6 +107,9 @@ public class Edycja_pizzy extends javax.swing.JFrame {
                 przegladajActionPerformed(evt);
             }
         });
+        getContentPane().add(przegladaj, new org.netbeans.lib.awtextra.AbsoluteConstraints(98, 11, 131, 39));
+
+        panel_tabelka.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tabelka.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -121,26 +148,9 @@ public class Edycja_pizzy extends javax.swing.JFrame {
             tabelka.getColumnModel().getColumn(6).setPreferredWidth(30);
         }
 
-        dodajdobazy.setText("Dodaj");
-        dodajdobazy.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dodajdobazyActionPerformed(evt);
-            }
-        });
+        panel_tabelka.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 21, 1199, 280));
 
-        usun.setText("Usuń");
-        usun.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                usunActionPerformed(evt);
-            }
-        });
-
-        edytuj.setText("Edytuj");
-        edytuj.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                edytujActionPerformed(evt);
-            }
-        });
+        paneledytujdodaj.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         POLENR.setEditable(false);
         POLENR.setPreferredSize(new java.awt.Dimension(10, 25));
@@ -149,29 +159,38 @@ public class Edycja_pizzy extends javax.swing.JFrame {
                 POLENRActionPerformed(evt);
             }
         });
+        paneledytujdodaj.add(POLENR, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 77, 30));
 
         NUMER.setText("NR");
-
-        POLENAZWA.setPreferredSize(new java.awt.Dimension(10, 25));
-
-        NAZWA.setText("NAZWA");
-
-        SKLADNIKI.setText("SKŁADNIKI");
+        paneledytujdodaj.add(NUMER, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 22, -1));
 
         CIASTO.setText("CIASTO");
-
-        ROZMIAR.setText("ROZMIAR");
-
-        CENA.setText("CENA (ZŁ)");
+        paneledytujdodaj.add(CIASTO, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 10, -1, -1));
 
         DOSTEPNOSC.setText("DOSTĘPNOŚĆ");
+        paneledytujdodaj.add(DOSTEPNOSC, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 10, -1, -1));
 
-        jButton1.setText("Anuluj");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        POLECENA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                POLECENAActionPerformed(evt);
             }
         });
+        paneledytujdodaj.add(POLECENA, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 30, 96, 30));
+
+        SKLADNIKI.setText("SKŁADNIKI");
+        paneledytujdodaj.add(SKLADNIKI, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 10, -1, -1));
+
+        POLENAZWA.setPreferredSize(new java.awt.Dimension(10, 25));
+        paneledytujdodaj.add(POLENAZWA, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, 94, 30));
+
+        NAZWA.setText("NAZWA");
+        paneledytujdodaj.add(NAZWA, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, -1, -1));
+
+        CENA.setText("CENA (ZŁ)");
+        paneledytujdodaj.add(CENA, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 10, -1, -1));
+
+        ROZMIAR.setText("ROZMIAR");
+        paneledytujdodaj.add(ROZMIAR, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, -1, -1));
 
         zapisz.setText("Zapisz");
         zapisz.addActionListener(new java.awt.event.ActionListener() {
@@ -179,75 +198,117 @@ public class Edycja_pizzy extends javax.swing.JFrame {
                 zapiszActionPerformed(evt);
             }
         });
+        paneledytujdodaj.add(zapisz, new org.netbeans.lib.awtextra.AbsoluteConstraints(832, 22, 127, 59));
 
-        javax.swing.GroupLayout panel_edycjaLayout = new javax.swing.GroupLayout(panel_edycja);
-        panel_edycja.setLayout(panel_edycjaLayout);
-        panel_edycjaLayout.setHorizontalGroup(
-            panel_edycjaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_edycjaLayout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(panel_edycjaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(POLENR, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(NUMER))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panel_edycjaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(NAZWA)
-                    .addComponent(POLENAZWA, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panel_edycjaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(POLESKLADNIKI, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SKLADNIKI))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panel_edycjaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(POLECIASTO, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CIASTO))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panel_edycjaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(POLEROZMIAR, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ROZMIAR))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panel_edycjaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(POLECENA, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CENA))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panel_edycjaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(POLEDOST, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(DOSTEPNOSC))
-                .addGap(16, 16, 16)
-                .addComponent(zapisz, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(108, 108, 108))
-        );
-        panel_edycjaLayout.setVerticalGroup(
-            panel_edycjaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_edycjaLayout.createSequentialGroup()
-                .addContainerGap(17, Short.MAX_VALUE)
-                .addGroup(panel_edycjaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(panel_edycjaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(zapisz, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panel_edycjaLayout.createSequentialGroup()
-                        .addGroup(panel_edycjaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(NAZWA)
-                            .addComponent(SKLADNIKI)
-                            .addComponent(CIASTO)
-                            .addComponent(ROZMIAR)
-                            .addComponent(CENA)
-                            .addComponent(DOSTEPNOSC)
-                            .addComponent(NUMER))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panel_edycjaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(POLENR, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(POLENAZWA, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panel_edycjaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(POLESKLADNIKI, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(POLECIASTO, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(POLEROZMIAR, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(POLECENA, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(POLEDOST, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
-        );
+        anuluj.setText("Anuluj");
+        anuluj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                anulujActionPerformed(evt);
+            }
+        });
+        paneledytujdodaj.add(anuluj, new org.netbeans.lib.awtextra.AbsoluteConstraints(965, 22, 113, 59));
+
+        POLECIASTO.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "cienkie", "grube" }));
+        POLECIASTO.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                POLECIASTOActionPerformed(evt);
+            }
+        });
+        paneledytujdodaj.add(POLECIASTO, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 30, 100, 30));
+
+        POLEROZMIAR.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "mała", "średnia", "duża" }));
+        paneledytujdodaj.add(POLEROZMIAR, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 30, 100, 30));
+
+        POLEDOST.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "tak", "nie" }));
+        POLEDOST.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                POLEDOSTActionPerformed(evt);
+            }
+        });
+        paneledytujdodaj.add(POLEDOST, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 30, 100, 30));
+        paneledytujdodaj.add(komunikat, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 90, 370, 70));
+
+        nowa_opcja_dostepnosc.setText("Nowa opcja");
+        nowa_opcja_dostepnosc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nowa_opcja_dostepnoscActionPerformed(evt);
+            }
+        });
+        paneledytujdodaj.add(nowa_opcja_dostepnosc, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 70, 100, -1));
+
+        nowa_opcja_rozmiar.setText("Nowa opcja");
+        nowa_opcja_rozmiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nowa_opcja_rozmiarActionPerformed(evt);
+            }
+        });
+        paneledytujdodaj.add(nowa_opcja_rozmiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 70, 100, -1));
+
+        nowa_opcja_ciasto.setText("Nowa opcja");
+        nowa_opcja_ciasto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nowa_opcja_ciastoActionPerformed(evt);
+            }
+        });
+        paneledytujdodaj.add(nowa_opcja_ciasto, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 70, 100, -1));
+        paneledytujdodaj.add(pole_dost_nowa, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 100, 100, 30));
+        paneledytujdodaj.add(pole_rozm_nowy, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 100, 100, 30));
+        paneledytujdodaj.add(pole_ciasto_nowe, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 100, 100, 30));
+
+        combobox_skladniki.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                combobox_skladnikiActionPerformed(evt);
+            }
+        });
+        paneledytujdodaj.add(combobox_skladniki, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 30, 120, 30));
+
+        dodajw.setText("Dodaj");
+        dodajw.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dodajwActionPerformed(evt);
+            }
+        });
+        paneledytujdodaj.add(dodajw, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 70, 120, -1));
+
+        jScrollPane2.setViewportView(lista_skladnikow);
+
+        paneledytujdodaj.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 100, 120, 110));
+
+        usunw.setText("Usuń");
+        usunw.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usunwActionPerformed(evt);
+            }
+        });
+        paneledytujdodaj.add(usunw, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 220, 120, -1));
+
+        panel_tabelka.add(paneledytujdodaj, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 1180, 250));
+
+        edytuj.setText("Edytuj");
+        edytuj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                edytujActionPerformed(evt);
+            }
+        });
+        panel_tabelka.add(edytuj, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 310, 111, 39));
+
+        usun.setText("Usuń");
+        usun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usunActionPerformed(evt);
+            }
+        });
+        panel_tabelka.add(usun, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 310, 118, 39));
+
+        dodajdobazy.setText("Dodaj");
+        dodajdobazy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dodajdobazyActionPerformed(evt);
+            }
+        });
+        panel_tabelka.add(dodajdobazy, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 310, 99, 39));
+
+        getContentPane().add(panel_tabelka, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
 
         powrot.setText("Powrót");
         powrot.addActionListener(new java.awt.event.ActionListener() {
@@ -255,49 +316,7 @@ public class Edycja_pizzy extends javax.swing.JFrame {
                 powrotActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(41, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(usun, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(39, 39, 39)
-                                .addComponent(edytuj, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(51, 51, 51)
-                                .addComponent(dodajdobazy, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(panel_edycja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(36, 36, 36))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(przegladaj, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(powrot, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(59, 59, 59))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(przegladaj, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(powrot, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(51, 51, 51)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(usun, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dodajdobazy, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(edytuj, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                .addComponent(panel_edycja, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        getContentPane().add(powrot, new org.netbeans.lib.awtextra.AbsoluteConstraints(1029, 11, 131, 39));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -305,12 +324,12 @@ public class Edycja_pizzy extends javax.swing.JFrame {
     private void przegladajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przegladajActionPerformed
         if (przegladaj.isSelected() == true) {
 
-            tabelka.setVisible(true);
+            panel_tabelka.setVisible(true);
             czysctabelke();
             przegladaj(model);
         } else {
-            tabelka.setVisible(false);
-            panel_edycja.setVisible(false);
+            //tabelka.setVisible(false);
+            panel_tabelka.setVisible(false);
 
         }
 
@@ -319,23 +338,28 @@ public class Edycja_pizzy extends javax.swing.JFrame {
 
     private void dodajdobazyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajdobazyActionPerformed
 
-        panel_edycja.setVisible(true);
-         int numer = tabelka.getRowCount() + 1;
-        POLENR.setText(numer+"");
-       
+        paneledytujdodaj.setVisible(true);
+        int numer = tabelka.getRowCount() + 1;
+        POLENR.setText(numer + "");
+        wypisznazwyskladnikow();
     }//GEN-LAST:event_dodajdobazyActionPerformed
 
     private void edytujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edytujActionPerformed
-        panel_edycja.setVisible(true);
-         int numer = tabelka.getSelectedRow()+1;
-        POLENR.setText(numer+"");
+        if (tabelka.getSelectedRowCount() > 0) {
+            paneledytujdodaj.setVisible(true);
+            int wybrwiersz = tabelka.getSelectedRow();
+            int numer = Integer.parseInt(tabelka.getValueAt(wybrwiersz, 0).toString());
+            POLENR.setText(numer + "");
+            wypisznazwyskladnikow();
+        } else {
+            JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");
+        }
 
 
     }//GEN-LAST:event_edytujActionPerformed
 
     private void usunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usunActionPerformed
 
-      
         int j = tabelka.getRowCount();
         String ostt = tabelka.getValueAt(j - 1, 0).toString();
         int ost = Integer.parseInt(ostt);
@@ -364,48 +388,79 @@ public class Edycja_pizzy extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+        } else {//zmienilam
+            JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");//zmienilam
+        }//zmienilam
+
         czysctabelke();
         przegladaj(model);
 
 
     }//GEN-LAST:event_usunActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        panel_edycja.setVisible(false);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void anulujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anulujActionPerformed
+        paneledytujdodaj.setVisible(false);
+    }//GEN-LAST:event_anulujActionPerformed
 
     private void zapiszActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zapiszActionPerformed
 
         int numer = tabelka.getRowCount() + 1;
-        
+
         String nazwa = POLENAZWA.getText();
-        String skladniki = POLESKLADNIKI.getText();
-        String ciasto = POLECIASTO.getText();
-        String rozmiar = POLEROZMIAR.getText();
-        if (POLECENA.getText() != null && POLECENA.getText().length() > 0) {
-            cena = Float.parseFloat(POLECENA.getText());
+        String skladniki = pobierzwybraneskladniki();
+        String ciasto;
+        if (nowa_opcja_ciasto.isSelected()) {
+            ciasto = pole_ciasto_nowe.getText();
+        } else {
+            ciasto = POLECIASTO.getSelectedItem().toString();
         }
-        String dostepnosc = POLEDOST.getText();
-        try {
-            con = DriverManager.getConnection(
-                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
-            );
-            stmt3 = con.createStatement();
-            String insert = "";
-            if (tabelka.getSelectedRow() < 0) {
-                insert = "INSERT INTO MENU_PIZZA VALUES(" + numer + ",'" + nazwa + "','" + skladniki + "','" + ciasto + "','" + rozmiar + "'," + cena + ",'" + dostepnosc + "')";
-            } else {
-       
-                int wiersz = tabelka.getSelectedRow();
-                String s = tabelka.getValueAt(wiersz, 0).toString();
-                
-                insert = "UPDATE menu_pizza SET nazwa='" + nazwa + "', skladniki='" + skladniki + "', ciasto='" + ciasto
-                        + "', rozmiar='" + rozmiar + "', cena_pizza=" + cena + ", dostepnosc='" + dostepnosc + "' WHERE id_pizzy=" + s;
+        String rozmiar;
+        if (nowa_opcja_rozmiar.isSelected()) {
+            rozmiar = pole_rozm_nowy.getText();
+        } else {
+            rozmiar = POLEROZMIAR.getSelectedItem().toString();
+        }
+        if (POLECENA.getText() != null && POLECENA.getText().length() > 0) {
+            try {
+                cena = Float.parseFloat(POLECENA.getText());
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(null, "Niepoprawny format ceny!");
             }
-            stmt3.executeUpdate(insert);
-        } catch (Exception e) {
-            // JOptionPane.showMessageDialog(null, "Błąd zapisu - brak połączenia z bazą danych");
+        }
+        String dostepnosc;
+        if (nowa_opcja_dostepnosc.isSelected()) {
+            dostepnosc = pole_dost_nowa.getText();
+        } else {
+            dostepnosc = POLEDOST.getSelectedItem().toString();
+        }
+        if (nazwa.equals("") || skladniki.equals("") || ciasto.equals("") || cena == 0 || rozmiar.equals("") || dostepnosc.equals("")) {
+            komunikat.setText("Brak  danych!");
+            komunikat.setForeground(Color.red);
+
+        } else {
+            try {
+                con = DriverManager.getConnection(
+                        "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+                );
+                stmt3 = con.createStatement();
+                String insert = "";
+                if (tabelka.getSelectedRow() < 0) {
+                    insert = "INSERT INTO MENU_PIZZA VALUES(" + numer + ",'" + nazwa + "','" + skladniki + "','" + ciasto + "','" + rozmiar + "'," + cena + ",'" + dostepnosc + "')";
+                } else {
+
+                    int wiersz = tabelka.getSelectedRow();
+                    String s = tabelka.getValueAt(wiersz, 0).toString();
+
+                    insert = "UPDATE menu_pizza SET nazwa='" + nazwa + "', skladniki='" + skladniki + "', ciasto='" + ciasto
+                            + "', rozmiar='" + rozmiar + "', cena_pizza=" + cena + ", dostepnosc='" + dostepnosc + "' WHERE id_pizzy=" + s;
+                }
+                stmt3.executeUpdate(insert);
+                komunikat.setText("Nowa pizza została dodany do bazy systemu");
+            } catch (Exception e) {
+                // JOptionPane.showMessageDialog(null, "Błąd zapisu - brak połączenia z bazą danych");
+            }
+            czysctabelke();//zmienilam
+            przegladaj(model);//zmienilam
         }
     }//GEN-LAST:event_zapiszActionPerformed
 
@@ -414,10 +469,82 @@ public class Edycja_pizzy extends javax.swing.JFrame {
     }//GEN-LAST:event_POLENRActionPerformed
 
     private void powrotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_powrotActionPerformed
-        Zamowienia zam = new Zamowienia();
-         zam.setVisible(true);
+        zam.genUser2();
+        zam.setVisible(true);
         dispose();
     }//GEN-LAST:event_powrotActionPerformed
+
+    private void POLECENAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_POLECENAActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_POLECENAActionPerformed
+
+    private void nowa_opcja_ciastoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nowa_opcja_ciastoActionPerformed
+        if (nowa_opcja_ciasto.isSelected() == true) {
+            pole_ciasto_nowe.setVisible(true);
+            POLECIASTO.setEnabled(false);
+            POLECIASTO.setSelectedIndex(0);
+        } else {
+            pole_ciasto_nowe.setVisible(false);
+            POLECIASTO.setEnabled(true);
+
+        }
+    }//GEN-LAST:event_nowa_opcja_ciastoActionPerformed
+
+    private void nowa_opcja_dostepnoscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nowa_opcja_dostepnoscActionPerformed
+        if (nowa_opcja_dostepnosc.isSelected() == true) {
+            pole_dost_nowa.setVisible(true);
+            POLEDOST.setEnabled(false);
+            POLEDOST.setSelectedIndex(0);
+        } else {
+            pole_dost_nowa.setVisible(false);
+            POLEDOST.setEnabled(true);
+
+        }
+    }//GEN-LAST:event_nowa_opcja_dostepnoscActionPerformed
+
+    private void POLEDOSTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_POLEDOSTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_POLEDOSTActionPerformed
+
+    private void nowa_opcja_rozmiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nowa_opcja_rozmiarActionPerformed
+        if (nowa_opcja_rozmiar.isSelected() == true) {
+            pole_rozm_nowy.setVisible(true);
+            POLEROZMIAR.setEnabled(false);
+            POLEROZMIAR.setSelectedIndex(0);
+        } else {
+            pole_rozm_nowy.setVisible(false);
+            POLEROZMIAR.setEnabled(true);
+
+        }
+    }//GEN-LAST:event_nowa_opcja_rozmiarActionPerformed
+
+    private void POLECIASTOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_POLECIASTOActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_POLECIASTOActionPerformed
+
+    private void dodajwActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajwActionPerformed
+
+        int i = model1.getSize();
+        if (combobox_skladniki.getSelectedIndex() != -1) {
+            String wybr = combobox_skladniki.getSelectedItem().toString();
+            model1.add(i, wybr);
+        } else {
+            model1.add(i, " ");
+        }
+        lista_skladnikow.setModel(model1);
+    }//GEN-LAST:event_dodajwActionPerformed
+
+    private void usunwActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usunwActionPerformed
+        if (!lista_skladnikow.isSelectionEmpty()) {
+            int index = lista_skladnikow.getSelectedIndex();
+            model1.removeElementAt(index);
+            lista_skladnikow.setModel(model1);
+        }
+    }//GEN-LAST:event_usunwActionPerformed
+
+    private void combobox_skladnikiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combobox_skladnikiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_combobox_skladnikiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -435,37 +562,29 @@ public class Edycja_pizzy extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Edycja_pizzy.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Edycja_pizzy.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Edycja_pizzy.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Edycja_pizzy.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-
+        //</editor-fold>
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Edycja_pizzy().setVisible(true);
+                new Edycja_pizzy(zam).setVisible(true);
             }
         });
     }
 
     void przegladaj(DefaultTableModel model) {
 
-        // model = (DefaultTableModel) tabelka.getModel();
-        // model.removeTableModelListener(tabelka);
         try {
             con = DriverManager.getConnection(
                     "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
             );
             stmt1 = con.createStatement();
             res1 = stmt1.executeQuery(
-                    "select * from MENU_PIZZA"
+                    "select * from MENU_PIZZA order by id_pizzy"
             );
             stmt2 = con.createStatement();
             res2 = stmt2.executeQuery(
@@ -505,6 +624,46 @@ public class Edycja_pizzy extends javax.swing.JFrame {
         }
     }
 
+    String pobierzwybraneskladniki() {
+        String skladniki = "";
+
+        int i = model1.getSize();
+        for (int j = 0; j < i; j++) {
+
+            lista_skladnikow.setSelectedIndex(j);
+            skladniki = skladniki + lista_skladnikow.getSelectedValue().toString();
+            if (j == i - 1) {
+
+            } else {
+                skladniki = skladniki + ", ";
+            }
+        }
+        return skladniki;
+    }
+
+    void wypisznazwyskladnikow() {
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt4 = con.createStatement();
+            res4 = stmt4.executeQuery(
+                    "select * from SKLADNIKI"
+            );
+
+        } catch (Exception e) {
+
+        }
+        try {
+            while (res4.next()) {
+                combobox_skladniki.addItem(res4.getString("nazwa"));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CENA;
     private javax.swing.JLabel CIASTO;
@@ -512,23 +671,35 @@ public class Edycja_pizzy extends javax.swing.JFrame {
     private javax.swing.JLabel NAZWA;
     private javax.swing.JLabel NUMER;
     private javax.swing.JTextField POLECENA;
-    private javax.swing.JTextField POLECIASTO;
-    private javax.swing.JTextField POLEDOST;
+    private javax.swing.JComboBox POLECIASTO;
+    private javax.swing.JComboBox POLEDOST;
     private javax.swing.JTextField POLENAZWA;
     private javax.swing.JTextField POLENR;
-    private javax.swing.JTextField POLEROZMIAR;
-    private javax.swing.JTextField POLESKLADNIKI;
+    private javax.swing.JComboBox POLEROZMIAR;
     private javax.swing.JLabel ROZMIAR;
     private javax.swing.JLabel SKLADNIKI;
+    private javax.swing.JButton anuluj;
+    private javax.swing.JComboBox combobox_skladniki;
     private javax.swing.JButton dodajdobazy;
+    private javax.swing.JButton dodajw;
     private javax.swing.JButton edytuj;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPanel panel_edycja;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel komunikat;
+    private javax.swing.JList lista_skladnikow;
+    private javax.swing.JToggleButton nowa_opcja_ciasto;
+    private javax.swing.JToggleButton nowa_opcja_dostepnosc;
+    private javax.swing.JToggleButton nowa_opcja_rozmiar;
+    private javax.swing.JPanel panel_tabelka;
+    private javax.swing.JPanel paneledytujdodaj;
+    private javax.swing.JTextField pole_ciasto_nowe;
+    private javax.swing.JTextField pole_dost_nowa;
+    private javax.swing.JTextField pole_rozm_nowy;
     private javax.swing.JToggleButton powrot;
     private javax.swing.JToggleButton przegladaj;
     private javax.swing.JTable tabelka;
     private javax.swing.JButton usun;
+    private javax.swing.JButton usunw;
     private javax.swing.JButton zapisz;
     // End of variables declaration//GEN-END:variables
 }

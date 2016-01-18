@@ -13,10 +13,10 @@ import javax.swing.JOptionPane;
  */
 public class WybierzNazwe extends javax.swing.JFrame {
 
-    /**
-     * Creates new form WybierzNazwe
-     */
+    //static WybierzNazwe wyb;
+    
     public WybierzNazwe() {
+       // this.wyb = wyb;
         initComponents();
         setVisible(true);
         /*Project_pizzeria pp = new Project_pizzeria();
@@ -93,9 +93,11 @@ public class WybierzNazwe extends javax.swing.JFrame {
         // TODO add your handling code here:
         String nazwap = nazwapizzerii.getText();
         if (nazwap.length()>0) {
-        Project_pizzeria projekt_pizzeria = new Project_pizzeria();
-        projekt_pizzeria.setVisible(true);
+        Project_pizzeria projekt_pizzeria = new Project_pizzeria(this);
         projekt_pizzeria.genNazwa(nazwap);
+        projekt_pizzeria.setVisible(true);        
+        //projekt_pizzeria.nazwapizzerii = nazwap;
+        nazwapizzerii.setEditable(false);
         dispose();
         } else {
         JOptionPane.showMessageDialog(null, "Brak nazwy. Spróbuj ponownie.");
