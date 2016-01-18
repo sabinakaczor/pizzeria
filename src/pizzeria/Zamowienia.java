@@ -55,8 +55,11 @@ public class Zamowienia extends javax.swing.JFrame {
         menuglowne = new javax.swing.JMenuBar();
         pracownicy = new javax.swing.JMenu();
         dodajprac = new javax.swing.JMenuItem();
+        klienci = new javax.swing.JMenu();
+        nowe_klienci = new javax.swing.JMenuItem();
         menu = new javax.swing.JMenu();
         menu_pizza = new javax.swing.JMenuItem();
+        menu_skladniki = new javax.swing.JMenuItem();
         program = new javax.swing.JMenu();
         zamknij = new javax.swing.JMenuItem();
 
@@ -193,6 +196,18 @@ public class Zamowienia extends javax.swing.JFrame {
 
         menuglowne.add(pracownicy);
 
+        klienci.setText("Klienci");
+
+        nowe_klienci.setText("Dodaj nowego klienta");
+        nowe_klienci.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nowe_klienciActionPerformed(evt);
+            }
+        });
+        klienci.add(nowe_klienci);
+
+        menuglowne.add(klienci);
+
         menu.setText("Menu");
 
         menu_pizza.setText("Pizza");
@@ -202,6 +217,14 @@ public class Zamowienia extends javax.swing.JFrame {
             }
         });
         menu.add(menu_pizza);
+
+        menu_skladniki.setText("Składniki");
+        menu_skladniki.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_skladnikiActionPerformed(evt);
+            }
+        });
+        menu.add(menu_skladniki);
 
         menuglowne.add(menu);
 
@@ -356,6 +379,19 @@ public class Zamowienia extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_zamknijActionPerformed
 
+    private void menu_skladnikiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_skladnikiActionPerformed
+        //Edycja_skladnikow edycja_skladnikow = new Edycja_skladnikow(this);
+        Edycja_skladnikow edycja_skladnikow = new Edycja_skladnikow(this);
+        edycja_skladnikow.setVisible(true);
+        setVisible(false);
+    }//GEN-LAST:event_menu_skladnikiActionPerformed
+
+    private void nowe_klienciActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nowe_klienciActionPerformed
+       Edycja_klientow edycja_klientow = new Edycja_klientow();
+        edycja_klientow.setVisible(true);
+        setVisible(false);
+    }//GEN-LAST:event_nowe_klienciActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -398,11 +434,14 @@ public class Zamowienia extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel jesteszalog;
+    private javax.swing.JMenu klienci;
     private javax.swing.JList listahistoriilogowan;
     private javax.swing.JList listaostzam;
     private javax.swing.JMenu menu;
     private javax.swing.JMenuItem menu_pizza;
+    private javax.swing.JMenuItem menu_skladniki;
     private javax.swing.JMenuBar menuglowne;
+    private javax.swing.JMenuItem nowe_klienci;
     private javax.swing.JToggleButton ostzam;
     private javax.swing.JPanel panelHistoriaLogowan;
     private javax.swing.JPanel panelHistoriaZam;
