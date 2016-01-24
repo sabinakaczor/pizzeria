@@ -1,28 +1,38 @@
-
 package pizzeria;
 
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author sk
- */
 public class Zamowienia extends javax.swing.JFrame {
-    
-    static Project_pizzeria pr;
-    
-    public Zamowienia(Project_pizzeria pr) {
-        this.pr = pr;
+
+    Connection con;
+    Statement stmt, stmt1, stmt2, stmt3, stamt2, stmt4, stmt5, stmt6;
+    ResultSet res, res2, res3, result2, res4;
+    DefaultTableModel model;
+
+    public Zamowienia() {
         initComponents();
-        PanelOstZam.setVisible(false);
         panelHistoriaLogowan.setVisible(false);
-        panelHistoriaZam.setVisible(false);
-        
+        model = (DefaultTableModel) listahistoriilogowan.getModel();
+        String log = "Jesteś zalogowany jako: ";
+        log += getlogin();
+        int i = sprawdzdostep();
+        if (i == 1) {
+            log += " (admin)";
         }
-    String nazwa_login="";
-    String nazwa_stanowisko="";
+        jesteszalog.setText(log);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -36,22 +46,10 @@ public class Zamowienia extends javax.swing.JFrame {
         jesteszalog = new javax.swing.JLabel();
         przyciskwyloguj = new javax.swing.JButton();
         przyciskzlozzam = new javax.swing.JButton();
-        PanelOstZam = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        listaostzam = new javax.swing.JList();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        szczegolyzam = new javax.swing.JTextArea();
-        pokazszczegoly = new javax.swing.JButton();
-        powtorzzam = new javax.swing.JButton();
-        histzam = new javax.swing.JToggleButton();
         histlog = new javax.swing.JToggleButton();
-        panelHistoriaZam = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        polehistoriazam = new javax.swing.JTextArea();
         panelHistoriaLogowan = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        listahistoriilogowan = new javax.swing.JList();
-        ostzam = new javax.swing.JToggleButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        listahistoriilogowan = new javax.swing.JTable();
         menuglowne = new javax.swing.JMenuBar();
         pracownicy = new javax.swing.JMenu();
         dodajprac = new javax.swing.JMenuItem();
@@ -60,17 +58,29 @@ public class Zamowienia extends javax.swing.JFrame {
         menu = new javax.swing.JMenu();
         menu_pizza = new javax.swing.JMenuItem();
         menu_skladniki = new javax.swing.JMenuItem();
+        menu_napoje = new javax.swing.JMenuItem();
+        menu_zamowienia = new javax.swing.JMenu();
+        menuzamowienia = new javax.swing.JMenuItem();
         program = new javax.swing.JMenu();
+        zmiennazwe = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         zamknij = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Pizzeria \"" + sprawdznazwe() + "\"");
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jesteszalog.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        getContentPane().add(jesteszalog, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, 590, 50));
+
+        przyciskwyloguj.setBackground(new java.awt.Color(255, 51, 51));
         przyciskwyloguj.setText("Wyloguj się");
         przyciskwyloguj.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 przyciskwylogujActionPerformed(evt);
             }
         });
+        getContentPane().add(przyciskwyloguj, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 10, 190, 50));
 
         przyciskzlozzam.setText("Złóż nowe zamówienie");
         przyciskzlozzam.addActionListener(new java.awt.event.ActionListener() {
@@ -78,57 +88,7 @@ public class Zamowienia extends javax.swing.JFrame {
                 przyciskzlozzamActionPerformed(evt);
             }
         });
-
-        jScrollPane1.setViewportView(listaostzam);
-
-        szczegolyzam.setColumns(20);
-        szczegolyzam.setRows(5);
-        jScrollPane2.setViewportView(szczegolyzam);
-
-        pokazszczegoly.setText("Pokaż szczegóły");
-
-        powtorzzam.setText("Powtórz zamówienie");
-
-        javax.swing.GroupLayout PanelOstZamLayout = new javax.swing.GroupLayout(PanelOstZam);
-        PanelOstZam.setLayout(PanelOstZamLayout);
-        PanelOstZamLayout.setHorizontalGroup(
-            PanelOstZamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelOstZamLayout.createSequentialGroup()
-                .addGroup(PanelOstZamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelOstZamLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(PanelOstZamLayout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addComponent(pokazszczegoly))
-                    .addGroup(PanelOstZamLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(PanelOstZamLayout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(powtorzzam)))
-                .addContainerGap(12, Short.MAX_VALUE))
-        );
-        PanelOstZamLayout.setVerticalGroup(
-            PanelOstZamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelOstZamLayout.createSequentialGroup()
-                .addGap(4, 4, 4)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13)
-                .addComponent(pokazszczegoly)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(powtorzzam)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        histzam.setText("Historia zamówień");
-        histzam.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                histzamActionPerformed(evt);
-            }
-        });
+        getContentPane().add(przyciskzlozzam, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 100, 190, 60));
 
         histlog.setText("Historia logowań");
         histlog.addActionListener(new java.awt.event.ActionListener() {
@@ -136,55 +96,67 @@ public class Zamowienia extends javax.swing.JFrame {
                 histlogActionPerformed(evt);
             }
         });
+        getContentPane().add(histlog, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 180, 190, 60));
 
-        polehistoriazam.setColumns(20);
-        polehistoriazam.setRows(5);
-        jScrollPane3.setViewportView(polehistoriazam);
+        listahistoriilogowan.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "NR", "LOGIN", "DATA"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
 
-        javax.swing.GroupLayout panelHistoriaZamLayout = new javax.swing.GroupLayout(panelHistoriaZam);
-        panelHistoriaZam.setLayout(panelHistoriaZamLayout);
-        panelHistoriaZamLayout.setHorizontalGroup(
-            panelHistoriaZamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHistoriaZamLayout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        panelHistoriaZamLayout.setVerticalGroup(
-            panelHistoriaZamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHistoriaZamLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(105, Short.MAX_VALUE))
-        );
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
-        jScrollPane4.setViewportView(listahistoriilogowan);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(listahistoriilogowan);
+        if (listahistoriilogowan.getColumnModel().getColumnCount() > 0) {
+            listahistoriilogowan.getColumnModel().getColumn(0).setResizable(false);
+            listahistoriilogowan.getColumnModel().getColumn(0).setPreferredWidth(5);
+        }
 
         javax.swing.GroupLayout panelHistoriaLogowanLayout = new javax.swing.GroupLayout(panelHistoriaLogowan);
         panelHistoriaLogowan.setLayout(panelHistoriaLogowanLayout);
         panelHistoriaLogowanLayout.setHorizontalGroup(
             panelHistoriaLogowanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHistoriaLogowanLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelHistoriaLogowanLayout.createSequentialGroup()
+                .addContainerGap(21, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         panelHistoriaLogowanLayout.setVerticalGroup(
             panelHistoriaLogowanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelHistoriaLogowanLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addGap(22, 22, 22)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
-        ostzam.setText("Ostatnie zamówienie");
-        ostzam.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ostzamActionPerformed(evt);
-            }
-        });
+        getContentPane().add(panelHistoriaLogowan, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 250, 350, 250));
 
         pracownicy.setText("Pracownicy");
+        pracownicy.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         dodajprac.setText("Dodaj nowego pracownika");
         dodajprac.addActionListener(new java.awt.event.ActionListener() {
@@ -197,6 +169,7 @@ public class Zamowienia extends javax.swing.JFrame {
         menuglowne.add(pracownicy);
 
         klienci.setText("Klienci");
+        klienci.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         nowe_klienci.setText("Dodaj nowego klienta");
         nowe_klienci.addActionListener(new java.awt.event.ActionListener() {
@@ -209,6 +182,7 @@ public class Zamowienia extends javax.swing.JFrame {
         menuglowne.add(klienci);
 
         menu.setText("Menu");
+        menu.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         menu_pizza.setText("Pizza");
         menu_pizza.addActionListener(new java.awt.event.ActionListener() {
@@ -226,9 +200,40 @@ public class Zamowienia extends javax.swing.JFrame {
         });
         menu.add(menu_skladniki);
 
+        menu_napoje.setText("Napoje");
+        menu_napoje.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_napojeActionPerformed(evt);
+            }
+        });
+        menu.add(menu_napoje);
+
         menuglowne.add(menu);
 
+        menu_zamowienia.setText("Zamówienia");
+        menu_zamowienia.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+
+        menuzamowienia.setText("Zamówienia");
+        menuzamowienia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuzamowieniaActionPerformed(evt);
+            }
+        });
+        menu_zamowienia.add(menuzamowienia);
+
+        menuglowne.add(menu_zamowienia);
+
         program.setText("Program");
+        program.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+
+        zmiennazwe.setText("Zmień nazwę pizzerii");
+        zmiennazwe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zmiennazweActionPerformed(evt);
+            }
+        });
+        program.add(zmiennazwe);
+        program.add(jSeparator1);
 
         zamknij.setText("Zamknij program");
         zamknij.addActionListener(new java.awt.event.ActionListener() {
@@ -242,135 +247,92 @@ public class Zamowienia extends javax.swing.JFrame {
 
         setJMenuBar(menuglowne);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(PanelOstZam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(panelHistoriaZam, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(panelHistoriaLogowan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addComponent(jesteszalog, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(przyciskzlozzam)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(312, 312, 312)
-                                .addComponent(przyciskwyloguj)))
-                        .addContainerGap())))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(68, 68, 68)
-                .addComponent(ostzam)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(histzam)
-                .addGap(138, 138, 138)
-                .addComponent(histlog)
-                .addGap(112, 112, 112))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(przyciskwyloguj)
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jesteszalog, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(przyciskzlozzam))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(ostzam))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(histzam)
-                            .addComponent(histlog))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(panelHistoriaZam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(PanelOstZam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(76, 76, 76))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(panelHistoriaLogowan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(119, 119, 119))))
-        );
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void przyciskwylogujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przyciskwylogujActionPerformed
-       
-       // WybierzNazwe wn = new WybierzNazwe();
-       // wn.setVisible(false);
-        pr.genNazwa2();
-        pr.setVisible(true);
+        String datawyl = sprawdzdate();
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt = con.createStatement();
+            stmt.executeUpdate("update LOGOWANIE set DATA_GODZ_W='" + datawyl + "' where id_log=(select max(id_log) from LOGOWANIE)");
+        } catch (SQLException ex) {
+            Logger.getLogger(Zamowienia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Project_pizzeria pp = new Project_pizzeria();
+        pp.setLocationRelativeTo(null);
+        pp.setVisible(true);
         dispose();
-        // TODO add your handling code here:
     }//GEN-LAST:event_przyciskwylogujActionPerformed
 
     private void przyciskzlozzamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przyciskzlozzamActionPerformed
-       // panel.setVisible(true);
-         NoweZamLok nzl = new NoweZamLok(this);
-        nzl.setVisible(true);      
-        
-        
-// TODO add your handling code here:
-    }//GEN-LAST:event_przyciskzlozzamActionPerformed
 
-    private void ostzamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ostzamActionPerformed
-        // TODO add your handling code here:
-        if(ostzam.isSelected()) {
-            PanelOstZam.setVisible(true);
-        } else {
-            PanelOstZam.setVisible(false);
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt5 = con.createStatement();
+            res = stmt5.executeQuery("select count(*) from zamowienie");
+            while (res.next()) {
+                int i = res.getInt("1");
+                if (i == 0) {
+                    stmt5.executeUpdate(
+                            "INSERT INTO ZAMOWIENIE (ID_ZAM, DATA_ZAM, PLATNOSC, ZREALIZOWANE, FORMA, WARTOSC, ID_PRAC) \n"
+                            + "	VALUES ((select count(*)+1 from ZAMOWIENIE), '', '', 'N', '',0, " + sprawdzid() + ")"
+                    );
+                } else {
+                    stmt5.executeUpdate(
+                            "INSERT INTO ZAMOWIENIE (ID_ZAM, DATA_ZAM, PLATNOSC, ZREALIZOWANE, FORMA, WARTOSC, ID_PRAC) \n"
+                            + "	VALUES ((select max(id_zam)+1 from ZAMOWIENIE), '', '', 'N', '',0, " + sprawdzid() + ")"
+                    );
+                }
+                stmt5.executeUpdate(
+                        "insert into szcz_o_napoju (id_szcz_o_nap, id_zam, id_napoju, ile_sztuk_nap) values ((select count(*) from szcz_o_napoju)+1,(select max(id_zam) from zamowienie), 1, 0)"
+                );
+                stmt5.executeUpdate(
+                        "insert into szcz_o_pizzy values ((select count(*)+1 from szcz_o_pizzy),(select max(id_zam) from zamowienie),1,0)"
+                );
+
+            }
+            NoweZamLok nzl = new NoweZamLok();
+            nzl.setVisible(true);
+            dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Błąd bazy danych!");
         }
-        
-    }//GEN-LAST:event_ostzamActionPerformed
-
-    private void histzamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_histzamActionPerformed
-        // TODO add your handling code here:
-        if(histzam.isSelected()) {
-           panelHistoriaZam.setVisible(true);
-        } else {
-           panelHistoriaZam.setVisible(false);
-        } 
-    }//GEN-LAST:event_histzamActionPerformed
+    }//GEN-LAST:event_przyciskzlozzamActionPerformed
 
     private void histlogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_histlogActionPerformed
         // TODO add your handling code here:
-        if(histlog.isSelected()) {
-           panelHistoriaLogowan.setVisible(true);
+        if (histlog.isSelected()) {
+            panelHistoriaLogowan.setVisible(true);
+            czysctabelke();
+            pokazlogowania();
         } else {
-           panelHistoriaLogowan.setVisible(false);
-        } 
+            panelHistoriaLogowan.setVisible(false);
+        }
     }//GEN-LAST:event_histlogActionPerformed
 
     private void dodajpracActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajpracActionPerformed
-        // TODO add your handling code here:
-       
-        String zalog = jesteszalog.getText(); 
-       if(zalog.contains("admin")) {
-           Nowy_pracownik nowy_pracownik = new Nowy_pracownik(this);
-        nowy_pracownik.setVisible(true);
-        setVisible(false);
-       } else {
-           JOptionPane.showMessageDialog(null, "Brak dostępu");
-       }
-       
+
+        int a = sprawdzdostep();
+        if (a == 1) {
+            Nowy_pracownik nowy_pracownik = new Nowy_pracownik(this);
+            nowy_pracownik.setLocationRelativeTo(null);
+            nowy_pracownik.setVisible(true);
+            setVisible(false);
+        } else {
+            JOptionPane.showMessageDialog(null, "Brak dostępu");
+        }
+
     }//GEN-LAST:event_dodajpracActionPerformed
 
     private void menu_pizzaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_pizzaActionPerformed
         Edycja_pizzy edycja_pizzy = new Edycja_pizzy(this);
+        edycja_pizzy.setLocationRelativeTo(null);
         edycja_pizzy.setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_menu_pizzaActionPerformed
@@ -382,15 +344,54 @@ public class Zamowienia extends javax.swing.JFrame {
     private void menu_skladnikiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_skladnikiActionPerformed
         //Edycja_skladnikow edycja_skladnikow = new Edycja_skladnikow(this);
         Edycja_skladnikow edycja_skladnikow = new Edycja_skladnikow(this);
+        edycja_skladnikow.setLocationRelativeTo(null);
         edycja_skladnikow.setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_menu_skladnikiActionPerformed
 
     private void nowe_klienciActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nowe_klienciActionPerformed
-       Edycja_klientow edycja_klientow = new Edycja_klientow();
+        Edycja_klientow edycja_klientow = new Edycja_klientow();
+        edycja_klientow.setLocationRelativeTo(null);
+        edycja_klientow.czyzamtrwa = false;
+        edycja_klientow.pokazpanel();
         edycja_klientow.setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_nowe_klienciActionPerformed
+
+    private void menu_napojeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_napojeActionPerformed
+        Edycja_napojow edycja_napojow = new Edycja_napojow(this);
+        edycja_napojow.setLocationRelativeTo(null);
+        edycja_napojow.setVisible(true);
+        setVisible(false);
+    }//GEN-LAST:event_menu_napojeActionPerformed
+
+    private void zmiennazweActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zmiennazweActionPerformed
+        String nowanazwa = JOptionPane.showInputDialog(null, "Wpisz nową nazwę:\n", "Zmiana nazwy pizzerii", JOptionPane.OK_CANCEL_OPTION);
+        if ((nowanazwa != null) && (nowanazwa.length() > 0)) {
+            try {
+                con = DriverManager.getConnection(
+                        "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+                );
+                stmt3 = con.createStatement();
+                stmt3.executeUpdate(
+                        "update PIZZERIA.NAZWA_PIZZERII set nazwa='" + nowanazwa + "' where id_pizzerii=1"
+                );
+                setTitle("Pizzeria \"" + sprawdznazwe() + "\"");
+                JOptionPane.showMessageDialog(null, "Nazwa została zmieniona.");
+            } catch (SQLException ex) {
+                Logger.getLogger(WybierzNazwe.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Brak nazwy! Spróbuj ponownie później.");
+        }
+    }//GEN-LAST:event_zmiennazweActionPerformed
+
+    private void menuzamowieniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuzamowieniaActionPerformed
+        Edycja_zamowienia edycja_zamowienia = new Edycja_zamowienia(this);
+        edycja_zamowienia.setLocationRelativeTo(null);
+        edycja_zamowienia.setVisible(true);
+        setVisible(false);
+    }//GEN-LAST:event_menuzamowieniaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -412,60 +413,156 @@ public class Zamowienia extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Zamowienia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Zamowienia(pr).setVisible(true);
+                new Zamowienia().setVisible(true);
+
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel PanelOstZam;
     private javax.swing.JMenuItem dodajprac;
     private javax.swing.JToggleButton histlog;
-    private javax.swing.JToggleButton histzam;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JLabel jesteszalog;
     private javax.swing.JMenu klienci;
-    private javax.swing.JList listahistoriilogowan;
-    private javax.swing.JList listaostzam;
+    private javax.swing.JTable listahistoriilogowan;
     private javax.swing.JMenu menu;
+    private javax.swing.JMenuItem menu_napoje;
     private javax.swing.JMenuItem menu_pizza;
     private javax.swing.JMenuItem menu_skladniki;
+    private javax.swing.JMenu menu_zamowienia;
     private javax.swing.JMenuBar menuglowne;
+    private javax.swing.JMenuItem menuzamowienia;
     private javax.swing.JMenuItem nowe_klienci;
-    private javax.swing.JToggleButton ostzam;
     private javax.swing.JPanel panelHistoriaLogowan;
-    private javax.swing.JPanel panelHistoriaZam;
-    private javax.swing.JButton pokazszczegoly;
-    private javax.swing.JTextArea polehistoriazam;
-    private javax.swing.JButton powtorzzam;
     private javax.swing.JMenu pracownicy;
     private javax.swing.JMenu program;
     private javax.swing.JButton przyciskwyloguj;
     private javax.swing.JButton przyciskzlozzam;
-    private javax.swing.JTextArea szczegolyzam;
     private javax.swing.JMenuItem zamknij;
+    private javax.swing.JMenuItem zmiennazwe;
     // End of variables declaration//GEN-END:variables
 
-    void genUser(String nazwa,String stanowisko) {
-        String stan="";
-        if(stanowisko.contains("Admin")) {
-            stan = " (admin)";
+    String getlogin() {
+        String login = "";
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt2 = con.createStatement();
+            res2 = stmt2.executeQuery("select * from LOGOWANIE L join PRACOWNICY P on L.id_prac=P.id_prac where id_log=(select max(id_log) from LOGOWANIE)");
+            while (res2.next()) {
+                login = res2.getString("LOGIN");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Zamowienia.class.getName()).log(Level.SEVERE, null, ex);
         }
-        nazwa_login = nazwa;
-        nazwa_stanowisko = stan;
-        jesteszalog.setText("Jesteś zalogowany jako:  "+ nazwa +""+ stan);
+        return login;
     }
-    void genUser2(){
-        jesteszalog.setText("Jesteś› zalogowany jako:  "+ nazwa_login +""+ nazwa_stanowisko);
+
+    String sprawdzdate() {
+        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        Date dateobj = new Date();
+        return df.format(dateobj);
     }
+
+    int sprawdzdostep() {
+        //zwraca 0 dla zwykłego pracownika, 1 dla admina
+        int dst = 0;
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt1 = con.createStatement();
+            res = stmt1.executeQuery("select * from LOGOWANIE L join PRACOWNICY P on L.id_prac=P.id_prac where id_log=(select max(id_log) from LOGOWANIE)");
+            while (res.next()) {
+                String stan = res.getString("STANOWISKO");
+                if (stan.contains("Administrator")) {
+                    dst = 1;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Zamowienia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return dst;
+    }
+
+    String sprawdznazwe() {
+        String nazwa = "";
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stamt2 = con.createStatement();
+
+            result2 = stamt2.executeQuery(
+                    "select * from NAZWA_PIZZERII where id_pizzerii=1"
+            );
+            while (result2.next()) {
+                nazwa = result2.getString("nazwa");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return nazwa;
+    }
+
+    void pokazlogowania() {
+        int nr = 1;
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt4 = con.createStatement();
+            res4 = stmt4.executeQuery(
+                    "select * from LOGOWANIE L join PRACOWNICY P on L.id_prac=P.id_prac where id_log>(select max(id_log)-10 from LOGOWANIE) order by id_log DESC"
+            );
+        } catch (Exception e) {
+
+        }
+        try {
+            while (res4.next()) {
+                String login = res4.getString("LOGIN");
+                String data = res4.getString("DATA_GODZ_Z");
+                Object[] row = {nr, login, data};
+                model.addRow(row);
+                nr++;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Zamowienia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        listahistoriilogowan.setModel(model);
+    }
+
+    void czysctabelke() {
+        for (int i = model.getRowCount() - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
+    }
+
+    int sprawdzid() {
+        int id = 0;
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt6 = con.createStatement();
+            res = stmt6.executeQuery("select * from LOGOWANIE L join PRACOWNICY P on L.id_prac=P.id_prac where id_log=(select max(id_log) from LOGOWANIE)");
+            while (res.next()) {
+                id = res.getInt("id_prac");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Zamowienia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
+    }
+
 }

@@ -23,8 +23,8 @@ import javax.swing.table.DefaultTableModel;
 public class Nowy_pracownik extends javax.swing.JFrame {
 
     Connection con;
-    Statement stmtnp1, stmtnp2,stmtnp3,stmtnp4,stmtnp5;
-    ResultSet resnp1, resnp2,resnp3,resnp4,resnp5;
+    Statement stmtnp1, stmtnp2, stmtnp3, stmtnp4, stmtnp5;
+    ResultSet resnp1, resnp2, resnp3, resnp4, resnp5;
     DefaultTableModel model;
     static Zamowienia zam;
 
@@ -32,7 +32,7 @@ public class Nowy_pracownik extends javax.swing.JFrame {
      * Creates new form Nowy_pracownik
      */
     public Nowy_pracownik(Zamowienia zam) {
-        this.zam=zam;
+        this.zam = zam;
         initComponents();
         panel_pacownikow.setVisible(false);
         paneledycji.setVisible(false);
@@ -76,6 +76,7 @@ public class Nowy_pracownik extends javax.swing.JFrame {
         anuluj = new javax.swing.JButton();
         polenr = new javax.swing.JTextField();
         napisnumer = new javax.swing.JLabel();
+        kom = new javax.swing.JLabel();
         usun = new javax.swing.JButton();
         edytuj = new javax.swing.JButton();
         dodaj = new javax.swing.JButton();
@@ -88,49 +89,51 @@ public class Nowy_pracownik extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(1400, 740));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        przyciskpowrot.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         przyciskpowrot.setText("Powrót");
         przyciskpowrot.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 przyciskpowrotActionPerformed(evt);
             }
         });
-        getContentPane().add(przyciskpowrot, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 12, 160, 40));
+        getContentPane().add(przyciskpowrot, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 10, 170, 40));
 
+        przegladaj_pracownikow.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         przegladaj_pracownikow.setText("Przeglądaj wszystkich pracowników");
         przegladaj_pracownikow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 przegladaj_pracownikowActionPerformed(evt);
             }
         });
-        getContentPane().add(przegladaj_pracownikow, new org.netbeans.lib.awtextra.AbsoluteConstraints(79, 11, 232, 41));
+        getContentPane().add(przegladaj_pracownikow, new org.netbeans.lib.awtextra.AbsoluteConstraints(79, 11, 250, 40));
 
         panel_pacownikow.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         paneledycji.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        napisnumertelefonu.setText("Numer telefonu:");
-        paneledycji.add(napisnumertelefonu, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 143, 25));
+        napisnumertelefonu.setText("Numer telefonu*");
+        paneledycji.add(napisnumertelefonu, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 170, 143, 25));
 
-        napisadres.setText("Adres:");
-        paneledycji.add(napisadres, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 220, 143, 25));
+        napisadres.setText("Adres*");
+        paneledycji.add(napisadres, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 143, 25));
 
-        napishaslo.setText("Hasło:");
-        paneledycji.add(napishaslo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 143, 27));
+        napishaslo.setText("Hasło*");
+        paneledycji.add(napishaslo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 143, 27));
 
-        napispesel.setText("Pesel:");
-        paneledycji.add(napispesel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 143, 25));
+        napispesel.setText("Pesel*");
+        paneledycji.add(napispesel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 250, 143, 25));
 
-        napisemail.setText("E-mail:");
-        paneledycji.add(napisemail, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 143, 25));
+        napisemail.setText("E-mail");
+        paneledycji.add(napisemail, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 290, 143, 25));
 
-        napisimie.setText("Imię:");
-        paneledycji.add(napisimie, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 143, 30));
+        napisimie.setText("Imię*");
+        paneledycji.add(napisimie, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, 143, 30));
 
-        napisstanowisko.setText("Twoje stanowisko:");
+        napisstanowisko.setText("Twoje stanowisko*");
         paneledycji.add(napisstanowisko, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 330, 143, 25));
 
-        napisnazwisko.setText("Nazwisko:");
-        paneledycji.add(napisnazwisko, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 143, 27));
+        napisnazwisko.setText("Nazwisko*");
+        paneledycji.add(napisnazwisko, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 143, 27));
         paneledycji.add(poleadres, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 210, 159, 30));
 
         polepesel.addActionListener(new java.awt.event.ActionListener() {
@@ -172,10 +175,16 @@ public class Nowy_pracownik extends javax.swing.JFrame {
                 przyciskwyczyscActionPerformed(evt);
             }
         });
-        paneledycji.add(przyciskwyczysc, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 30, 126, 50));
+        paneledycji.add(przyciskwyczysc, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 30, 130, 50));
+
+        nadpis_pesel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         paneledycji.add(nadpis_pesel, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 250, 240, 30));
+
+        nadpis_telefon.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         paneledycji.add(nadpis_telefon, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 170, 280, 30));
-        paneledycji.add(komunikat, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 220, 370, 60));
+
+        komunikat.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        paneledycji.add(komunikat, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 220, 560, 60));
 
         przyciskzapisz.setText("Zapisz");
         przyciskzapisz.addActionListener(new java.awt.event.ActionListener() {
@@ -193,13 +202,16 @@ public class Nowy_pracownik extends javax.swing.JFrame {
         });
         paneledycji.add(anuluj, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 150, 130, 50));
 
-        polenr.setEditable(false);
+        polenr.setEnabled(false);
         paneledycji.add(polenr, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 10, 160, 30));
 
-        napisnumer.setText("Nr:");
-        paneledycji.add(napisnumer, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 50, 20));
+        napisnumer.setText("Nr");
+        paneledycji.add(napisnumer, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 50, 30));
 
-        panel_pacownikow.add(paneledycji, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 265, 1010, 360));
+        kom.setText("*-pola obowiązkowe do wypełnienia");
+        paneledycji.add(kom, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 330, 280, 30));
+
+        panel_pacownikow.add(paneledycji, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 265, 1190, 360));
 
         usun.setText("Usuń");
         usun.addActionListener(new java.awt.event.ActionListener() {
@@ -272,12 +284,14 @@ public class Nowy_pracownik extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void przyciskpowrotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przyciskpowrotActionPerformed
-        zam.genUser2();
         zam.setVisible(true);
         dispose();
     }//GEN-LAST:event_przyciskpowrotActionPerformed
 
     private void przyciskzapiszActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przyciskzapiszActionPerformed
+        komunikat.setText("");
+        nadpis_pesel.setText("");
+        nadpis_telefon.setText("");
         String HASLO = polenazwisko.getText() + ' ' + poleimie.getText();
         String haslo = polePasswordhaslo1.getText();
         int numer = tabelka_pracownikow.getRowCount() + 1;
@@ -289,43 +303,44 @@ public class Nowy_pracownik extends javax.swing.JFrame {
         boolean bledy = false;
         int licznikbledow = 0;
         if (bledy == false) {
+            if (TELEFON.length() == 0 || haslo.equals("") || polenazwisko.getText().equals("") || poleimie.getText().equals("")
+                    || ADRES.equals("") || STANOWISKO.equals("") || PESEL.length() == 0) {
+                komunikat.setText("Brak danych!");
+                komunikat.setForeground(Color.red);
+                licznikbledow++;
+            }
             int j = 0;
             boolean TylkoLiczbyTelefon = true;
             while ((TylkoLiczbyTelefon == true) && (j < TELEFON.length())) {
                 if ((TELEFON.charAt(j) < '0') || (TELEFON.charAt(j) > '9')) {
                     TylkoLiczbyTelefon = false;
+                    nadpis_telefon.setText("Telefon powinien zawierać 9 cyfr");
+                    nadpis_telefon.setForeground(Color.red);
+                    licznikbledow++;
                 }
                 j++;
             }
-            if ((TELEFON.length() != 9) || (TylkoLiczbyTelefon == false)) {
+            if (TELEFON.length() != 0 && TELEFON.length() != 9) {
                 nadpis_telefon.setText("Telefon powinien zawierać 9 cyfr");
                 nadpis_telefon.setForeground(Color.red);
-                komunikat.setText("Sprawdź wprowadzone dane!");
-                komunikat.setForeground(Color.red);
                 licznikbledow++;
-            } else {
-                nadpis_telefon.setText(" ");
-
             }
-
             int i = 0;
             boolean TylkoLiczbyPesel = true;
             while ((TylkoLiczbyPesel == true) && (i < PESEL.length())) {
                 if ((PESEL.charAt(i) < '0') || (PESEL.charAt(i) > '9')) {
                     TylkoLiczbyPesel = false;
+                    nadpis_pesel.setText("Pesel powinien zawierać 11 cyfr");
+                    nadpis_pesel.setForeground(Color.red);
+                    licznikbledow++;
                 }
                 ++i;
             }
-            if ((PESEL.length() != 11) || (TylkoLiczbyPesel == false)) {
+            if (PESEL.length() != 0 && PESEL.length() != 11) {
                 nadpis_pesel.setText("Pesel powinien zawierać 11 cyfr");
                 nadpis_pesel.setForeground(Color.red);
-                komunikat.setText("Sprawdź wprowadzone dane!");
-                komunikat.setForeground(Color.red);
                 licznikbledow++;
-            } else {
-                nadpis_pesel.setText(" ");
             }
-
         }
         if (licznikbledow == 0) {
             try {
@@ -337,29 +352,28 @@ public class Nowy_pracownik extends javax.swing.JFrame {
                         "select * from PRACOWNICY"
                 );
                 String insert = "";
-            if (tabelka_pracownikow.getSelectedRow() < 0) {
-               insert ="INSERT INTO PIZZERIA.PRACOWNICY (ID_PRAC, LOGIN, HASLO, TELEFON, ADRES, PESEL, STANOWISKO, EMAIL) \n"
-                        + "	VALUES (" + id()+ ",'" + HASLO + "', '" + haslo + "', " + TELEFON + ", '" + ADRES + "', " + PESEL + ", '" + STANOWISKO + "', '" + EMAIL + "')";
-            } else {
-       
-                int wiersz = tabelka_pracownikow.getSelectedRow();
-                String s = tabelka_pracownikow.getValueAt(wiersz, 0).toString();
-                insert = "UPDATE PIZZERIA.PRACOWNICY SET LOGIN='" + HASLO + "', haslo='" + haslo + "', telefon=" + TELEFON
-                        + ", ADRES='" + ADRES + "', PESEL=" + PESEL + ", STANOWISKO='" + STANOWISKO +"', EMAIL='" + EMAIL + "' WHERE id_prac=" + s;
-            }
-            stmtnp1.executeUpdate(insert);
-                
-            komunikat.setText("Nowy pracownik został dodany do bazy systemu");
-                
+                if (tabelka_pracownikow.getSelectedRow() < 0) {
+                    insert = "INSERT INTO PIZZERIA.PRACOWNICY (ID_PRAC, LOGIN, HASLO, TELEFON, ADRES, PESEL, STANOWISKO, EMAIL) \n"
+                            + "	VALUES (" + id() + ",'" + HASLO + "', '" + haslo + "', " + TELEFON + ", '" + ADRES + "', " + PESEL + ", '" + STANOWISKO + "', '" + EMAIL + "')";
+                    stmtnp1.executeUpdate(insert);
+                    numer++;
+                    polenr.setText(numer + "");
+                } else {
+                    int wiersz = tabelka_pracownikow.getSelectedRow();
+                    String s = tabelka_pracownikow.getValueAt(wiersz, 0).toString();
+                    insert = "UPDATE PIZZERIA.PRACOWNICY SET LOGIN='" + HASLO + "', haslo='" + haslo + "', telefon=" + TELEFON
+                            + ", ADRES='" + ADRES + "', PESEL=" + PESEL + ", STANOWISKO='" + STANOWISKO + "', EMAIL='" + EMAIL + "' WHERE id_prac=" + s;
+                    stmtnp1.executeUpdate(insert);
+                }
+                wyczyscdane();
+                komunikat.setText("Nowy pracownik został dodany do bazy systemu");
+                komunikat.setForeground(Color.DARK_GRAY);
             } catch (Exception e) {
-               //komunikat.setText("Nie udało się!");                
+                JOptionPane.showMessageDialog(null, "Błąd zapisu");
             }
-            
-            komunikat.setForeground(Color.DARK_GRAY);
-            
+            czysctabelke();
+            przegladaj(model);
         }
-        czysctabelke();
-        przegladaj(model);
     }//GEN-LAST:event_przyciskzapiszActionPerformed
 
     private void polePasswordhaslo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_polePasswordhaslo1ActionPerformed
@@ -371,19 +385,7 @@ public class Nowy_pracownik extends javax.swing.JFrame {
     }//GEN-LAST:event_polepeselActionPerformed
 
     private void przyciskwyczyscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przyciskwyczyscActionPerformed
-        polenazwisko.setText("");
-        poleimie.setText("");
-        polePasswordhaslo1.setText("");
-        poletelefon.setText("");
-        poleadres.setText("");
-        polepesel.setText("");
-        wybierzstanowisko.setSelectedIndex(0);
-        poleemail.setText("");
-        komunikat.setText("");
-       
-        nadpis_pesel.setText("");
-        nadpis_telefon.setText("");
-
+        wyczyscdane();
     }//GEN-LAST:event_przyciskwyczyscActionPerformed
 
     private void wybierzstanowiskoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wybierzstanowiskoActionPerformed
@@ -398,6 +400,7 @@ public class Nowy_pracownik extends javax.swing.JFrame {
         if (przegladaj_pracownikow.isSelected() == true) {
 
             panel_pacownikow.setVisible(true);
+            paneledycji.setVisible(false);
             czysctabelke();
             przegladaj(model);
         } else {
@@ -407,17 +410,17 @@ public class Nowy_pracownik extends javax.swing.JFrame {
     }//GEN-LAST:event_przegladaj_pracownikowActionPerformed
 
     private void anulujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anulujActionPerformed
-         paneledycji.setVisible(false);
+        wyczyscdane();
+        paneledycji.setVisible(false);
     }//GEN-LAST:event_anulujActionPerformed
 
     private void usunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usunActionPerformed
- int j = tabelka_pracownikow.getRowCount();
+        int j = tabelka_pracownikow.getRowCount();
         String ostt = tabelka_pracownikow.getValueAt(j - 1, 0).toString();
         int ost = Integer.parseInt(ostt);
         if (tabelka_pracownikow.getSelectedRowCount() > 0) {
             int wiersz = tabelka_pracownikow.getSelectedRow();
             String s = tabelka_pracownikow.getValueAt(wiersz, 0).toString();
-
             String usunwiersz = "delete from pizzeria.pracownicy where id_prac=" + s;
             try {
                 con = DriverManager.getConnection(
@@ -439,7 +442,7 @@ public class Nowy_pracownik extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else {
+        } else {
             JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");
         }
         czysctabelke();
@@ -448,29 +451,21 @@ public class Nowy_pracownik extends javax.swing.JFrame {
     }//GEN-LAST:event_usunActionPerformed
 
     private void edytujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edytujActionPerformed
-        
-        if(tabelka_pracownikow.getSelectedRowCount()>0) {
+        wyczyscdane();
+        if (tabelka_pracownikow.getSelectedRowCount() > 0) {
             paneledycji.setVisible(true);
-         int numer = tabelka_pracownikow.getSelectedRow()+1;
-        polenr.setText(numer+"");
+            int numer = tabelka_pracownikow.getSelectedRow() + 1;
+            polenr.setText(numer + "");
         } else {
             JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");
         }
     }//GEN-LAST:event_edytujActionPerformed
 
     private void dodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajActionPerformed
-       paneledycji.setVisible(true);
-         int numer = tabelka_pracownikow.getRowCount() + 1;
-        polenr.setText(numer+"");
-        polenazwisko.setText("");
-        poleimie.setText("");
-        polePasswordhaslo1.setText("");
-        poletelefon.setText("");
-        poleadres.setText("");
-        polepesel.setText("");
-        wybierzstanowisko.setSelectedIndex(0);
-        poleemail.setText("");
-        komunikat.setText("");
+        wyczyscdane();
+        paneledycji.setVisible(true);
+        int numer = tabelka_pracownikow.getRowCount() + 1;
+        polenr.setText(numer + "");
     }//GEN-LAST:event_dodajActionPerformed
 
     /**
@@ -506,11 +501,25 @@ public class Nowy_pracownik extends javax.swing.JFrame {
         });
     }
 
+    void wyczyscdane() {
+        polenazwisko.setText("");
+        poleimie.setText("");
+        polePasswordhaslo1.setText("");
+        poletelefon.setText("");
+        poleadres.setText("");
+        polepesel.setText("");
+        wybierzstanowisko.setSelectedIndex(0);
+        poleemail.setText("");
+        komunikat.setText("");
+        nadpis_pesel.setText("");
+        nadpis_telefon.setText("");
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anuluj;
     private javax.swing.JButton dodaj;
     private javax.swing.JButton edytuj;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel kom;
     private javax.swing.JLabel komunikat;
     private javax.swing.JLabel nadpis_pesel;
     private javax.swing.JLabel nadpis_telefon;
@@ -562,15 +571,15 @@ public class Nowy_pracownik extends javax.swing.JFrame {
         }
         try {
             while (resnp3.next()) {
-                int nr = resnp3 .getInt("id_prac");
-                String login = resnp3 .getString("login");
-                String haslo = resnp3 .getString("haslo");
-                long telefon = resnp3 .getLong("telefon");
-                String adres = resnp3 .getString("adres");
-                long pesel = resnp3 .getLong("pesel");
-                String stanowisko = resnp3 .getString("stanowisko");
-                String email = resnp3 .getString("email");
-                Object[] row = {nr, login, haslo, telefon, adres, pesel, stanowisko,email};
+                int nr = resnp3.getInt("id_prac");
+                String login = resnp3.getString("login");
+                String haslo = resnp3.getString("haslo");
+                long telefon = resnp3.getLong("telefon");
+                String adres = resnp3.getString("adres");
+                long pesel = resnp3.getLong("pesel");
+                String stanowisko = resnp3.getString("stanowisko");
+                String email = resnp3.getString("email");
+                Object[] row = {nr, login, haslo, telefon, adres, pesel, stanowisko, email};
                 model.addRow(row);
 
             }
@@ -581,11 +590,13 @@ public class Nowy_pracownik extends javax.swing.JFrame {
         tabelka_pracownikow.setModel(model);
 
     }
+
     void czysctabelke() {
         for (int i = model.getRowCount() - 1; i >= 0; i--) {
             model.removeRow(i);
         }
     }
+
     public long id() {
         try {
             con = DriverManager.getConnection(
@@ -596,7 +607,7 @@ public class Nowy_pracownik extends javax.swing.JFrame {
                     "select id_prac from PRACOWNICY"
             );
         } catch (Exception e) {
-            
+
         }
         String id = "0";
         try {

@@ -29,8 +29,8 @@ import static pizzeria.Nowy_pracownik.zam;
 public class Edycja_pizzy extends javax.swing.JFrame {
 
     Connection con;
-    Statement stmt1, stmt2, stmt3, stmt4, stmt5;
-    ResultSet res1, res2, res3, res4, res5;
+    Statement stmt1, stmt2, stmt3, stmt4, stmt5, stmt6, stmt7, stmt8;
+    ResultSet res1, res2, res3, res4, res5, res6, res7, res8;
     DefaultTableModel model;
     DefaultListModel<String> model1 = new DefaultListModel<>();
     float cena = 0;
@@ -92,6 +92,7 @@ public class Edycja_pizzy extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         lista_skladnikow = new javax.swing.JList();
         usunw = new javax.swing.JButton();
+        wyczysc = new javax.swing.JButton();
         edytuj = new javax.swing.JButton();
         usun = new javax.swing.JButton();
         dodajdobazy = new javax.swing.JButton();
@@ -101,13 +102,14 @@ public class Edycja_pizzy extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(1239, 720));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        przegladaj.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         przegladaj.setText("Przeglądaj menu");
         przegladaj.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 przegladajActionPerformed(evt);
             }
         });
-        getContentPane().add(przegladaj, new org.netbeans.lib.awtextra.AbsoluteConstraints(98, 11, 131, 39));
+        getContentPane().add(przegladaj, new org.netbeans.lib.awtextra.AbsoluteConstraints(98, 11, 260, 60));
 
         panel_tabelka.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -148,7 +150,7 @@ public class Edycja_pizzy extends javax.swing.JFrame {
             tabelka.getColumnModel().getColumn(6).setPreferredWidth(30);
         }
 
-        panel_tabelka.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 21, 1199, 280));
+        panel_tabelka.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 1199, 280));
 
         paneledytujdodaj.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -198,7 +200,7 @@ public class Edycja_pizzy extends javax.swing.JFrame {
                 zapiszActionPerformed(evt);
             }
         });
-        paneledytujdodaj.add(zapisz, new org.netbeans.lib.awtextra.AbsoluteConstraints(832, 22, 127, 59));
+        paneledytujdodaj.add(zapisz, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 80, 127, 59));
 
         anuluj.setText("Anuluj");
         anuluj.addActionListener(new java.awt.event.ActionListener() {
@@ -206,9 +208,8 @@ public class Edycja_pizzy extends javax.swing.JFrame {
                 anulujActionPerformed(evt);
             }
         });
-        paneledytujdodaj.add(anuluj, new org.netbeans.lib.awtextra.AbsoluteConstraints(965, 22, 113, 59));
+        paneledytujdodaj.add(anuluj, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 150, 130, 59));
 
-        POLECIASTO.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "cienkie", "grube" }));
         POLECIASTO.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 POLECIASTOActionPerformed(evt);
@@ -216,17 +217,17 @@ public class Edycja_pizzy extends javax.swing.JFrame {
         });
         paneledytujdodaj.add(POLECIASTO, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 30, 100, 30));
 
-        POLEROZMIAR.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "mała", "średnia", "duża" }));
         paneledytujdodaj.add(POLEROZMIAR, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 30, 100, 30));
 
-        POLEDOST.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "tak", "nie" }));
         POLEDOST.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 POLEDOSTActionPerformed(evt);
             }
         });
         paneledytujdodaj.add(POLEDOST, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 30, 100, 30));
-        paneledytujdodaj.add(komunikat, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 90, 370, 70));
+
+        komunikat.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        paneledytujdodaj.add(komunikat, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 150, 520, 70));
 
         nowa_opcja_dostepnosc.setText("Nowa opcja");
         nowa_opcja_dostepnosc.addActionListener(new java.awt.event.ActionListener() {
@@ -282,7 +283,15 @@ public class Edycja_pizzy extends javax.swing.JFrame {
         });
         paneledytujdodaj.add(usunw, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 220, 120, -1));
 
-        panel_tabelka.add(paneledytujdodaj, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 1180, 250));
+        wyczysc.setText("Wyczyść");
+        wyczysc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                wyczyscActionPerformed(evt);
+            }
+        });
+        paneledytujdodaj.add(wyczysc, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 10, 130, 60));
+
+        panel_tabelka.add(paneledytujdodaj, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, 1230, 250));
 
         edytuj.setText("Edytuj");
         edytuj.addActionListener(new java.awt.event.ActionListener() {
@@ -290,7 +299,7 @@ public class Edycja_pizzy extends javax.swing.JFrame {
                 edytujActionPerformed(evt);
             }
         });
-        panel_tabelka.add(edytuj, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 310, 111, 39));
+        panel_tabelka.add(edytuj, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 290, 120, 50));
 
         usun.setText("Usuń");
         usun.addActionListener(new java.awt.event.ActionListener() {
@@ -298,7 +307,7 @@ public class Edycja_pizzy extends javax.swing.JFrame {
                 usunActionPerformed(evt);
             }
         });
-        panel_tabelka.add(usun, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 310, 118, 39));
+        panel_tabelka.add(usun, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 290, 120, 50));
 
         dodajdobazy.setText("Dodaj");
         dodajdobazy.addActionListener(new java.awt.event.ActionListener() {
@@ -306,56 +315,52 @@ public class Edycja_pizzy extends javax.swing.JFrame {
                 dodajdobazyActionPerformed(evt);
             }
         });
-        panel_tabelka.add(dodajdobazy, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 310, 99, 39));
+        panel_tabelka.add(dodajdobazy, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 290, 110, 50));
 
-        getContentPane().add(panel_tabelka, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
+        getContentPane().add(panel_tabelka, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 1250, 610));
 
+        powrot.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         powrot.setText("Powrót");
         powrot.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 powrotActionPerformed(evt);
             }
         });
-        getContentPane().add(powrot, new org.netbeans.lib.awtextra.AbsoluteConstraints(1029, 11, 131, 39));
+        getContentPane().add(powrot, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 10, 190, 60));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void przegladajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przegladajActionPerformed
         if (przegladaj.isSelected() == true) {
-
+            paneledytujdodaj.setVisible(false);
             panel_tabelka.setVisible(true);
             czysctabelke();
             przegladaj(model);
         } else {
-            //tabelka.setVisible(false);
             panel_tabelka.setVisible(false);
-
         }
-
-
     }//GEN-LAST:event_przegladajActionPerformed
 
     private void dodajdobazyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajdobazyActionPerformed
-
+       wyczyscdane();
         paneledytujdodaj.setVisible(true);
         int numer = tabelka.getRowCount() + 1;
         POLENR.setText(numer + "");
-        wypisznazwyskladnikow();
+        uzupelnijlisty();
     }//GEN-LAST:event_dodajdobazyActionPerformed
 
     private void edytujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edytujActionPerformed
         if (tabelka.getSelectedRowCount() > 0) {
             paneledytujdodaj.setVisible(true);
+            wyczyscdane();
             int wybrwiersz = tabelka.getSelectedRow();
             int numer = Integer.parseInt(tabelka.getValueAt(wybrwiersz, 0).toString());
             POLENR.setText(numer + "");
-            wypisznazwyskladnikow();
+            uzupelnijlisty();
         } else {
             JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");
         }
-
-
     }//GEN-LAST:event_edytujActionPerformed
 
     private void usunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usunActionPerformed
@@ -366,7 +371,6 @@ public class Edycja_pizzy extends javax.swing.JFrame {
         if (tabelka.getSelectedRowCount() > 0) {
             int wiersz = tabelka.getSelectedRow();
             String s = tabelka.getValueAt(wiersz, 0).toString();
-
             String usunwiersz = "delete from pizzeria.menu_pizza where id_pizzy=" + s;
             try {
                 con = DriverManager.getConnection(
@@ -384,28 +388,24 @@ public class Edycja_pizzy extends javax.swing.JFrame {
                     String naprawid = "UPDATE menu_pizza SET id_pizzy =" + (i - 1) + " WHERE id_pizzy =" + i;
                     stmt5.executeUpdate(naprawid);
                 }
-
             } catch (SQLException ex) {
                 Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else {//zmienilam
+        } else {
             JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");//zmienilam
-        }//zmienilam
-
+        }
         czysctabelke();
         przegladaj(model);
-
-
     }//GEN-LAST:event_usunActionPerformed
 
     private void anulujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anulujActionPerformed
+        wyczyscdane();
         paneledytujdodaj.setVisible(false);
     }//GEN-LAST:event_anulujActionPerformed
 
     private void zapiszActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zapiszActionPerformed
-
+        komunikat.setText("");
         int numer = tabelka.getRowCount() + 1;
-
         String nazwa = POLENAZWA.getText();
         String skladniki = pobierzwybraneskladniki();
         String ciasto;
@@ -446,6 +446,9 @@ public class Edycja_pizzy extends javax.swing.JFrame {
                 String insert = "";
                 if (tabelka.getSelectedRow() < 0) {
                     insert = "INSERT INTO MENU_PIZZA VALUES(" + numer + ",'" + nazwa + "','" + skladniki + "','" + ciasto + "','" + rozmiar + "'," + cena + ",'" + dostepnosc + "')";
+                    stmt3.executeUpdate(insert);
+                    numer++;
+                    POLENR.setText(numer + "");
                 } else {
 
                     int wiersz = tabelka.getSelectedRow();
@@ -453,14 +456,16 @@ public class Edycja_pizzy extends javax.swing.JFrame {
 
                     insert = "UPDATE menu_pizza SET nazwa='" + nazwa + "', skladniki='" + skladniki + "', ciasto='" + ciasto
                             + "', rozmiar='" + rozmiar + "', cena_pizza=" + cena + ", dostepnosc='" + dostepnosc + "' WHERE id_pizzy=" + s;
+                    stmt3.executeUpdate(insert);
                 }
-                stmt3.executeUpdate(insert);
-                komunikat.setText("Nowa pizza została dodany do bazy systemu");
+                wyczyscdane();
+                komunikat.setText("Nowa pizza została dodana do bazy systemu");
+                komunikat.setForeground(Color.DARK_GRAY);
             } catch (Exception e) {
-                // JOptionPane.showMessageDialog(null, "Błąd zapisu - brak połączenia z bazą danych");
+                JOptionPane.showMessageDialog(null, "Błąd zapisu!");
             }
-            czysctabelke();//zmienilam
-            przegladaj(model);//zmienilam
+            czysctabelke();
+            przegladaj(model);
         }
     }//GEN-LAST:event_zapiszActionPerformed
 
@@ -469,7 +474,6 @@ public class Edycja_pizzy extends javax.swing.JFrame {
     }//GEN-LAST:event_POLENRActionPerformed
 
     private void powrotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_powrotActionPerformed
-        zam.genUser2();
         zam.setVisible(true);
         dispose();
     }//GEN-LAST:event_powrotActionPerformed
@@ -486,7 +490,7 @@ public class Edycja_pizzy extends javax.swing.JFrame {
         } else {
             pole_ciasto_nowe.setVisible(false);
             POLECIASTO.setEnabled(true);
-
+            pole_ciasto_nowe.setText("");
         }
     }//GEN-LAST:event_nowa_opcja_ciastoActionPerformed
 
@@ -498,7 +502,7 @@ public class Edycja_pizzy extends javax.swing.JFrame {
         } else {
             pole_dost_nowa.setVisible(false);
             POLEDOST.setEnabled(true);
-
+            pole_dost_nowa.setText("");
         }
     }//GEN-LAST:event_nowa_opcja_dostepnoscActionPerformed
 
@@ -514,7 +518,6 @@ public class Edycja_pizzy extends javax.swing.JFrame {
         } else {
             pole_rozm_nowy.setVisible(false);
             POLEROZMIAR.setEnabled(true);
-
         }
     }//GEN-LAST:event_nowa_opcja_rozmiarActionPerformed
 
@@ -545,6 +548,11 @@ public class Edycja_pizzy extends javax.swing.JFrame {
     private void combobox_skladnikiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combobox_skladnikiActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_combobox_skladnikiActionPerformed
+
+    private void wyczyscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wyczyscActionPerformed
+        wyczyscdane();
+        uzupelnijlisty();
+    }//GEN-LAST:event_wyczyscActionPerformed
 
     /**
      * @param args the command line arguments
@@ -577,7 +585,6 @@ public class Edycja_pizzy extends javax.swing.JFrame {
     }
 
     void przegladaj(DefaultTableModel model) {
-
         try {
             con = DriverManager.getConnection(
                     "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
@@ -594,11 +601,7 @@ public class Edycja_pizzy extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
         }
         try {
-
-            // if (model.getRowCount() == 0) {
-            //usunieto = 0;
             while (res1.next()) {
-
                 int nr = res1.getInt("id_pizzy");
                 String nazwa = res1.getString("nazwa");
                 String skladniki = res1.getString("skladniki");
@@ -608,16 +611,12 @@ public class Edycja_pizzy extends javax.swing.JFrame {
                 String dostepnosc = res1.getString("dostepnosc");
                 Object[] row = {nr, nazwa, skladniki, ciasto, rozmiar, cena, dostepnosc};
                 model.addRow(row);
-
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
         }
         tabelka.setModel(model);
-
     }
-
     void czysctabelke() {
         for (int i = model.getRowCount() - 1; i >= 0; i--) {
             model.removeRow(i);
@@ -626,7 +625,6 @@ public class Edycja_pizzy extends javax.swing.JFrame {
 
     String pobierzwybraneskladniki() {
         String skladniki = "";
-
         int i = model1.getSize();
         for (int j = 0; j < i; j++) {
 
@@ -641,7 +639,11 @@ public class Edycja_pizzy extends javax.swing.JFrame {
         return skladniki;
     }
 
-    void wypisznazwyskladnikow() {
+    void uzupelnijlisty() {
+        combobox_skladniki.removeAllItems();
+        POLEROZMIAR.removeAllItems();
+        POLEDOST.removeAllItems();
+        POLECIASTO.removeAllItems();
         try {
             con = DriverManager.getConnection(
                     "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
@@ -650,19 +652,71 @@ public class Edycja_pizzy extends javax.swing.JFrame {
             res4 = stmt4.executeQuery(
                     "select * from SKLADNIKI"
             );
-
+            stmt6 = con.createStatement();
+            res6 = stmt6.executeQuery(
+                    "select distinct(ciasto) from MENU_PIZZA"
+            );
+            stmt7 = con.createStatement();
+            res7 = stmt7.executeQuery(
+                    "select distinct(rozmiar) from MENU_PIZZA"
+            );
+            stmt8 = con.createStatement();
+            res8 = stmt8.executeQuery(
+                    "select distinct(dostepnosc) from MENU_PIZZA"
+            );
         } catch (Exception e) {
-
         }
         try {
-            while (res4.next()) {
-                combobox_skladniki.addItem(res4.getString("nazwa"));
+            if (combobox_skladniki.getItemCount() == 0) {
+                combobox_skladniki.addItem("");
+                while (res4.next()) {
+                    combobox_skladniki.addItem(res4.getString("nazwa"));
+                }
             }
-
+            if (POLECIASTO.getItemCount() == 0) {
+                POLECIASTO.addItem("");
+                while (res6.next()) {
+                    POLECIASTO.addItem(res6.getString("ciasto"));
+                }
+            }
+            if (POLEROZMIAR.getItemCount() == 0) {
+                POLEROZMIAR.addItem("");
+                while (res7.next()) {
+                    POLEROZMIAR.addItem(res7.getString("rozmiar"));
+                }
+            }
+            if (POLEDOST.getItemCount() == 0) {
+                POLEDOST.addItem("");
+                while (res8.next()) {
+                    POLEDOST.addItem(res8.getString("dostepnosc"));
+                }
+            }
         } catch (SQLException ex) {
             Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+    }
+    void wyczyscdane(){
+    pole_ciasto_nowe.setText("");
+        pole_dost_nowa.setText("");
+        pole_rozm_nowy.setText("");
+        combobox_skladniki.removeAllItems();
+        POLECIASTO.removeAllItems();
+        POLEROZMIAR.removeAllItems();
+        POLEDOST.removeAllItems();
+        POLECIASTO.setEnabled(true);
+        POLEROZMIAR.setEnabled(true);
+        POLEDOST.setEnabled(true);
+        pole_ciasto_nowe.setVisible(false);
+        pole_rozm_nowy.setVisible(false);
+        pole_dost_nowa.setVisible(false);
+        POLECENA.setText("");
+        komunikat.setText("");
+        POLENAZWA.setText("");
+        nowa_opcja_ciasto.setSelected(false);
+        nowa_opcja_rozmiar.setSelected(false);
+        nowa_opcja_dostepnosc.setSelected(false);
+        model1.removeAllElements();
+        lista_skladnikow.setModel(model1);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CENA;
@@ -700,6 +754,7 @@ public class Edycja_pizzy extends javax.swing.JFrame {
     private javax.swing.JTable tabelka;
     private javax.swing.JButton usun;
     private javax.swing.JButton usunw;
+    private javax.swing.JButton wyczysc;
     private javax.swing.JButton zapisz;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,6 +5,13 @@
  */
 package pizzeria;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,14 +20,12 @@ import javax.swing.JOptionPane;
  */
 public class WybierzNazwe extends javax.swing.JFrame {
 
-    //static WybierzNazwe wyb;
-    
+    Connection con;
+    Statement stmt1;
+
     public WybierzNazwe() {
-       // this.wyb = wyb;
         initComponents();
         setVisible(true);
-        /*Project_pizzeria pp = new Project_pizzeria();
-        pp.setVisible(false);*/
     }
 
     /**
@@ -90,17 +95,24 @@ public class WybierzNazwe extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void okActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okActionPerformed
-        // TODO add your handling code here:
         String nazwap = nazwapizzerii.getText();
-        if (nazwap.length()>0) {
-        Project_pizzeria projekt_pizzeria = new Project_pizzeria(this);
-        projekt_pizzeria.genNazwa(nazwap);
-        projekt_pizzeria.setVisible(true);        
-        //projekt_pizzeria.nazwapizzerii = nazwap;
-        nazwapizzerii.setEditable(false);
-        dispose();
+        if (nazwap.length() > 0) {
+            try {
+                con = DriverManager.getConnection(
+                        "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+                );
+                stmt1 = con.createStatement();
+                stmt1.executeUpdate(
+                        "insert into NAZWA_PIZZERII values (1,'" + nazwap + "')"
+                );
+            } catch (SQLException ex) {
+                Logger.getLogger(WybierzNazwe.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Project_pizzeria projekt_pizzeria = new Project_pizzeria();
+            projekt_pizzeria.setVisible(true);
+            dispose();
         } else {
-        JOptionPane.showMessageDialog(null, "Brak nazwy. Spróbuj ponownie.");
+            JOptionPane.showMessageDialog(null, "Brak nazwy. Spróbuj ponownie.");
         }
     }//GEN-LAST:event_okActionPerformed
 

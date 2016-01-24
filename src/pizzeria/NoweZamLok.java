@@ -11,7 +11,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -26,19 +29,17 @@ import static pizzeria.Nowy_pracownik.zam;
 public class NoweZamLok extends javax.swing.JFrame {
 
     Connection con;
-    Statement stmt1, stmt2, stmt3, stmt4, stmt7, stmt5, stmt6, stmt8, stmt9, stmt10, stmt11, stmt12, stmt13, stmt14;
-    ResultSet res1, res2, res3, res4, res5, res6, res7, res8, res9, res10, res11, res12, res13, res14;
+    Statement stmt1, stmt2, stmt3, stmt4, stmt7, stmt5, stmt6, stmt8, stmt9, stmt10, stmt11, stmt12, stmt13, stmt14, stmt15;
+    ResultSet res, res1, res2, res3, res4, res5, res6, res7, res8, res9, res10, res11, res12, res13, res14, res15;
     DefaultListModel<String> model = new DefaultListModel<>();
-    DefaultListModel<String> modelzam = new DefaultListModel<>();
-    static Zamowienia zam;
+    DefaultListModel<String> modelzamp = new DefaultListModel<>();
+    DefaultListModel<String> modelzamn = new DefaultListModel<>();
 
-    public NoweZamLok(Zamowienia zam) {
-        this.zam = zam;
+    public NoweZamLok() {
         initComponents();
         panelpizza.setVisible(false);
         panelnapoj.setVisible(false);
         opisnapoju.setLineWrap(true);
-        //listazamowien.setLineWrap(true);
         cena.setText("");
         panelskladniki.setVisible(false);
     }
@@ -79,7 +80,7 @@ public class NoweZamLok extends javax.swing.JFrame {
         pokazpanelnapoj = new javax.swing.JToggleButton();
         napiszamowiono = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        listazamowien = new javax.swing.JList();
+        listazamowienpizzy = new javax.swing.JList();
         wlokalu = new javax.swing.JRadioButton();
         wdostawie = new javax.swing.JRadioButton();
         gotowka = new javax.swing.JRadioButton();
@@ -105,7 +106,15 @@ public class NoweZamLok extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         opisnapoju = new javax.swing.JTextArea();
         buttonpotwierdz = new javax.swing.JButton();
-        buttonwyczysc = new javax.swing.JButton();
+        buttonwyczyscp = new javax.swing.JButton();
+        usunpozycjep = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        listazamowiennapojow = new javax.swing.JList<>();
+        jLabel3 = new javax.swing.JLabel();
+        buttonusunn = new javax.swing.JButton();
+        buttonwyczyscn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1370, 720));
@@ -292,42 +301,50 @@ public class NoweZamLok extends javax.swing.JFrame {
         });
         getContentPane().add(pokazpanelnapoj, new org.netbeans.lib.awtextra.AbsoluteConstraints(468, 64, 322, 50));
 
-        napiszamowiono.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        napiszamowiono.setText("Zamowiono:");
-        getContentPane().add(napiszamowiono, new org.netbeans.lib.awtextra.AbsoluteConstraints(861, 11, 165, 29));
+        napiszamowiono.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        napiszamowiono.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        napiszamowiono.setText("Zamówiono:");
+        getContentPane().add(napiszamowiono, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 20, 165, 29));
 
-        jScrollPane2.setViewportView(listazamowien);
+        jScrollPane2.setViewportView(listazamowienpizzy);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 50, 220, 277));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 80, 360, 90));
 
         buttonGroupmiejsce.add(wlokalu);
         wlokalu.setText("w lokalu");
-        getContentPane().add(wlokalu, new org.netbeans.lib.awtextra.AbsoluteConstraints(969, 401, -1, -1));
+        getContentPane().add(wlokalu, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 460, -1, -1));
 
         buttonGroupmiejsce.add(wdostawie);
         wdostawie.setText("w dostawie");
-        getContentPane().add(wdostawie, new org.netbeans.lib.awtextra.AbsoluteConstraints(969, 428, -1, -1));
+        getContentPane().add(wdostawie, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 480, -1, -1));
 
         buttonGroupoplata.add(gotowka);
         gotowka.setText("gotówka");
-        getContentPane().add(gotowka, new org.netbeans.lib.awtextra.AbsoluteConstraints(969, 472, -1, -1));
+        getContentPane().add(gotowka, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 520, -1, -1));
 
+        formazam.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         formazam.setText("Forma zamówienia:");
-        getContentPane().add(formazam, new org.netbeans.lib.awtextra.AbsoluteConstraints(845, 409, 118, 29));
+        getContentPane().add(formazam, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 460, 118, 29));
 
         buttonGroupoplata.add(karta);
         karta.setText("karta");
-        getContentPane().add(karta, new org.netbeans.lib.awtextra.AbsoluteConstraints(969, 495, -1, -1));
+        getContentPane().add(karta, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 540, -1, -1));
 
+        formaoplaty.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         formaoplaty.setText("Forma opłaty:");
-        getContentPane().add(formaoplaty, new org.netbeans.lib.awtextra.AbsoluteConstraints(845, 479, 118, 27));
+        getContentPane().add(formaoplaty, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 530, 118, 27));
 
         napis_zl1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         napis_zl1.setText("zl.");
-        getContentPane().add(napis_zl1, new org.netbeans.lib.awtextra.AbsoluteConstraints(969, 353, 31, -1));
+        getContentPane().add(napis_zl1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 420, 31, -1));
 
         cena1.setEditable(false);
-        getContentPane().add(cena1, new org.netbeans.lib.awtextra.AbsoluteConstraints(853, 353, 110, -1));
+        cena1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cena1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(cena1, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 420, 80, -1));
 
         powrot.setText("Powrót");
         powrot.addActionListener(new java.awt.event.ActionListener() {
@@ -491,11 +508,66 @@ public class NoweZamLok extends javax.swing.JFrame {
 
         getContentPane().add(panelnapoj, new org.netbeans.lib.awtextra.AbsoluteConstraints(468, 120, 322, 549));
 
-        buttonpotwierdz.setText("Potwierdź");
-        getContentPane().add(buttonpotwierdz, new org.netbeans.lib.awtextra.AbsoluteConstraints(937, 591, -1, -1));
+        buttonpotwierdz.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        buttonpotwierdz.setText("Potwierdź zamówienie");
+        buttonpotwierdz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonpotwierdzActionPerformed(evt);
+            }
+        });
+        getContentPane().add(buttonpotwierdz, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 580, 300, 60));
 
-        buttonwyczysc.setText("Wyczyść");
-        getContentPane().add(buttonwyczysc, new org.netbeans.lib.awtextra.AbsoluteConstraints(925, 620, -1, -1));
+        buttonwyczyscp.setText("Wyczyść");
+        buttonwyczyscp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonwyczyscpActionPerformed(evt);
+            }
+        });
+        getContentPane().add(buttonwyczyscp, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 170, 130, -1));
+
+        usunpozycjep.setText("Usuń pozycję");
+        usunpozycjep.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usunpozycjepActionPerformed(evt);
+            }
+        });
+        getContentPane().add(usunpozycjep, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 170, 130, -1));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Jedzenie:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 60, 130, -1));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Napoje:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 230, -1, -1));
+
+        listazamowiennapojow.setToolTipText("");
+        jScrollPane4.setViewportView(listazamowiennapojow);
+
+        getContentPane().add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 250, 360, 90));
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel3.setText("Razem:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 420, 50, 20));
+
+        buttonusunn.setText("Usuń pozycję");
+        buttonusunn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonusunnActionPerformed(evt);
+            }
+        });
+        getContentPane().add(buttonusunn, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 340, 130, -1));
+
+        buttonwyczyscn.setText("Wyczyść");
+        buttonwyczyscn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonwyczyscnActionPerformed(evt);
+            }
+        });
+        getContentPane().add(buttonwyczyscn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 340, 130, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -504,6 +576,32 @@ public class NoweZamLok extends javax.swing.JFrame {
 
         if (!listaskladnikow.isSelectionEmpty()) {
             int index = listaskladnikow.getSelectedIndex();
+            String wybr = model.elementAt(index);
+            if (wybr.contains("+")) {
+                int l = wybr.length();
+                String skladn = wybr.substring(0, l - 10);
+                try {
+                    con = DriverManager.getConnection(
+                            "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+                    );
+                    stmt1 = con.createStatement();
+                    stmt2 = con.createStatement();
+                    res1 = stmt2.executeQuery("select max(id_szcz_o_skl) from szcz_o_skl where id_skladnika="
+                            + "(select id_skladnika from skladniki where nazwa like '%" + skladn + "%') and id_szcz_o_pizzy=(select max(id_szcz_o_pizzy) from szcz_o_pizzy)"
+                    );
+                    while (res1.next()) {
+                        int id_usuniete = res1.getInt("1");
+                        stmt1.executeUpdate(
+                                "delete from SZCZ_O_SKL where id_szcz_o_skl=" + id_usuniete + " and id_szcz_o_pizzy=(select max(id_szcz_o_pizzy) from szcz_o_pizzy)"
+                        );
+                        stmt1.executeUpdate(
+                                "update SZCZ_O_SKL set id_szcz_o_skl=id_szcz_o_skl-1 where id_szcz_o_skl>" + id_usuniete
+                        );
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
             model.removeElementAt(index);
             listaskladnikow.setModel(model);
         } else {
@@ -513,10 +611,35 @@ public class NoweZamLok extends javax.swing.JFrame {
 
     private void dodajwActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajwActionPerformed
         String wybr = dodajs.getSelectedItem().toString();
+        int l = wybr.length();
+        String skladn = wybr.substring(0, l - 10);
         if (wybr.length() > 1) {
-            int i = model.getSize();
-            model.add(i, wybr);
-            listaskladnikow.setModel(model);
+            try {
+                con = DriverManager.getConnection(
+                        "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+                );
+                stmt1 = con.createStatement();
+                stmt2 = con.createStatement();
+                res2 = stmt2.executeQuery("SELECT COUNT(*) FROM SZCZ_O_SKL");
+                while (res2.next()) {
+                    if (res2.getInt("1") == 0) {
+                        stmt1.executeUpdate(
+                                "insert into SZCZ_O_SKL VALUES ((SELECT COUNT(*) FROM SZCZ_O_SKL)+1,(SELECT MAX(ID_SZCZ_O_PIZZY) FROM SZCZ_O_PIZZY),"
+                                + "(SELECT ID_SKLADNIKA FROM SKLADNIKI WHERE NAZWA LIKE '" + skladn + "'))"
+                        );
+                    } else {
+                        stmt1.executeUpdate(
+                                "insert into SZCZ_O_SKL VALUES ((SELECT max(id_szcz_o_skl) FROM SZCZ_O_SKL)+1,(SELECT MAX(ID_SZCZ_O_PIZZY) FROM SZCZ_O_PIZZY),"
+                                + "(SELECT ID_SKLADNIKA FROM SKLADNIKI WHERE NAZWA LIKE '" + skladn + "'))"
+                        );
+                    }
+                }
+                int i = model.getSize();
+                model.add(i, wybr);
+                listaskladnikow.setModel(model);
+            } catch (SQLException ex) {
+                Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Nie wybrano składnika!");
         }
@@ -558,32 +681,31 @@ public class NoweZamLok extends javax.swing.JFrame {
     }//GEN-LAST:event_zobsklActionPerformed
 
     private void dodajdomenupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajdomenupActionPerformed
-        String t = cena.getText();
+       
         String nazwa = listawybpizzy.getSelectedItem().toString();
         String rozmiar = listawybrozmpizzy.getSelectedItem().toString();
         String ciasto = listawybciastapizzy.getSelectedItem().toString();
-        if (t.length() > 0) {
-            double cp = Double.parseDouble(t);
-            try {
-            Integer.parseInt(poleilep.getText());
-            dodajzampizzy();
-            zliczcene(cp);
-            czyscpanelpizza();
-            } catch(NumberFormatException nfe) {
-                 JOptionPane.showMessageDialog(null, "Niepoprawne dane!");
-            }
-        } else if (nazwa.length() > 1 && rozmiar.length() > 1 && ciasto.length() > 1) {
+        if (nazwa.length() > 1 && rozmiar.length() > 1 && ciasto.length() > 1) {
             try {
                 int ile = Integer.parseInt(poleilep.getText());
-                Double cenap = policzkosztpizzy();
-                cenap += policzkosztskladnikow();
-                cenap *= ile;
-                dodajzampizzy();
-                zliczcene(cenap);
+                dodajzampizzy(nazwa, rozmiar, ciasto, ile);
+                dodajpizzedozamowienia();
+                double wartosczam;
+                if (cena1.getText().length() > 0) {
+                    wartosczam = Double.parseDouble(cena1.getText());
+                } else {
+                    wartosczam = 0;
+                }
+                double kosztpizzy = policzkosztpizzyzbazy();
+                kosztpizzy += policzkosztskladnikow();
+                kosztpizzy *= ile;
+                wartosczam += kosztpizzy;
+                cena1.setText(wartosczam + "");
                 czyscpanelpizza();
             } catch (NumberFormatException nfe) {
                 JOptionPane.showMessageDialog(null, "Niepoprawne dane!");
             }
+
         } else {
             JOptionPane.showMessageDialog(null, "Nic nie zamówiono!");
         }
@@ -591,7 +713,28 @@ public class NoweZamLok extends javax.swing.JFrame {
     }//GEN-LAST:event_dodajdomenupActionPerformed
 
     private void powrotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_powrotActionPerformed
-        zam.genUser2();
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt11 = con.createStatement();
+            stmt11.executeUpdate(
+                    "delete from szcz_o_skl where id_szcz_o_pizzy in "
+                    + "(select id_szcz_o_pizzy from szcz_o_pizzy where id_zam=(select max(id_zam) from zamowienie))"
+            );
+            stmt11.executeUpdate(
+                    "delete from szcz_o_pizzy where id_zam=(select max(id_zam) from zamowienie)"
+            );
+            stmt11.executeUpdate(
+                    "delete from szcz_o_napoju where id_zam=(select max(id_zam) from zamowienie)"
+            );
+            stmt11.executeUpdate(
+                    "delete from zamowienie where id_zam=(select max(id_zam) from zamowienie)"
+            );
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Zamowienia zam = new Zamowienia();
         zam.setVisible(true);
         dispose();
     }//GEN-LAST:event_powrotActionPerformed
@@ -611,26 +754,23 @@ public class NoweZamLok extends javax.swing.JFrame {
     }//GEN-LAST:event_pokazpanelnapojActionPerformed
 
     private void dodajdomenunapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajdomenunapActionPerformed
-        String t = cena2.getText();
-        if (t.length() > 0) {
-            double cp = Double.parseDouble(t);
-            try {
-                Integer.parseInt(poleilenap.getText());
-                dodajzamnapoju();
-                zliczcene(cp);
-                czyscpanelnapoje();
-            } catch (NumberFormatException nfe) {
-                JOptionPane.showMessageDialog(null, "Niepoprawne dane!");
-            }
-        } else if (listawybnazwynap.getSelectedIndex() != -1) {
+        if (listawybnazwynap.getSelectedIndex() != -1) {
             String nazwanap = listawybnazwynap.getSelectedItem().toString();
             if (nazwanap.length() > 1) {
                 try {
                     int ile = Integer.parseInt(poleilenap.getText());
-                    double cenanapoju = podajcenenap(nazwanap);
-                    cenanapoju *= ile;
-                    dodajzamnapoju();
-                    zliczcene(cenanapoju);
+                    dodajzamnapoju(nazwanap, ile);
+                    dodajnapojdozamowienia();
+                    double wartosczam;
+                    if (cena1.getText().length() > 0) {
+                        wartosczam = Double.parseDouble(cena1.getText());
+                    } else {
+                        wartosczam = 0;
+                    }
+                    double kosztnapoju = policzkosztnapojuzbazy();
+                    kosztnapoju *= ile;
+                    wartosczam += kosztnapoju;
+                    cena1.setText(wartosczam + "");
                     czyscpanelnapoje();
                 } catch (NumberFormatException nfe) {
                     JOptionPane.showMessageDialog(null, "Niepoprawne dane!");
@@ -641,6 +781,7 @@ public class NoweZamLok extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Nic nie zamówiono!");
         }
+        //dodajnapojdozamowienia();
     }//GEN-LAST:event_dodajdomenunapActionPerformed
 
     private void pokazopisnapojuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pokazopisnapojuActionPerformed
@@ -688,15 +829,14 @@ public class NoweZamLok extends javax.swing.JFrame {
 
     private void poleilepKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_poleilepKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-
             try {
                 String nazwa = listawybpizzy.getSelectedItem().toString();
                 String rozmiar = listawybrozmpizzy.getSelectedItem().toString();
                 String ciasto = listawybciastapizzy.getSelectedItem().toString();
                 int ile = Integer.parseInt(poleilep.getText());
                 if (nazwa.length() > 1 && rozmiar.length() > 1 && ciasto.length() > 1) {
-                    Double cenap = policzkosztpizzy();
-                    cenap += policzkosztskladnikow();
+                    Double cenap = podajkosztpizzy();
+                    cenap += podajkosztskladnikow();
                     cenap *= ile;
                     cena.setText(cenap + "");
                 } else {
@@ -739,19 +879,128 @@ public class NoweZamLok extends javax.swing.JFrame {
         model.removeAllElements();
         listaskladnikow.setModel(model);
         zobskl.setSelected(false);
+        dodajs.removeAllItems();
+        panelskladniki.setVisible(false);
     }//GEN-LAST:event_listawybpizzyItemStateChanged
 
     private void listawybrozmpizzyItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listawybrozmpizzyItemStateChanged
         model.removeAllElements();
         listaskladnikow.setModel(model);
         zobskl.setSelected(false);
+        dodajs.removeAllItems();
+        panelskladniki.setVisible(false);
     }//GEN-LAST:event_listawybrozmpizzyItemStateChanged
 
     private void listawybciastapizzyItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listawybciastapizzyItemStateChanged
         model.removeAllElements();
         listaskladnikow.setModel(model);
         zobskl.setSelected(false);
+        dodajs.removeAllItems();
+        panelskladniki.setVisible(false);
     }//GEN-LAST:event_listawybciastapizzyItemStateChanged
+
+    private void usunpozycjepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usunpozycjepActionPerformed
+        if (!listazamowienpizzy.isSelectionEmpty()) {
+            int ilepozycji = modelzamp.getSize();
+            int index = listazamowienpizzy.getSelectedIndex();
+            usunpizzezzam(index, ilepozycji);
+            dodajpizzedozamowienia();
+        } else {
+            JOptionPane.showMessageDialog(null, "Wybierz pozycję!");
+        }
+    }//GEN-LAST:event_usunpozycjepActionPerformed
+
+    private void buttonwyczyscpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonwyczyscpActionPerformed
+
+       
+    }//GEN-LAST:event_buttonwyczyscpActionPerformed
+
+    private void buttonpotwierdzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonpotwierdzActionPerformed
+        double wart = 0;
+        try {
+            wart = Double.parseDouble(cena1.getText());
+        } catch (NumberFormatException nfe) {
+        }
+        String platnosc = "";
+        String forma = "";
+        if ((wdostawie.isSelected() || wlokalu.isSelected()) && (karta.isSelected() || gotowka.isSelected()) && wart > 0) {
+            if (karta.isSelected()) {
+                platnosc = "K";
+            } else if (gotowka.isSelected()) {
+                platnosc = "G";
+            }
+            if (wdostawie.isSelected()) {
+                forma = "D";
+            } else if (wlokalu.isSelected()) {
+                forma = "L";
+            }
+            try {
+                con = DriverManager.getConnection(
+                        "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+                );
+                stmt11 = con.createStatement();
+                stmt11.executeUpdate(
+                        "update zamowienie set data_zam='" + sprawdzdate() + "',platnosc='" + platnosc + "',forma='"
+                        + forma + "',wartosc=" + wart + ",id_prac=" + sprawdzid() + " where id_zam=(select max(id_zam) from zamowienie)"
+                );
+                stmt11.executeUpdate(
+                        "delete from szcz_o_skl where id_szcz_o_pizzy="
+                        + "(select max(id_szcz_o_pizzy) from szcz_o_pizzy)"
+                );
+                stmt11.executeUpdate(
+                        "delete from szcz_o_pizzy where id_szcz_o_pizzy=(select max(id_szcz_o_pizzy) from szcz_o_pizzy)"
+                );
+                stmt11.executeUpdate(
+                        "delete from szcz_o_napoju where id_szcz_o_nap=(select max(id_szcz_o_nap) from szcz_o_napoju)"
+                );
+            } catch (SQLException ex) {
+                Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (wdostawie.isSelected()) {
+                String[] opcje = new String[2];
+                opcje[0] = new String("OK");
+                opcje[1] = new String("Anuluj");
+                int res = JOptionPane.showOptionDialog(null, "Wybierz klienta lub dodaj nowego", "Potwierdzenie", 0, JOptionPane.QUESTION_MESSAGE, null, opcje, null);
+                switch (res) {
+                    case JOptionPane.YES_OPTION:
+                        Edycja_klientow ek = new Edycja_klientow();
+                        ek.setCzyzamtrwa(true);
+                        ek.pokazpanel();
+                        ek.setVisible(true);
+                        setVisible(false);
+                        break;
+                    case JOptionPane.NO_OPTION:
+                        break;
+                }
+            } else if (wlokalu.isSelected()) {
+                Szczegoly_zamowienia sz = new Szczegoly_zamowienia();
+                sz.setVisible(true);
+                dispose();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Brak danych");
+        }
+
+    }//GEN-LAST:event_buttonpotwierdzActionPerformed
+
+    private void cena1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cena1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cena1ActionPerformed
+
+    private void buttonusunnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonusunnActionPerformed
+        if (!listazamowiennapojow.isSelectionEmpty()) {
+            int ilepozycji = modelzamn.getSize();
+            int index = listazamowiennapojow.getSelectedIndex();
+            usunnapojzzam(index, ilepozycji);
+            dodajnapojdozamowienia();
+        } else {
+            JOptionPane.showMessageDialog(null, "Wybierz pozycję!");
+        }
+    }//GEN-LAST:event_buttonusunnActionPerformed
+
+    private void buttonwyczyscnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonwyczyscnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonwyczyscnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -780,9 +1029,9 @@ public class NoweZamLok extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new NoweZamLok(zam).setVisible(true);
-                NoweZamLok nzl = new NoweZamLok(zam);
-                nzl.setVisible(false);
+                new NoweZamLok().setVisible(true);
+                // NoweZamLok nzl = new NoweZamLok();
+                //nzl.setVisible(false);
 
             }
 
@@ -794,7 +1043,9 @@ public class NoweZamLok extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroupmiejsce;
     private javax.swing.ButtonGroup buttonGroupoplata;
     private javax.swing.JButton buttonpotwierdz;
-    private javax.swing.JButton buttonwyczysc;
+    private javax.swing.JButton buttonusunn;
+    private javax.swing.JButton buttonwyczyscn;
+    private javax.swing.JButton buttonwyczyscp;
     private javax.swing.JTextField cena;
     private javax.swing.JTextField cena1;
     private javax.swing.JTextField cena2;
@@ -806,9 +1057,13 @@ public class NoweZamLok extends javax.swing.JFrame {
     private javax.swing.JLabel formaoplaty;
     private javax.swing.JLabel formazam;
     private javax.swing.JRadioButton gotowka;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JRadioButton karta;
     private javax.swing.JList listaskladnikow;
     private javax.swing.JComboBox listawybciastapizzy;
@@ -816,7 +1071,8 @@ public class NoweZamLok extends javax.swing.JFrame {
     private javax.swing.JComboBox listawybpizzy;
     private javax.swing.JComboBox listawybrodznap;
     private javax.swing.JComboBox listawybrozmpizzy;
-    private javax.swing.JList listazamowien;
+    private javax.swing.JList<String> listazamowiennapojow;
+    private javax.swing.JList listazamowienpizzy;
     private javax.swing.JLabel napis_zl;
     private javax.swing.JLabel napis_zl1;
     private javax.swing.JLabel napis_zl2;
@@ -841,6 +1097,7 @@ public class NoweZamLok extends javax.swing.JFrame {
     private javax.swing.JTextField poleilenap;
     private javax.swing.JTextField poleilep;
     private javax.swing.JButton powrot;
+    private javax.swing.JButton usunpozycjep;
     private javax.swing.JButton usuns;
     private javax.swing.JRadioButton wdostawie;
     private javax.swing.JRadioButton wlokalu;
@@ -914,7 +1171,7 @@ public class NoweZamLok extends javax.swing.JFrame {
             );
             stmt4 = con.createStatement();
             res4 = stmt4.executeQuery(
-                    "select * from SKLADNIKI where id_skladnika <= 37 or id_skladnika >= 40"
+                    "select * from SKLADNIKI"
             );
         } catch (Exception e) {
 
@@ -924,7 +1181,7 @@ public class NoweZamLok extends javax.swing.JFrame {
 
                 if (rozmpizzy.equals("mała")) {
                     dodajs.addItem(res4.getString("nazwa") + " + " + res4.getString("cena_skl_mala") + " zł");
-                } else if (rozmpizzy.equals("srednia")) {
+                } else if (rozmpizzy.equals("średnia")) {
                     dodajs.addItem(res4.getString("nazwa") + " + " + res4.getString("cena_skl_srednia") + " zł");
                 } else if (rozmpizzy.equals("duża")) {
                     dodajs.addItem(res4.getString("nazwa") + " + " + res4.getString("cena_skl_duza") + " zł");
@@ -1033,7 +1290,7 @@ public class NoweZamLok extends javax.swing.JFrame {
             );
             stmt7 = con.createStatement();
             res7 = stmt7.executeQuery(
-                    "select distinct(nazwa) from MENU_NAPOJE where rodzaj like '" + rodzaj + "'"
+                    "select distinct(nazwa_napoju) from MENU_NAPOJE where rodzaj like '" + rodzaj + "'"
             );
         } catch (SQLException ex) {
             Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
@@ -1041,7 +1298,7 @@ public class NoweZamLok extends javax.swing.JFrame {
         try {
             if (listawybnazwynap.getItemCount() == 1) {
                 while (res7.next()) {
-                    listawybnazwynap.addItem(res7.getString("nazwa"));
+                    listawybnazwynap.addItem(res7.getString("nazwa_napoju"));
                 }
             }
         } catch (SQLException ex) {
@@ -1057,7 +1314,7 @@ public class NoweZamLok extends javax.swing.JFrame {
             );
             stmt8 = con.createStatement();
             res8 = stmt8.executeQuery(
-                    "select * from MENU_NAPOJE where nazwa like '" + nazwa + "'"
+                    "select * from MENU_NAPOJE where nazwa_napoju like '" + nazwa + "'"
             );
         } catch (SQLException ex) {
             Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
@@ -1084,7 +1341,47 @@ public class NoweZamLok extends javax.swing.JFrame {
         }
     }
 
-    double policzkosztpizzy() {
+    double policzkosztpizzyzbazy() {
+        double cena = 0;
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt9 = con.createStatement();
+            res9 = stmt9.executeQuery(
+                    "select cena_pizza from MENU_PIZZA as mp join szcz_o_pizzy as sp on mp.ID_PIZZY=sp.ID_PIZZY join zamowienie as z on z.ID_ZAM=sp.ID_ZAM\n"
+                    + " where z.ID_ZAM=(select max(id_zam) from zamowienie) and sp.ID_SZCZ_O_PIZZY=(select max(ID_SZCZ_O_PIZZY)-1 from szcz_o_pizzy)"
+            );
+            while (res9.next()) {
+                cena = res9.getDouble("cena_pizza");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cena;
+    }
+
+    double policzkosztnapojuzbazy() {
+        double cena = 0;
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt9 = con.createStatement();
+            res9 = stmt9.executeQuery(
+                    "select cena from MENU_NAPOJE as mn join szcz_o_napoju as sn on mn.ID_NAPOJU=sn.ID_NAPOJU join zamowienie as z on z.ID_ZAM=sn.ID_ZAM\n"
+                    + " where z.ID_ZAM=(select max(id_zam) from zamowienie) and sn.ID_SZCZ_O_NAP=(select max(ID_SZCZ_O_NAP)-1 from szcz_o_napoju)"
+            );
+            while (res9.next()) {
+                cena = res9.getDouble("cena");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cena;
+    }
+
+    double podajkosztpizzy() {
         double cenaa = 0;
         String nazwa = listawybpizzy.getSelectedItem().toString();
         String rozmiar = listawybrozmpizzy.getSelectedItem().toString();
@@ -1112,6 +1409,53 @@ public class NoweZamLok extends javax.swing.JFrame {
     }
 
     double policzkosztskladnikow() {
+        double kosztskl = 0;
+        String polmalej = "SELECT sum(cena_skl_mala) from skladniki as s "
+                + "join szcz_o_skl as ss on s.ID_SKLADNIKA=ss.ID_SKLADNIKA join szcz_o_pizzy as sp on ss.ID_SZCZ_O_PIZZY=sp.ID_SZCZ_O_PIZZY "
+                + "join zamowienie as z on z.ID_ZAM=sp.ID_ZAM where z.ID_ZAM=(select max(id_zam) from zamowienie) "
+                + "and sp.ID_SZCZ_O_PIZZY=(select max(id_szcz_o_pizzy)-1 from szcz_o_pizzy)";
+        String polsredniej = "SELECT sum(cena_skl_srednia) from skladniki as s "
+                + "join szcz_o_skl as ss on s.ID_SKLADNIKA=ss.ID_SKLADNIKA join szcz_o_pizzy as sp on ss.ID_SZCZ_O_PIZZY=sp.ID_SZCZ_O_PIZZY "
+                + "join zamowienie as z on z.ID_ZAM=sp.ID_ZAM where z.ID_ZAM=(select max(id_zam) from zamowienie) "
+                + "and sp.ID_SZCZ_O_PIZZY=(select max(id_szcz_o_pizzy)-1 from szcz_o_pizzy)";
+        String polduzej = "SELECT sum(cena_skl_duza) from skladniki as s "
+                + "join szcz_o_skl as ss on s.ID_SKLADNIKA=ss.ID_SKLADNIKA join szcz_o_pizzy as sp on ss.ID_SZCZ_O_PIZZY=sp.ID_SZCZ_O_PIZZY "
+                + "join zamowienie as z on z.ID_ZAM=sp.ID_ZAM where z.ID_ZAM=(select max(id_zam) from zamowienie) "
+                + "and sp.ID_SZCZ_O_PIZZY=(select max(id_szcz_o_pizzy)-1 from szcz_o_pizzy)";
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt9 = con.createStatement();
+            res9 = stmt9.executeQuery(
+                    "select rozmiar from MENU_PIZZA as mp join szcz_o_pizzy as sp on mp.ID_PIZZY=sp.ID_PIZZY"
+                    + " join zamowienie as z on z.ID_ZAM=sp.ID_ZAM where z.id_zam=(select max(id_zam) from zamowienie) "
+                    + "and sp.ID_SZCZ_O_PIZZY=(select max(id_szcz_o_pizzy)-1 from szcz_o_pizzy)"
+            );
+            while (res9.next()) {
+                String rozm = res9.getString("rozmiar");
+                if (rozm.contains("mała")) {
+                    stmt10 = con.createStatement();
+                    res10 = stmt10.executeQuery(polmalej);
+                } else if (rozm.contains("średnia")) {
+                    stmt10 = con.createStatement();
+                    res10 = stmt10.executeQuery(polsredniej);
+                } else if (rozm.contains("duża")) {
+                    stmt10 = con.createStatement();
+                    res10 = stmt10.executeQuery(polduzej);
+                }
+                while (res10.next()) {
+                    kosztskl = res10.getDouble("1");
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return kosztskl;
+    }
+
+    double podajkosztskladnikow() {
+
         double cenaskl = 0;
         int ile = model.getSize();
         for (int i = 0; i < ile; i++) {
@@ -1141,7 +1485,7 @@ public class NoweZamLok extends javax.swing.JFrame {
             );
             stmt10 = con.createStatement();
             res10 = stmt10.executeQuery(
-                    "select cena from MENU_NAPOJE where nazwa like '" + nazwa + "'"
+                    "select cena from MENU_NAPOJE where nazwa_napoju like '" + nazwa + "'"
             );
 
         } catch (SQLException ex) {
@@ -1168,39 +1512,54 @@ public class NoweZamLok extends javax.swing.JFrame {
         }
     }
 
-    void dodajzampizzy() {
-        String nazwa = listawybpizzy.getSelectedItem().toString();
-        String rozmiar = listawybrozmpizzy.getSelectedItem().toString();
-        String ciasto = listawybciastapizzy.getSelectedItem().toString();
-        String ilerazy = poleilep.getText();
-        String zampizza = ilerazy + "x " + nazwa + " " + rozmiar + ", " + ciasto + " ciasto";
-        int i = modelzam.getSize();
-        modelzam.add(i, zampizza);
-        listazamowien.setModel(modelzam);
+    void dodajzampizzy(String nazwa, String rozmiar, String ciasto, int ile) {
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt13 = con.createStatement();
+            stmt13.executeUpdate(
+                    "update szcz_o_pizzy set id_pizzy=(select id_pizzy from menu_pizza "
+                    + "where nazwa like '" + nazwa + "' and rozmiar like '" + rozmiar + "' and ciasto like '" + ciasto + "'),"
+                    + "ile_sztuk_p=" + ile + " where id_szcz_o_pizzy=(select max(id_szcz_o_pizzy) from szcz_o_pizzy)"
+            );
+            stmt13.executeUpdate(
+                    "insert into szcz_o_pizzy values ((select max(id_szcz_o_pizzy)+1 from szcz_o_pizzy),(select max(id_zam) from zamowienie),1,0)"
+            );
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    void dodajzamnapoju() {
-        String nazwa = listawybnazwynap.getSelectedItem().toString();
-        String ilerazy = poleilenap.getText();
-        String zampizza = ilerazy + "x " + nazwa;
-        int i = modelzam.getSize();
-        modelzam.add(i, zampizza);
-        listazamowien.setModel(modelzam);
-
+    void dodajzamnapoju(String nazwanap, int ile) {
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt13 = con.createStatement();
+            stmt13.executeUpdate(
+                    "update szcz_o_napoju set id_napoju=(select id_napoju from menu_napoje "
+                    + "where nazwa_napoju like '" + nazwanap + "'),ile_sztuk_nap=" + ile
+                    + " where id_szcz_o_nap=(select max(id_szcz_o_nap) from szcz_o_napoju)"
+            );
+            stmt13.executeUpdate(
+                    "insert into szcz_o_napoju (id_szcz_o_nap, id_zam, id_napoju, ile_sztuk_nap) values ((select max(id_szcz_o_nap)+1 from szcz_o_napoju),(select max(id_zam) from zamowienie), 1, 0)"
+            );
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     void czyscpanelpizza() {
         listawybpizzy.setSelectedIndex(0);
         listawybrozmpizzy.setSelectedIndex(0);
         listawybciastapizzy.setSelectedIndex(0);
-        dodajs.setSelectedIndex(0);
+        dodajs.setSelectedIndex(-1);
         cena.setText("");
         poleilep.setText("");
         panelskladniki.setVisible(false);
         pokazpanelpizza.setSelected(false);
         panelpizza.setVisible(false);
-        model.removeAllElements();
-        listaskladnikow.setModel(model);
     }
 
     void czyscpanelnapoje() {
@@ -1210,4 +1569,243 @@ public class NoweZamLok extends javax.swing.JFrame {
         pokazpanelnapoj.setSelected(false);
         panelnapoj.setVisible(false);
     }
+
+    String sprawdzdate() {
+        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        Date dateobj = new Date();
+        return df.format(dateobj);
+    }
+
+    int sprawdzid() {
+        int id = 0;
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt12 = con.createStatement();
+            res = stmt12.executeQuery("select * from LOGOWANIE L join PRACOWNICY P on L.id_prac=P.id_prac where id_log=(select max(id_log) from LOGOWANIE)");
+            while (res.next()) {
+                id = res.getInt("id_prac");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Zamowienia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
+    }
+
+    void dodajnapojdozamowienia() {
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt2 = con.createStatement();
+            res2 = stmt2.executeQuery(
+                    "select * from ZAMOWIENIE Z join SZCZ_O_NAPOJU AS N on Z.ID_ZAM=N.ID_ZAM"
+                    + " join MENU_NAPOJE AS M on N.ID_NAPOJU=M.ID_NAPOJU"
+                    + " where Z.id_zam=(select max(id_zam) from ZAMOWIENIE) "
+            );
+            modelzamn.removeAllElements();
+            while (res2.next()) {
+                int ilenapojow = res2.getInt("ile_sztuk_nap");
+                String napoj = ilenapojow + "";
+                napoj += "x " + res2.getString("nazwa_napoju");
+                if (ilenapojow > 0) {
+                    modelzamn.addElement(napoj);
+                }
+            }
+            listazamowiennapojow.setModel(modelzamn);
+        } catch (SQLException ex) {
+        }
+    }
+
+    void dodajpizzedozamowienia() {
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt2 = con.createStatement();
+            res2 = stmt2.executeQuery(
+                    "select * from ZAMOWIENIE Z join SZCZ_O_PIZZY AS SP on Z.ID_ZAM=SP.ID_ZAM"
+                    + " join MENU_PIZZA AS MP on SP.ID_PIZZY=MP.ID_PIZZY where Z.id_zam=(select max(id_zam) from ZAMOWIENIE)"
+            );
+            modelzamp.removeAllElements();
+            while (res2.next()) {
+                int idszcz = res2.getInt("id_szcz_o_pizzy");
+                int ilepizzy = res2.getInt("ile_sztuk_p");
+                String pizza = ilepizzy + "";
+                pizza += "x " + res2.getString("nazwa");
+                pizza += " " + res2.getString("rozmiar");
+                String ciasto = res2.getString("ciasto");
+                if (ciasto.contains("grube")) {
+                    pizza += " na grubym cieście";
+                } else if (ciasto.contains("cienkie")) {
+                    pizza += " na cienkim cieście";
+                }
+                pizza += " " + dodajskladniki(idszcz);
+                if (ilepizzy > 0) {
+                    modelzamp.addElement(pizza);
+                }
+            }
+            listazamowienpizzy.setModel(modelzamp);
+        } catch (SQLException ex) {
+        }
+    }
+
+    String dodajskladniki(int idszcz) {
+        String skladnik = "";
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt4 = con.createStatement();
+            res4 = stmt4.executeQuery(
+                    "select * from ZAMOWIENIE AS Z join SZCZ_O_PIZZY AS SP on Z.ID_ZAM=SP.ID_ZAM"
+                    + " join SZCZ_O_SKL AS SS on SP.ID_SZCZ_O_PIZZY=SS.ID_SZCZ_O_PIZZY"
+                    + " JOIN SKLADNIKI AS S ON SS.ID_SKLADNIKA=S.ID_SKLADNIKA"
+                    + " where Z.id_zam=(select max(id_zam) from ZAMOWIENIE)"
+                    + " and sp.id_szcz_o_pizzy=" + idszcz
+            );
+            while (res4.next()) {
+                skladnik += "+ " + res4.getString("nazwa") + ", ";
+            }
+        } catch (SQLException ex) {
+            System.out.println("Jakiś błąd");
+        }
+        if (skladnik.length() > 0) {
+            return skladnik.substring(0, skladnik.length() - 2);
+        } else {
+            return "";
+        }
+    }
+
+    void usunpizzezzam(int index, int ilepozycji) {
+        double kosztpizzaiskl = 0;
+        int idsz = index - ilepozycji;
+        String idszcz = "";
+        if (idsz >= 0) {
+            idszcz = "+" + idsz;
+        } else {
+            idszcz = "" + idsz;
+        }
+        String polmalej = "SELECT sum(cena_skl_mala) from skladniki as s "
+                + "join szcz_o_skl as ss on s.ID_SKLADNIKA=ss.ID_SKLADNIKA join szcz_o_pizzy as sp on ss.ID_SZCZ_O_PIZZY=sp.ID_SZCZ_O_PIZZY "
+                + "join zamowienie as z on z.ID_ZAM=sp.ID_ZAM where z.ID_ZAM=(select max(id_zam) from zamowienie) "
+                + "and sp.ID_SZCZ_O_PIZZY=(select max(id_szcz_o_pizzy) from szcz_o_pizzy)" + idszcz;
+        String polsredniej = "SELECT sum(cena_skl_srednia) from skladniki as s "
+                + "join szcz_o_skl as ss on s.ID_SKLADNIKA=ss.ID_SKLADNIKA join szcz_o_pizzy as sp on ss.ID_SZCZ_O_PIZZY=sp.ID_SZCZ_O_PIZZY "
+                + "join zamowienie as z on z.ID_ZAM=sp.ID_ZAM where z.ID_ZAM=(select max(id_zam) from zamowienie) "
+                + "and sp.ID_SZCZ_O_PIZZY=(select max(id_szcz_o_pizzy) from szcz_o_pizzy)" + idszcz;
+        String polduzej = "SELECT sum(cena_skl_duza) from skladniki as s "
+                + "join szcz_o_skl as ss on s.ID_SKLADNIKA=ss.ID_SKLADNIKA join szcz_o_pizzy as sp on ss.ID_SZCZ_O_PIZZY=sp.ID_SZCZ_O_PIZZY "
+                + "join zamowienie as z on z.ID_ZAM=sp.ID_ZAM where z.ID_ZAM=(select max(id_zam) from zamowienie) "
+                + "and sp.ID_SZCZ_O_PIZZY=(select max(id_szcz_o_pizzy) from szcz_o_pizzy)" + idszcz;
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt13 = con.createStatement();
+            res13 = stmt13.executeQuery(
+                    "select rozmiar,cena_pizza,ile_sztuk_p from menu_pizza as mp join szcz_o_pizzy as sp "
+                    + "on mp.id_pizzy=sp.id_pizzy where sp.id_szcz_o_pizzy=(select max(id_szcz_o_pizzy) "
+                    + "from szcz_o_pizzy)" + idszcz + " and id_zam=(select max(id_zam) from zamowienie)");
+            while (res13.next()) {
+                String rozmiar = res13.getString("rozmiar");
+                Double cenapizzy = res13.getDouble("cena_pizza");
+                int ilerazy = res13.getInt("ile_sztuk_p");
+                if (rozmiar.contains("mała")) {
+                    stmt10 = con.createStatement();
+                    res10 = stmt10.executeQuery(polmalej);
+                } else if (rozmiar.contains("średnia")) {
+                    stmt10 = con.createStatement();
+                    res10 = stmt10.executeQuery(polsredniej);
+                } else if (rozmiar.contains("duża")) {
+                    stmt10 = con.createStatement();
+                    res10 = stmt10.executeQuery(polduzej);
+                }
+                while (res10.next()) {
+                    kosztpizzaiskl = res10.getInt("1");
+                    kosztpizzaiskl += cenapizzy;
+                    kosztpizzaiskl *= ilerazy;
+                    double wartosc = Double.parseDouble(cena1.getText());
+                    wartosc -= kosztpizzaiskl;
+                    cena1.setText(wartosc + "");
+                }
+            }
+            stmt12 = con.createStatement();
+            res12 = stmt12.executeQuery("select id_szcz_o_pizzy from szcz_o_pizzy where id_szcz_o_pizzy=(select max(id_szcz_o_pizzy) from szcz_o_pizzy)" + idszcz + " and id_zam=(select max(id_zam) from zamowienie)"
+            );
+            while (res12.next()) {
+                int idusuniete = res12.getInt("id_szcz_o_pizzy");
+                stmt14 = con.createStatement();
+                res14 = stmt14.executeQuery("select max(id_szcz_o_skl) from szcz_o_skl where id_szcz_o_pizzy=" + idusuniete);
+                while (res14.next()) {
+                    int idpizzy = res14.getInt("1");
+                    stmt15 = con.createStatement();
+                    res15 = stmt15.executeQuery("select count(id_szcz_o_skl) from szcz_o_skl where id_szcz_o_pizzy=" + idusuniete);
+                    while (res15.next()) {
+                        int ileskl = res15.getInt("1");
+                        stmt13.executeUpdate(
+                                "delete from szcz_o_skl where id_szcz_o_pizzy=" + idusuniete
+                        );                       
+                        stmt13.executeUpdate(
+                                "delete from szcz_o_pizzy where id_szcz_o_pizzy=" + idusuniete
+                        );
+                        stmt13.executeUpdate(
+                                "update szcz_o_pizzy set id_szcz_o_pizzy=id_szcz_o_pizzy-1 where id_szcz_o_pizzy>" + idusuniete
+                        );
+                        if (ileskl > 0 && idpizzy > 0) {
+                         stmt13.executeUpdate(
+                                "update szcz_o_skl set id_szcz_o_skl=id_szcz_o_skl-" + ileskl + ",id_szcz_o_pizzy=id_szcz_o_pizzy-1 where id_szcz_o_skl>" + idpizzy
+                        );
+                    }
+                        
+                    }
+                }
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    void usunnapojzzam(int index, int ilepozycji) {
+        int idsz = index - ilepozycji;
+        String idszcz = "";
+        if (idsz >= 0) {
+            idszcz = "+" + idsz;
+        } else {
+            idszcz = "" + idsz;
+        }
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt13 = con.createStatement();
+            res13 = stmt13.executeQuery("select cena,ile_sztuk_nap from menu_napoje as mn join szcz_o_napoju as sn "
+                    + "on mn.id_napoju=sn.id_napoju where sn.id_szcz_o_nap=(select max(id_szcz_o_nap) "
+                    + "from szcz_o_napoju)" + idszcz + " and id_zam=(select max(id_zam) from zamowienie)");
+            while (res13.next()) {
+                double cenaa = res13.getDouble("cena");
+                cenaa *= res13.getInt("ile_sztuk_nap");
+                double wartosc = Double.parseDouble(cena1.getText());
+                wartosc -= cenaa;
+                cena1.setText(wartosc + "");
+            }
+            stmt14 = con.createStatement();
+            res14 = stmt14.executeQuery("select id_szcz_o_nap from szcz_o_napoju where id_szcz_o_nap=(select max(id_szcz_o_nap) from szcz_o_napoju)" + idszcz + " and id_zam=(select max(id_zam) from zamowienie)");
+            while (res14.next()) {
+                int idusuniete = res14.getInt("id_szcz_o_nap");
+                stmt13.executeUpdate(
+                        "delete from szcz_o_napoju where id_szcz_o_nap=" + idusuniete
+                );
+                stmt13.executeUpdate(
+                        "update szcz_o_napoju set id_szcz_o_nap=id_szcz_o_nap-1 where id_szcz_o_nap>" + idusuniete
+                );
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
+

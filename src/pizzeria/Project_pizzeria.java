@@ -6,10 +6,13 @@
 package pizzeria;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -21,51 +24,37 @@ import javax.swing.JOptionPane;
 public class Project_pizzeria extends javax.swing.JFrame {
 
     Connection con;
-    Statement stmt, stmt2;
-    ResultSet result, result2;
-    static WybierzNazwe wyb;
+    Statement stmt, stmt2, stmt3, stmt4, stmt5;
+    ResultSet result, result2, rs;
 
-    public Project_pizzeria(WybierzNazwe wyb) {
-        this.wyb = wyb;
+    public Project_pizzeria() {
+
         
-        try{
+        initComponents();
+        String nazwa = "Pizzeria \"";
+        nazwa += sprawdznazwe();
+        nazwa += "\"";
+        napisnazwapizzerii.setText(nazwa);
+        login.addItem("");
+        if (login.getItemCount() < 1) {
+            przyciskzalogujsie.setEnabled(false);
+        }
+        try {
             con = DriverManager.getConnection(
-            "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
             );
             stmt = con.createStatement();
             result = stmt.executeQuery(
-                  "select * from PRACOWNICY"
-            );   
-            stmt2 = con.createStatement();
-            result2 = stmt2.executeQuery(
-                  "select * from PRACOWNICY"
-            );         
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
-            
-        }
-        initComponents();
-        
-       //genNazwa(nazwapizzerii);
-        
-        
-        
-        try {
-            while(result.next()){
+                    "select * from PRACOWNICY"
+            );
+            while (result.next()) {
                 login.addItem(result.getString("login"));
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
-        } catch(NullPointerException npe){
-            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
         }
-        if(login.getItemCount()<1){
-            przyciskzalogujsie.setEnabled(false);
-        }
-        
-    }
-     String nazwa_pizzerii="";
 
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -91,6 +80,11 @@ public class Project_pizzeria extends javax.swing.JFrame {
         napislogowanie.setText("Logowanie pracownika");
 
         login.setToolTipText("");
+        login.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                loginItemStateChanged(evt);
+            }
+        });
         login.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginActionPerformed(evt);
@@ -170,57 +164,60 @@ public class Project_pizzeria extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void przyciskzalogujsieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przyciskzalogujsieActionPerformed
-
-            
-            String nazwa=login.getSelectedItem().toString();
-            String haslo = password.getText();
-        try {
+        String datazal = sprawdzdate();
+        String nazwa = login.getSelectedItem().toString();
+        String haslo = password.getText();
+        try {            
             ResultSet pobHaslo = stmt.executeQuery(
                     "select * from PRACOWNICY where login like '" + nazwa + "'"
-            ); 
-            ResultSet pobStanowisko = stmt2.executeQuery(
-                    "select * from PRACOWNICY where login like '" + nazwa + "'"
-            ); 
-            String stan="";
-            while(pobStanowisko.next()) {
-             stan =  pobStanowisko.getString("stanowisko");
-            }
-            while(pobHaslo.next()) {
+            );
+           while (pobHaslo.next()) {
                 String popr = pobHaslo.getString("haslo");
-                if(haslo.equals(popr)) {
-                    Zamowienia zam =new Zamowienia(this);
-                    zam.genUser(nazwa,stan);
+                if (haslo.equals(popr)) {
+                    stmt3 = con.createStatement();
+                    stmt4 = con.createStatement();
+                    rs = stmt4.executeQuery("select * from LOGOWANIE where id_log=(select max(id_log) from LOGOWANIE)");
+                    while (rs.next()) {
+                        String sesja = rs.getString("DATA_GODZ_W");
+                        if (sesja.equals("sesja trwa")) {
+                            stmt5 = con.createStatement();
+                            stmt5.executeUpdate("update LOGOWANIE set DATA_GODZ_W='" + datazal + "' where id_log=(select max(id_log) from LOGOWANIE)");
+                        }
+                    }
+                    String log = "insert into LOGOWANIE values ((select count(*)FROM LOGOWANIE)+1,(select id_prac from PRACOWNICY where login like '"
+                            + nazwa + "'),'" + datazal + "','sesja trwa')";
+                    stmt3.executeUpdate(log);
+                    Zamowienia zam = new Zamowienia();
                     zam.setVisible(true);
-                    dispose(); 
+                    dispose();
                 } else {
                     komunikat.setText("Podane hasło jest niepoprawne.");
                 }
             }
         } catch (SQLException ex) {
             Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
-            
+
         }
-                   
-            
-       
-        
+
+
     }//GEN-LAST:event_przyciskzalogujsieActionPerformed
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
-       
-        
+
+
     }//GEN-LAST:event_loginActionPerformed
+
+    private void loginItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_loginItemStateChanged
+
+    }//GEN-LAST:event_loginItemStateChanged
 
     /**
      * @param args the command line arguments
      * @throws java.sql.SQLException
      */
     @SuppressWarnings("empty-statement")
-    public static void main(String args[]) throws SQLException{
-          
-           
-              
-        
+    public static void main(String args[]) throws SQLException {
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -237,17 +234,17 @@ public class Project_pizzeria extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Project_pizzeria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-;
+        ;
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                
-                new Project_pizzeria(wyb).setVisible(true);
-                
+
+                new Project_pizzeria().setVisible(true);
+
             }
         });
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -264,12 +261,29 @@ public class Project_pizzeria extends javax.swing.JFrame {
     private void close() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    void genNazwa(String nazwa) {
-        napisnazwapizzerii.setText("Pizzeria \""+ nazwa + "\""); 
-        nazwa_pizzerii = nazwa;
+
+    String sprawdzdate() {
+        DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        Date dateobj = new Date();
+        return df.format(dateobj);
     }
-    void genNazwa2() {
-        napisnazwapizzerii.setText("Pizzeria \""+ nazwa_pizzerii + "\""); 
+    String sprawdznazwe() {
+        String nazwa = "";
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt2 = con.createStatement();
+            
+            result2 = stmt2.executeQuery(
+                    "select * from NAZWA_PIZZERII where id_pizzerii=1"
+            );
+            while(result2.next()) {
+            nazwa = result2.getString("nazwa");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return nazwa;
     }
-    //void 
 }
