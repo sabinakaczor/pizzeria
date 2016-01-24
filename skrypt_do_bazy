@@ -1,0 +1,471 @@
+create table "PIZZERIA".KLIENCI
+(
+	ID_KLIENTA NUMERIC(5) not null primary key,
+	NR_TEL NUMERIC(9),
+	ADRES VARCHAR(50),
+	IMIE_NAZWISKO VARCHAR(30)
+);
+create table "PIZZERIA".SKLADNIKI
+(
+	ID_SKLADNIKA NUMERIC(5) not null primary key,
+	CENA_SKL_MALA DECIMAL(8,2),
+	CENA_SKL_SREDNIA DECIMAL(8,2),
+	CENA_SKL_DUZA DECIMAL(8,2),
+	RODZAJ VARCHAR(20),
+	NAZWA VARCHAR(30),
+        DOSTEPNOSC VARCHAR(15)
+);
+create table "PIZZERIA".MENU_PIZZA
+(
+	ID_PIZZY NUMERIC(5) not null primary key,
+	NAZWA VARCHAR(20),
+	SKLADNIKI VARCHAR(150),
+	CIASTO VARCHAR(15),
+	ROZMIAR VARCHAR(20),
+	CENA_PIZZA DECIMAL(8,2),
+	DOSTEPNOSC VARCHAR(15)
+);
+create table "PIZZERIA".PRACOWNICY
+(
+	ID_PRAC NUMERIC(5) not null primary key,
+	LOGIN VARCHAR(50),
+	HASLO VARCHAR(20),
+	TELEFON NUMERIC(13),
+	ADRES VARCHAR(80),
+	PESEL NUMERIC(11),
+	STANOWISKO VARCHAR(20),
+	EMAIL VARCHAR(50)
+);
+create table "PIZZERIA".LOGOWANIE
+(
+	ID_LOG NUMERIC(5) not null primary key,
+	ID_PRAC NUMERIC(5) NOT NULL REFERENCES "PIZZERIA".PRACOWNICY (ID_PRAC),
+	DATA_GODZ_z VARCHAR(100),
+	DATA_GODZ_W VARCHAR(100)
+);
+create table "PIZZERIA".MENU_NAPOJE
+(
+	ID_NAPOJU NUMERIC(5) not null primary key,
+	DLA_PELNOLETNICH CHAR(1),
+	OBJETOSC VARCHAR(6),
+	CENA DECIMAL(8,2),
+	NAZWA_NAPOJU VARCHAR(30),
+	RODZAJ VARCHAR(15),
+	OPIS VARCHAR(100),
+        DOSTEPNOSC VARCHAR(15)
+);
+create table "PIZZERIA".ZAMOWIENIE
+(
+	ID_ZAM NUMERIC(5) not null primary key,
+	DATA_ZAM VARCHAR(50) ,
+	PLATNOSC VARCHAR(1),
+	ZREALIZOWANE VARCHAR(1),
+	FORMA VARCHAR(1),
+	WARTOSC DECIMAL(8,2),
+	ID_KLIENTA NUMERIC(5) REFERENCES "PIZZERIA".KLIENCI (ID_KLIENTA),
+        ID_PRAC NUMERIC(5) NOT NULL REFERENCES "PIZZERIA".PRACOWNICY (ID_PRAC)
+);
+create table "PIZZERIA".SZCZ_O_PIZZY
+(
+	ID_SZCZ_O_PIZZY NUMERIC(5) not null primary key,
+	ID_ZAM NUMERIC(5) NOT NULL REFERENCES "PIZZERIA".ZAMOWIENIE (ID_ZAM),
+	ID_PIZZY NUMERIC(5) NOT NULL REFERENCES "PIZZERIA".MENU_PIZZA (ID_PIZZY),
+	ILE_SZTUK_P NUMERIC(6)
+);
+create table "PIZZERIA".SZCZ_O_NAPOJU
+(	
+	ID_SZCZ_O_NAP NUMERIC(5) not null primary key,
+	ID_ZAM NUMERIC(5) NOT NULL REFERENCES "PIZZERIA".ZAMOWIENIE (ID_ZAM),
+	ID_NAPOJU NUMERIC(5) not null REFERENCES "PIZZERIA".MENU_NAPOJE (ID_NAPOJU),
+	ILE_SZTUK_NAP NUMERIC(6)
+);
+
+create table "PIZZERIA".SZCZ_O_SKL
+(
+	ID_SZCZ_O_SKL NUMERIC(5) not null primary key,
+	ID_SZCZ_O_PIZZY NUMERIC(5) not null REFERENCES "PIZZERIA".SZCZ_O_PIZZY (ID_SZCZ_O_PIZZY),
+	ID_SKLADNIKA NUMERIC(5) NOT NULL REFERENCES "PIZZERIA".SKLADNIKI (ID_SKLADNIKA)	
+);
+create table "PIZZERIA".NAZWA_PIZZERII
+(
+	ID_PIZZERII NUMERIC(1) not null primary key,
+	NAZWA VARCHAR(30) not null
+);
+
+
+
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (1, 855478896, 'ul.Bursztynowa 32', 'Julia Duda');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (2, 445899625, 'ul.Czwartaków 15', 'Estera Korkosz');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (3, 688459621, 'ul.Zuchów 1', 'Olga Tkaczyk');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (4, 977459862, 'ul.Lotnicza 64', 'Michał Chojecki');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (5, 455698214, 'ul.Sympatyczna 5', 'Dominik Kowaluk ');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (6, 855473896, 'ul.Mickiewicza 20', 'Ignacy Widomski');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (7, 900106589, 'ul.Bronowicka 55', 'Tomasz Mielniczuk');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (8, 779665448, 'ul.Fabryczna 13', 'Stanisław Ratkiewicz');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (9, 778562145, 'ul.Kresowa 4', 'Aneta Walenkiewicz');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (10, 665594821, 'ul.Targowa 86', 'Olga Szafran');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (11, 899652233, 'ul.Niska 61', 'Jagoda Pańczyk');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (12, 400589632, 'ul.Szkolna 22', 'Emilia Bodzioch');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (13, 645459621, 'ul.Zuchów 13', 'Olga Guz');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (14, 900459862, 'ul.Lotnicza 54', 'Justyna Wasilewska');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (15, 987698214, 'ul.Sympatyczna 15', 'Niezgoda Aleksandra');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (16, 855566216, 'ul.Obywatelska 18', 'Andrzej Cisek');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (17, 909258589, 'ul.Bronowicka 55', 'Paulina Sawa');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (18, 773335448, 'ul.Ruska 3', 'Karolina Zięba');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (19, 796362145, 'ul.Lubartowska 14', 'Oliwia Woloszyn');
+INSERT INTO PIZZERIA.KLIENCI (ID_KLIENTA, NR_TEL, ADRES, IMIE_NAZWISKO) 
+	VALUES (20, 665594111, 'ul.Obywatelska 8', 'Małgorzata Onuszkiewicz');
+
+
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (1, 'Herbata zielona', 3.50, 'N','0,2 l','zimne','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (2, 'Herbata czarna', 3.50, 'N','0,2 l','zimne','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (3, 'Coca-cola', 4.50, 'N','0,2 l','zimne','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (4, 'Coca-cola Light', 4.50, 'N','0,2 l','zimne','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (5, ' Fanta', 4.50, 'N','0,2 l','zimne','nie');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (6, 'Sprite', 4.50, 'N','0,2 l','zimne','nie');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (7, ' Tonic Kinley', 4.50, 'N','0,2 l','zimne','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (8, 'Woda niegazowana', 4.50, 'N','0,25 l','zimne','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (9, 'Woda gazowana', 4.50, 'N','0,25 l','zimne','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (10, 'Woda Aqua Panna n/g', 10.50, 'N','0,75 l','zimne','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (11, 'Woda San Pellegrino gaz', 11.50, 'N','0,75 l','zimne','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (12, 'Sok owocowy:jabłko,pomarańcza', 9.00, 'N','1 l','zimne','nie');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (13, 'Sok ze świeżych pomarańczy', 10.00, 'N','0,25 l','zimne','nie');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (14, ' Sok ze świeżych grejpfrutów', 11.00, 'N','0,25 l','zimne','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (15, ' Nestea', 4.50, 'N','0.25 l','zimne','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (16, 'Sok owocowy: jabłko', 5.00, 'N','0,25 l','zimne','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (17, 'Sok owocowy: pomidor', 5.00, 'N','0.25 l','zimne','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (18, 'Sok owocowy: czarna porzeczka', 5.00, 'N','0,25 l','zimne','nie');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (19, 'Sok owocowy: multiwitamina', 5.00, 'N','0.25 l','zimne','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (20, 'Sok owocowy: pomarańcza', 5.00, 'N','0,25 l','zimne','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (21, 'Sok owocowy: grejpfrut ', 5.00, 'N','0.25 l','zimne','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (22, 'Espresso', 6.50, 'N','0,1 l','gorące','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (23, 'Cappuccino', 7.50, 'N','0,2 l','gorące','nie');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (24, 'Latte', 9.50, 'N','0,2 l','gorące','nie');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (25, 'Kawa po irlandzku', 9.50, 'N','0,2 l','gorące','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,OPIS,DOSTEPNOSC) 
+	VALUES (26, 'Krwawa Mary', 16.00, 'T','-','drinki','koktajl o specyficznym smaku dzieki połaczeniu czystej wódki, pomidorów, cytryny i tabasco','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,OPIS,DOSTEPNOSC) 
+	VALUES (27, 'Piňa Colada ', 17.00, 'T','-','drinki','słodki karaibski koktail alkoholowy','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,OPIS,DOSTEPNOSC) 
+	VALUES (28, 'Kamikaze', 15.00, 'T','-','drinki','shot podawany w czterech kieliszkach do wódki o orzeźwiającym, kwaśnym smaku','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,OPIS,DOSTEPNOSC) 
+	VALUES (29, 'Mojito ', 17.00, 'T','-','drinki','koktajl pochodzenia kubańskiego na bazie białego rumu o orzeźwiającym,słodko-kwaśno-mietowym smaku','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,OPIS,DOSTEPNOSC) 
+	VALUES (30, 'Cuba Libre', 17.00, 'T','-','drinki','koktajl alkoholowy znany również jako "rum z colą"','nie');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (31, 'Kawa czarna', 6.50, 'N','-','gorące','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (32, 'Kawa biała', 7.50, 'N','-','gorące','nie');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,OPIS,DOSTEPNOSC) 
+	VALUES (33, 'Villa Bianchi Bianco', 75.00, 'T','0,75 l','WINO','wino wytrawne, białe','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,OPIS,DOSTEPNOSC) 
+	VALUES (34, 'Serrano Rosso ', 75.00, 'T','0,75 l','WINO','wino wytrawne, czerwone','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,OPIS,DOSTEPNOSC) 
+	VALUES (35, 'Lambrusco Reggiano ', 75.00, 'T','0,75 l','WINO','wino lekko deserowe, czerwone, frizzante','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,OPIS,DOSTEPNOSC) 
+	VALUES (36, 'Dolce Novella ', 75.00, 'T','0,75 l','WINO','wino deserowe, czerwone, lekko słodkie','nie');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (37, 'Tyskie', 9.00, 'T','-','PIWO','tak');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (38, 'Lech Premium', 9.00, 'T','-','PIWO','nie');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (39, 'Kasztelan (Niepasteryzowane)', 9.00, 'T','0,5 l','PIWO','nie');
+INSERT INTO PIZZERIA.MENU_NAPOJE (ID_NAPOJU, NAZWA_NAPOJU, CENA, DLA_PELNOLETNICH,OBJETOSC,RODZAJ,DOSTEPNOSC) 
+	VALUES (40, 'Książęce (pszeniczne)', 10.00, 'T','0,5 l','PIWO','nie');
+
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (1, 'Margherita', 'sos, ser, oregano', 'cienkie', 'mała', 13.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (2, 'Margherita', 'sos, ser, oregano', 'cienkie', 'średnia', 16.70, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (3, 'Margherita', 'sos, ser, oregano', 'cienkie', 'duża', 23.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (4, 'Margherita', 'sos, ser, oregano', 'grube', 'mała', 12.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (5, 'Margherita', 'sos, ser, oregano', 'grube', 'średnia', 15.70, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (6, 'Margherita', 'sos, ser, oregano', 'grube', 'duża', 22.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (7, 'Tradycyjna', 'sos, ser, pieczarki,szynka, bazylia', 'cienkie', 'mała', 14.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (8, 'Tradycyjna', 'sos, ser, pieczarki,szynka, bazylia', 'cienkie', 'średnia', 18.70, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (9, 'Tradycyjna', 'sos, ser, pieczarki,szynka, bazylia', 'cienkie', 'duża', 26.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (10, 'Tradycyjna', 'sos, ser, pieczarki,szynka, bazylia', 'grube', 'mała', 13.50, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (11, 'Tradycyjna', 'sos, ser, pieczarki,szynka, bazylia', 'grube', 'średnia', 17.70, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (12, 'Tradycyjna', 'sos, ser, pieczarki,szynka, bazylia', 'grube', 'duża', 25.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (13, 'Farmera', 'sos, ser, kurczak, ogórek kiszony, pieczarki, bazylia', 'cienkie', 'mała', 18.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (14, 'Farmera', 'sos, ser, kurczak, ogórek kiszony, pieczarki, bazylia', 'cienkie', 'średnia', 26.70, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (15, 'Farmera', 'sos, ser, kurczak, ogórek kiszony, pieczarki, bazylia', 'cienkie', 'duża', 32.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (16, 'Farmera', 'sos, ser, kurczak, ogórek kiszony, pieczarki, bazylia', 'grube', 'mała', 18.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (17, 'Farmera', 'sos, ser, kurczak, ogórek kiszony, pieczarki, bazylia', 'grube', 'średnia', 26.70, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (18, 'Farmera', 'sos, ser, kurczak, ogórek kiszony, pieczarki, bazylia', 'grube', 'duża', 32.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (19, 'Bolognese', 'sos, ser, bolognese (mięso mielone), cebula, oregano', 'cienkie', 'mała', 15.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (20, 'Bolognese', 'sos, ser, bolognese (mięso mielone), cebula, oregano', 'cienkie', 'średnia', 20.70, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (21, 'Bolognese', 'sos, ser, bolognese (mięso mielone), cebula, oregano', 'cienkie', 'duża', 30.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (22, 'Bolognese', 'sos, ser, bolognese (mięso mielone), cebula, oregano', 'grube', 'mała', 15.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (23, 'Bolognese', 'sos, ser, bolognese (mięso mielone), cebula, oregano', 'grube', 'średnia', 20.70, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (24, 'Bolognese', 'sos, ser, bolognese (mięso mielone), cebula, oregano', 'grube', 'duża', 30.00, 'tak');
+
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (25, 'Hawajska', 'sos, ser, szynka, ananas, bazylia', 'cienkie', 'mała',16.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (26, 'Hawajska', 'sos, ser, szynka, ananas, bazylia', 'cienkie', 'średnia',21.70, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (27, 'Hawajska', 'sos, ser, szynka, ananas, bazylia', 'cienkie', 'duża',31.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (28, 'Hawajska', 'sos, ser, szynka, ananas, bazylia', 'grube', 'mała',16.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (29, 'Hawajska', 'sos, ser, szynka, ananas, bazylia', 'grube', 'średnia',21.70, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (30, 'Hawajska', 'sos, ser, szynka, ananas, bazylia', 'grube', 'duża',31.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (31, 'Capricciosa', 'sos, ser, szynka, pieczarki, oliwki, pomidor, oregano', 'cienkie', 'mała', 18.00,'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (32, 'Capricciosa', 'sos, ser, szynka, pieczarki, oliwki, pomidor, oregano', 'cienkie', 'średnia', 23.70,'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (33, 'Capricciosa', 'sos, ser, szynka, pieczarki, oliwki, pomidor, oregano', 'cienkie', 'duża', 34.00,'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (34, 'Capricciosa', 'sos, ser, szynka, pieczarki, oliwki, pomidor, oregano', 'grube', 'mała', 18.00,'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (35, 'Capricciosa', 'sos, ser, szynka, pieczarki, oliwki, pomidor, oregano', 'grube', 'średnia', 23.70, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (36, 'Capricciosa', 'sos, ser, szynka, pieczarki, oliwki, pomidor, oregano', 'grube', 'duża',  34.00,'tak');
+
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (37, 'Peroni', 'sos, ser, salami, kurczak, pieczarki, kukurydza, czosnek, cebula prażona, oregano', 'cienkie', 'mała', 21.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (38, 'Peroni', 'sos, ser, salami, kurczak, pieczarki, kukurydza, czosnek, cebula prażona, oregano', 'cienkie', 'średnia', 24.70,'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (39, 'Peroni', 'sos, ser, salami, kurczak, pieczarki, kukurydza, czosnek, cebula prażona, oregano', 'cienkie', 'duża', 35.00,'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (40, 'Peroni', 'sos, ser, salami, kurczak, pieczarki, kukurydza, czosnek, cebula prażona, oregano', 'grube', 'mała', 21.00,'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (41, 'Peroni', 'sos, ser, salami, kurczak, pieczarki, kukurydza, czosnek, cebula prażona, oregano', 'grube', 'średnia', 24.70,'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (42, 'Peroni', 'sos, ser, salami, kurczak, pieczarki, kukurydza, czosnek, cebula prażona, oregano', 'grube', 'duża',  35.00,'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (43, 'Vegetarian', 'sos, ser, pieczarki, papryka, cebula, jajko, peperoni, oliwki, pomidor, brokuły, kukurydza, groszek, czerwona fasola, oregano', 'cienkie', 'mała',24.00,'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (44, 'Vegetarian', 'sos, ser, pieczarki, papryka, cebula, jajko, peperoni, oliwki, pomidor, brokuły, kukurydza, groszek, czerwona fasola, oregano', 'cienkie', 'średnia',30.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (45, 'Vegetarian', 'sos, ser, pieczarki, papryka, cebula, jajko, peperoni, oliwki, pomidor, brokuły, kukurydza, groszek, czerwona fasola, oregano', 'cienkie', 'duża',36.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (46, 'Vegetarian', 'sos, ser, pieczarki, papryka, cebula, jajko, peperoni, oliwki, pomidor, brokuły, kukurydza, groszek, czerwona fasola, oregano', 'grube', 'mała',24.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (47, 'Vegetarian', 'sos, ser, pieczarki, papryka, cebula, jajko, peperoni, oliwki, pomidor, brokuły, kukurydza, groszek, czerwona fasola, oregano', 'grube', 'średnia',30.00,'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (48, 'Vegetarian', 'sos, ser, pieczarki, papryka, cebula, jajko, peperoni, oliwki, pomidor, brokuły, kukurydza, groszek, czerwona fasola, oregano', 'grube', 'duża',  36.00, 'tak');
+
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 	
+        VALUES (49, 'Frutti di mare', 'sos, ser, owoce morza, czosnek, oregano', 'cienkie', 'mała', 21.00,'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (50, 'Frutti di mare', 'sos, ser, owoce morza, czosnek, oregano', 'cienkie', 'średnia', 36.00,'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (51, 'Frutti di mare', 'sos, ser, owoce morza, czosnek, oregano', 'cienkie', 'duża', 37.00, 'nie');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (52, 'Frutti di mare', 'sos, ser, owoce morza, czosnek, oregano', 'grube', 'mała', 21.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (53, 'Frutti di mare', 'sos, ser, owoce morza, czosnek, oregano', 'grube', 'średnia',  36.00,'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (54, 'Frutti di mare', 'sos, ser, owoce morza, czosnek, oregano', 'grube', 'duża',  37.00, 'tak');
+
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 	
+        VALUES (55, 'Giardinierra', 'sos, ser, szynka, salami, pieczarki, papryka, cebula, kukurydza, bazylia	', 'cienkie', 'mała', 20.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (56, 'Giardinierra', 'sos, ser, szynka, salami, pieczarki, papryka, cebula, kukurydza, bazylia	', 'cienkie', 'średnia', 25.00,  'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (57, 'Giardinierra', 'sos, ser, szynka, salami, pieczarki, papryka, cebula, kukurydza, bazylia	', 'cienkie', 'duża', 35.00,  'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (58, 'Giardinierra', 'sos, ser, szynka, salami, pieczarki, papryka, cebula, kukurydza, bazylia	', 'grube', 'mała', 20.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (59, 'Giardinierra', 'sos, ser, szynka, salami, pieczarki, papryka, cebula, kukurydza, bazylia	', 'grube', 'średnia',   25.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (60, 'Giardinierra', 'sos, ser, szynka, salami, pieczarki, papryka, cebula, kukurydza, bazylia	', 'grube', 'duża',  35.00,  'tak');
+
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 	
+        VALUES (61, 'Mexicana', 'sos, ser, salami, pieczarki, papryka, cebula, peperoni, czerwona fasola, chili, bazylia', 'cienkie', 'mała', 18.00,  'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (62, 'Mexicana', 'sos, ser, salami, pieczarki, papryka, cebula, peperoni, czerwona fasola, chili, bazylia', 'cienkie', 'średnia', 22.00,  'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (63, 'Mexicana', 'sos, ser, salami, pieczarki, papryka, cebula, peperoni, czerwona fasola, chili, bazylia', 'cienkie', 'duża', 34.00,  'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (64, 'Mexicana', 'sos, ser, salami, pieczarki, papryka, cebula, peperoni, czerwona fasola, chili, bazylia', 'grube', 'mała', 18.00,  'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (65, 'Mexicana', 'sos, ser, salami, pieczarki, papryka, cebula, peperoni, czerwona fasola, chili, bazylia', 'grube', 'średnia',   22.00,  'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (66, 'Mexicana', 'sos, ser, salami, pieczarki, papryka, cebula, peperoni, czerwona fasola, chili, bazylia', 'grube', 'duża',  34.00,  'tak');
+
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 	
+        VALUES (67, 'Diavolo', 'sos, ser, szynka, pieczarki, salami, cebula, oregano', 'cienkie', 'mała', 17.00,  'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (68, 'Diavolo', ' sos, ser, szynka, pieczarki, salami, cebula, oregano', 'cienkie', 'średnia', 23.00,  'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (69, 'Diavolo', 'sos, ser, szynka, pieczarki, salami, cebula, oregano', 'cienkie', 'duża', 33.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (70, 'Diavolo', 'sos, ser, szynka, pieczarki, salami, cebula, oregano', 'grube', 'mała', 17.00,  'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (71, 'Diavolo', 'sos, ser, szynka, pieczarki, salami, cebula, oregano', 'grube', 'średnia', 23.00,  'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (72, 'Diavolo', 'sos, ser, szynka, pieczarki, salami, cebula, oregano', 'grube', 'duża', 33.00,  'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (73, 'Swoja', 'sos, ser', 'grube', 'mała', 8.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (74, 'Swoja', 'sos, ser', 'grube', 'średnia', 9.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (75, 'Swoja', 'sos, ser', 'grube', 'duża', 10.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (76, 'Swoja', 'sos, ser', 'cienkie', 'średnia', 10.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (77, 'Swoja', 'sos, ser', 'cienkie', 'mała', 9.00, 'tak');
+INSERT INTO PIZZERIA.MENU_PIZZA (ID_PIZZY, NAZWA, SKLADNIKI, CIASTO, ROZMIAR, CENA_PIZZA, DOSTEPNOSC) 
+	VALUES (78, 'Swoja', 'sos, ser', 'cienkie', 'duża', 11.00, 'tak');
+
+
+INSERT INTO PIZZERIA.PRACOWNICY (ID_PRAC, LOGIN, HASLO, TELEFON, ADRES, PESEL, STANOWISKO, EMAIL) 
+	VALUES (1, 'Iwanek Weronika', 'iw', 459685741, 'ul. Sympatyczna 3', 78945612359, 'Administrator', 'iwanekweronika@poczta.pl');
+INSERT INTO PIZZERIA.PRACOWNICY (ID_PRAC, LOGIN, HASLO, TELEFON, ADRES, PESEL, STANOWISKO, EMAIL) 
+	VALUES (2, 'Kaczor Sabina', 'ks', 453385123, 'ul. Zuchów 5', 14455612355, 'Administrator', 'kaczorsabina@poczta.pl');
+INSERT INTO PIZZERIA.PRACOWNICY (ID_PRAC, LOGIN, HASLO, TELEFON, ADRES, PESEL, STANOWISKO, EMAIL) 
+	VALUES (3, 'Sowerda Wiktoria', 'sw', 449685788, 'ul. Bursztynowa 23', 11145612579, 'Administrator', 'sowerdawiktoria@poczta.pl');
+INSERT INTO PIZZERIA.PRACOWNICY (ID_PRAC, LOGIN, HASLO, TELEFON, ADRES, PESEL, STANOWISKO, EMAIL) 
+	VALUES (4, 'Medyńska Julia', 'mj', 696385123, 'ul. Lotnicza 5', 33355612355, 'Pracownik', 'medynskajulia@poczta.pl');
+INSERT INTO PIZZERIA.PRACOWNICY (ID_PRAC, LOGIN, HASLO, TELEFON, ADRES, PESEL, STANOWISKO, EMAIL) 
+	VALUES (5, 'Stachyra Stanisław', 'ss', 466685788, 'ul. Niska 45', 11562612579, 'Pracownik', 'stachyrastanislaw@poczta.pl');
+
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (1, 3.00, 3.50, 4.00, 'mięsne', 'boczek','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (2, 3.00, 3.50, 4.00, 'mięsne', 'kabanos','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (3, 3.00, 3.50, 4.00, 'mięsne', 'kiełbasa "wiejska"','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (4, 3.00, 3.50, 4.00, 'mięsne', 'kurczak','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (5, 3.00, 3.50, 4.00, 'mięsne', 'salami','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (6, 3.00, 3.50, 3.00, 'mięsne', 'szynka','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (7, 2.00, 2.50, 3.00, 'jarskie', 'ananas','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (8, 2.00, 2.50, 3.00, 'jarskie', 'brokuły','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (9, 2.00, 2.50, 3.00, 'jarskie', 'ananas','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (10, 2.00, 2.50, 3.00, 'jarskie', 'cebula biała','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (11, 2.00, 2.50, 3.00, 'jarskie', 'cebula czerwona','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (12, 2.00, 2.50, 3.00, 'jarskie', 'feta','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (13, 2.00, 2.50, 3.00, 'jarskie', 'kapary','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (14, 2.00, 2.50, 3.00, 'jarskie', 'kukurydza','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (15, 2.00, 2.50, 3.00, 'jarskie', 'ogórek konserowy','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (16, 2.00, 2.50, 3.00, 'jarskie', 'oliwki czarne','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (17, 2.00, 2.50, 3.00, 'jarskie', 'oliwki zielone','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (18, 2.00, 2.50, 3.00, 'jarskie', 'papryka chilli','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (19, 2.00, 2.50, 3.00, 'jarskie', 'papryka pepperoni','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (20, 2.00, 2.50, 3.00, 'jarskie', 'pieczarki','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (21, 2.00, 2.50, 3.00, 'jarskie', 'podwójny ser','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (22, 2.00, 2.50, 3.00, 'jarskie', 'pomidor','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (23, 2.00, 2.50, 3.00, 'sos', 'mieszany','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (24, 2.00, 2.50, 3.00, 'jarskie', 'ser parmezan','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (25, 2.00, 2.50, 3.00, 'jarskie', 'szpinak','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (26, 3.00, 3.50, 4.00, 'owoce morza', 'krewetki','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (27, 3.00, 3.50, 4.00, 'owoce morza', 'owoce morza (mix)','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (28, 3.00, 3.50, 4.00, 'owoce morza', 'tuńczyk','nie');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (29, 2.00, 2.00, 2.00, 'sos', 'tomato','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (30, 2.00, 2.00, 2.00, 'sos', 'ketchup','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (31, 2.00, 2.00, 2.00, 'sos', 'czosnkowy','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (32, 2.00, 2.00, 2.00, 'sos', 'barbecue','nie');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (33, 2.00, 2.00, 2.00, 'sos', 'meksykański','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (34, 2.50, 3.00, 3.50, 'jarskie', 'groszek','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (35, 2.50, 3.00, 3.50, 'jarskie', 'fasola czerwona','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (36, 3.50, 4.00, 4.50, 'mięsne', ' polędwica','tak');
+INSERT INTO PIZZERIA.SKLADNIKI (ID_SKLADNIKA, CENA_SKL_MALA, CENA_SKL_SREDNIA, CENA_SKL_DUZA, RODZAJ, NAZWA, DOSTEPNOSC) 
+	VALUES (37,  2.00, 2.00, 2.00, 'jarskie', 'oregano','nie');
+
+
+
