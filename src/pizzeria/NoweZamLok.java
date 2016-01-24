@@ -521,7 +521,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 usunpozycjepActionPerformed(evt);
             }
         });
-        getContentPane().add(usunpozycjep, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 170, 130, -1));
+        getContentPane().add(usunpozycjep, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 170, 130, -1));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
