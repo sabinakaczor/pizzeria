@@ -106,7 +106,6 @@ public class NoweZamLok extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         opisnapoju = new javax.swing.JTextArea();
         buttonpotwierdz = new javax.swing.JButton();
-        buttonwyczyscp = new javax.swing.JButton();
         usunpozycjep = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -114,7 +113,6 @@ public class NoweZamLok extends javax.swing.JFrame {
         listazamowiennapojow = new javax.swing.JList<>();
         jLabel3 = new javax.swing.JLabel();
         buttonusunn = new javax.swing.JButton();
-        buttonwyczyscn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1370, 720));
@@ -517,21 +515,13 @@ public class NoweZamLok extends javax.swing.JFrame {
         });
         getContentPane().add(buttonpotwierdz, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 580, 300, 60));
 
-        buttonwyczyscp.setText("Wyczyść");
-        buttonwyczyscp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonwyczyscpActionPerformed(evt);
-            }
-        });
-        getContentPane().add(buttonwyczyscp, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 170, 130, -1));
-
         usunpozycjep.setText("Usuń pozycję");
         usunpozycjep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usunpozycjepActionPerformed(evt);
             }
         });
-        getContentPane().add(usunpozycjep, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 170, 130, -1));
+        getContentPane().add(usunpozycjep, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 170, 130, -1));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -559,15 +549,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 buttonusunnActionPerformed(evt);
             }
         });
-        getContentPane().add(buttonusunn, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 340, 130, -1));
-
-        buttonwyczyscn.setText("Wyczyść");
-        buttonwyczyscn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonwyczyscnActionPerformed(evt);
-            }
-        });
-        getContentPane().add(buttonwyczyscn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 340, 130, -1));
+        getContentPane().add(buttonusunn, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 340, 130, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -910,11 +892,6 @@ public class NoweZamLok extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_usunpozycjepActionPerformed
 
-    private void buttonwyczyscpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonwyczyscpActionPerformed
-
-       
-    }//GEN-LAST:event_buttonwyczyscpActionPerformed
-
     private void buttonpotwierdzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonpotwierdzActionPerformed
         double wart = 0;
         try {
@@ -998,10 +975,6 @@ public class NoweZamLok extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_buttonusunnActionPerformed
 
-    private void buttonwyczyscnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonwyczyscnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buttonwyczyscnActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -1044,8 +1017,6 @@ public class NoweZamLok extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroupoplata;
     private javax.swing.JButton buttonpotwierdz;
     private javax.swing.JButton buttonusunn;
-    private javax.swing.JButton buttonwyczyscn;
-    private javax.swing.JButton buttonwyczyscp;
     private javax.swing.JTextField cena;
     private javax.swing.JTextField cena1;
     private javax.swing.JTextField cena2;
