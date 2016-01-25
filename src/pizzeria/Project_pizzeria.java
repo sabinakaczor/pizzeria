@@ -29,7 +29,7 @@ public class Project_pizzeria extends javax.swing.JFrame {
 
     public Project_pizzeria() {
 
-        
+        setLocationRelativeTo(null);
         initComponents();
         String nazwa = "Pizzeria \"";
         nazwa += sprawdznazwe();
@@ -188,6 +188,7 @@ public class Project_pizzeria extends javax.swing.JFrame {
                             + nazwa + "'),'" + datazal + "','sesja trwa')";
                     stmt3.executeUpdate(log);
                     Zamowienia zam = new Zamowienia();
+                    zam.setLocationRelativeTo(null);
                     zam.setVisible(true);
                     dispose();
                 } else {

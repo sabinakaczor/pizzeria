@@ -26,8 +26,8 @@ import javax.swing.table.DefaultTableModel;
 public class Edycja_zamowienia extends javax.swing.JFrame {
 
     Connection con;
-    Statement stmt1, stmt2, stmt3, stmt4, stmt5, stmt6;
-    ResultSet res1, res2, res3, res4, res5;
+    Statement stmt, stmt1, stmt2, stmt3, stmt4, stmt5, stmt6, stmt7;
+    ResultSet res1, res2, res3, res4, res5, res6, res7;
     DefaultTableModel model;
     DefaultListModel<String> model1 = new DefaultListModel<>();
     static Zamowienia zam;
@@ -67,7 +67,7 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
         zreal = new javax.swing.JToggleButton();
         niezreal = new javax.swing.JToggleButton();
         nadpis = new javax.swing.JLabel();
-        pracowniki = new javax.swing.JComboBox();
+        pracownicy = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         wszzam = new javax.swing.JToggleButton();
         przegladaj = new javax.swing.JToggleButton();
@@ -102,6 +102,7 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tabelka.setMaximumSize(new java.awt.Dimension(0, 0));
         tabelka.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelkaMouseClicked(evt);
@@ -135,7 +136,7 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
             tabelka.getColumnModel().getColumn(7).setMaxWidth(100);
         }
 
-        panel_tabelka.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, 910, 280));
+        panel_tabelka.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, 910, 220));
 
         zrealizuj.setText("Zrealizuj");
         zrealizuj.addActionListener(new java.awt.event.ActionListener() {
@@ -197,12 +198,12 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
         nadpis.setText("*- żeby posortować dane kliknij na nagłówek tablicy;");
         panel_tabelka.add(nadpis, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 430, -1));
 
-        pracowniki.addActionListener(new java.awt.event.ActionListener() {
+        pracownicy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pracownikiActionPerformed(evt);
+                pracownicyActionPerformed(evt);
             }
         });
-        panel_tabelka.add(pracowniki, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 460, 200, 30));
+        panel_tabelka.add(pracownicy, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 460, 200, 30));
 
         jLabel1.setText("Wyszukaj zamówienia pracownika:");
         panel_tabelka.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 430, 200, 30));
@@ -260,47 +261,18 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
 
     private void usunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usunActionPerformed
 
-        int j = tabelka.getRowCount();
-        String ostt = tabelka.getValueAt(j - 1, 0).toString();
-        int ost = Integer.parseInt(ostt);
         if (tabelka.getSelectedRowCount() > 0) {
-            model1.removeAllElements();
-            lista.setModel(model1);
             int wiersz = tabelka.getSelectedRow();
             String s = tabelka.getValueAt(wiersz, 0).toString();
-            try {
-                con = DriverManager.getConnection(
-                        "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
-                );
-                stmt5 = con.createStatement();
-
-                stmt5.executeUpdate(
-                        "delete from szcz_o_skl where id_szcz_o_pizzy in "
-                        + "(select id_szcz_o_pizzy from szcz_o_pizzy where id_zam=" + s + ")"
-                );
-                int id1 = Integer.parseInt(s);
-                id1++;
-                for (int i = id1; i <= ost; i++) {
-                    String naprawid = "UPDATE szcz_o_skl SET id_szcz_o_pizzy =" + (i - 1) + " WHERE id_zam =" + i;
-                    stmt5.executeUpdate(naprawid);
-                }
-                stmt5.executeUpdate(
-                        "delete from szcz_o_pizzy where id_zam=" + s
-                );
-                stmt5.executeUpdate(
-                        "delete from szcz_o_napoju where id_zam=" + s
-                );
-                stmt5.executeUpdate(
-                        "delete from zamowienie where id_zam=" + s
-                );
-            } catch (SQLException ex) {
-                Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            int id = Integer.parseInt(s);
+            usunzamowieniezbazy(id);
+            model1.removeAllElements();
+            lista.setModel(model1);
+            czysctabelke();
+            wyswietldane(model);
         } else {
             JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");
         }
-        czysctabelke();
-        wyswietldane(model);
     }//GEN-LAST:event_usunActionPerformed
 
     private void anrealActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anrealActionPerformed
@@ -327,7 +299,7 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
             panel_tabelka.setVisible(true);
             czysctabelke();
             wyswietldane(model);
-            pracowniki.removeAllItems();
+            pracownicy.removeAllItems();
             uzupelnijlisty();
         } else {
             panel_tabelka.setVisible(false);
@@ -360,6 +332,11 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
         lista.setModel(model1);
         if (ost.isSelected()) {
             wszzam.setSelected(false);
+            model1.removeAllElements();
+            lista.setModel(model1);
+            pracownicy.setSelectedIndex(0);
+            zreal.setSelected(false);
+            niezreal.setSelected(false);
             czysctabelke();
             wyswietldane(model);
         } else {
@@ -374,6 +351,10 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
         if (zreal.isSelected()) {
             niezreal.setSelected(false);
             wszzam.setSelected(false);
+            ost.setSelected(false);
+            model1.removeAllElements();
+            lista.setModel(model1);
+            pracownicy.setSelectedIndex(0);
             czysctabelke();
             wyswietldane(model);
         } else {
@@ -386,8 +367,12 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
         model1.removeAllElements();
         lista.setModel(model1);
         if (niezreal.isSelected()) {
+            pracownicy.setSelectedIndex(0);
             zreal.setSelected(false);
             wszzam.setSelected(false);
+            ost.setSelected(false);
+            model1.removeAllElements();
+            lista.setModel(model1);
             czysctabelke();
             wyswietldane(model);
         } else {
@@ -396,22 +381,23 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_niezrealActionPerformed
 
-    private void pracownikiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pracownikiActionPerformed
+    private void pracownicyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pracownicyActionPerformed
         model1.removeAllElements();
         lista.setModel(model1);
-        int i = pracowniki.getSelectedIndex();
-        wszzam.setSelected(false);
+        int i = pracownicy.getSelectedIndex();
         if (i > 0) {
+            niezreal.setSelected(false);
+            zreal.setSelected(false);
+            wszzam.setSelected(false);
+            ost.setSelected(false);
             czysctabelke();
             wyswietldane(model);
-            wszzam.setSelected(false);
-
         } else {
             czysctabelke();
             wyswietldane(model);
         }
 
-    }//GEN-LAST:event_pracownikiActionPerformed
+    }//GEN-LAST:event_pracownicyActionPerformed
 
     private void wszzamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wszzamActionPerformed
         model1.removeAllElements();
@@ -443,7 +429,7 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Edycja_zamowienia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-         //</editor-fold>
+        //</editor-fold>
 
         //</editor-fold>
 
@@ -456,7 +442,7 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
     }
 
     void uzupelnijlisty() {
-        pracowniki.removeAllItems();
+        pracownicy.removeAllItems();
         try {
             con = DriverManager.getConnection(
                     "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
@@ -468,10 +454,10 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
         } catch (Exception e) {
         }
         try {
-            if (pracowniki.getItemCount() == 0) {
-                pracowniki.addItem("");
+            if (pracownicy.getItemCount() == 0) {
+                pracownicy.addItem("");
                 while (res4.next()) {
-                    pracowniki.addItem(res4.getString("login"));
+                    pracownicy.addItem(res4.getString("login"));
                 }
             }
         } catch (SQLException ex) {
@@ -557,30 +543,57 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
     }
 
     void wyswietldane(DefaultTableModel model) {
-        String insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC order by id_ZAM";
 
-        if (ost.isSelected() && zreal.isSelected() == false && pracowniki.getSelectedIndex() == 0 && niezreal.isSelected() == false && wszzam.isSelected() == false) {
-            insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where id_zam=(select max(id_zam) from zamowienie) order by id_ZAM";
-        } else if (pracowniki.getSelectedIndex() > 0 && zreal.isSelected() == false && niezreal.isSelected() == false && ost.isSelected() == false && wszzam.isSelected() == false) {
-            insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where  login like '" + pracowniki.getSelectedItem().toString() + "' order by id_ZAM";
-        } else if (zreal.isSelected() && pracowniki.getSelectedIndex() == 0 && niezreal.isSelected() == false && wszzam.isSelected() == false && ost.isSelected() == false) {
-            insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where zrealizowane='T' order by id_ZAM";
-        } else if (niezreal.isSelected() && pracowniki.getSelectedIndex() == 0 && zreal.isSelected() == false && wszzam.isSelected() == false && ost.isSelected() == false) {
-            insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where zrealizowane='N' order by id_ZAM";
-        } else if (ost.isSelected() && zreal.isSelected() && pracowniki.getSelectedIndex() == 0 && wszzam.isSelected() == false) {
-            insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where id_zam=(select max(id_zam) from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where zrealizowane='T') order by id_ZAM";
-        } else if (ost.isSelected() && niezreal.isSelected() && pracowniki.getSelectedIndex() == 0 && wszzam.isSelected() == false) {
-            insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where id_zam=(select max(id_zam) from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where zrealizowane='N') order by id_ZAM";
-        } else if (ost.isSelected() && pracowniki.getSelectedIndex() > 0 && zreal.isSelected() == false && wszzam.isSelected() == false) {
-            insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE id_zam=(select max(id_zam) from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC  where login like '" + pracowniki.getSelectedItem().toString() + "') order by id_ZAM";
-        } else if (zreal.isSelected() && pracowniki.getSelectedIndex() > 0 && wszzam.isSelected() == false && ost.isSelected() == false) {
-            insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE login  like '" + pracowniki.getSelectedItem().toString() + "' and zrealizowane='T' order by id_ZAM";
-        } else if (niezreal.isSelected() && pracowniki.getSelectedIndex() > 0 && zreal.isSelected() == false && wszzam.isSelected() == false && ost.isSelected() == false) {
-            insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE login  like '" + pracowniki.getSelectedItem().toString() + "' and zrealizowane='N' order by id_ZAM";
-        } else if (ost.isSelected() && niezreal.isSelected() && pracowniki.getSelectedIndex() > 0 && zreal.isSelected() == false && wszzam.isSelected() == false) {
-            insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE  id_zam= (select max(id_zam) from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE login  like '" + pracowniki.getSelectedItem().toString() + "' and zrealizowane='N' ) and login  like '" + pracowniki.getSelectedItem().toString() + "' and zrealizowane='N' order by id_ZAM";
-        } else if (ost.isSelected() && zreal.isSelected() && pracowniki.getSelectedIndex() > 0 && niezreal.isSelected() == false && wszzam.isSelected() == false) {
-            insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE id_zam= (select max(id_zam) from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE login  like '" + pracowniki.getSelectedItem().toString() + "' and zrealizowane='T' ) and login  like '" + pracowniki.getSelectedItem().toString() + "' and zrealizowane='T'  order by id_ZAM";
+//Object[] row = {};
+        /*   String insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC order by id_ZAM";
+
+         if (ost.isSelected() && zreal.isSelected() == false && pracowniki.getSelectedIndex() == 0 && niezreal.isSelected() == false && wszzam.isSelected() == false) {
+         insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where id_zam=(select max(id_zam) from zamowienie) order by id_ZAM";
+         } else if (pracowniki.getSelectedIndex() > 0 && zreal.isSelected() == false && niezreal.isSelected() == false && ost.isSelected() == false && wszzam.isSelected() == false) {
+         insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where  login like '" + pracowniki.getSelectedItem().toString() + "' order by id_ZAM";
+         } else if (zreal.isSelected() && pracowniki.getSelectedIndex() == 0 && niezreal.isSelected() == false && wszzam.isSelected() == false && ost.isSelected() == false) {
+         insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where zrealizowane='T' order by id_ZAM";
+         } else if (niezreal.isSelected() && pracowniki.getSelectedIndex() == 0 && zreal.isSelected() == false && wszzam.isSelected() == false && ost.isSelected() == false) {
+         insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where zrealizowane='N' order by id_ZAM";
+         } else if (ost.isSelected() && zreal.isSelected() && pracowniki.getSelectedIndex() == 0 && wszzam.isSelected() == false) {
+         insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where id_zam=(select max(id_zam) from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where zrealizowane='T') order by id_ZAM";
+         } else if (ost.isSelected() && niezreal.isSelected() && pracowniki.getSelectedIndex() == 0 && wszzam.isSelected() == false) {
+         insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where id_zam=(select max(id_zam) from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where zrealizowane='N') order by id_ZAM";
+         } else if (ost.isSelected() && pracowniki.getSelectedIndex() > 0 && zreal.isSelected() == false && wszzam.isSelected() == false) {
+         insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE id_zam=(select max(id_zam) from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC  where login like '" + pracowniki.getSelectedItem().toString() + "') order by id_ZAM";
+         } else if (zreal.isSelected() && pracowniki.getSelectedIndex() > 0 && wszzam.isSelected() == false && ost.isSelected() == false) {
+         insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE login  like '" + pracowniki.getSelectedItem().toString() + "' and zrealizowane='T' order by id_ZAM";
+         } else if (niezreal.isSelected() && pracowniki.getSelectedIndex() > 0 && zreal.isSelected() == false && wszzam.isSelected() == false && ost.isSelected() == false) {
+         insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE login  like '" + pracowniki.getSelectedItem().toString() + "' and zrealizowane='N' order by id_ZAM";
+         } else if (ost.isSelected() && niezreal.isSelected() && pracowniki.getSelectedIndex() > 0 && zreal.isSelected() == false && wszzam.isSelected() == false) {
+         insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE  id_zam= (select max(id_zam) from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE login  like '" + pracowniki.getSelectedItem().toString() + "' and zrealizowane='N' ) and login  like '" + pracowniki.getSelectedItem().toString() + "' and zrealizowane='N' order by id_ZAM";
+         } else if (ost.isSelected() && zreal.isSelected() && pracowniki.getSelectedIndex() > 0 && niezreal.isSelected() == false && wszzam.isSelected() == false) {
+         insert = "select * from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE id_zam= (select max(id_zam) from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE login  like '" + pracowniki.getSelectedItem().toString() + "' and zrealizowane='T' ) and login  like '" + pracowniki.getSelectedItem().toString() + "' and zrealizowane='T'  order by id_ZAM";
+         }*/
+        String insert = "select * from ZAMOWIENIE Z JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC order by id_ZAM";
+
+        if (ost.isSelected() && zreal.isSelected() == false && pracownicy.getSelectedIndex() == 0 && niezreal.isSelected() == false && wszzam.isSelected() == false) {
+            insert = "select * from ZAMOWIENIE Z JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where id_zam=(select max(id_zam) from zamowienie) order by id_ZAM";
+        } else if (pracownicy.getSelectedIndex() > 0 && zreal.isSelected() == false && niezreal.isSelected() == false && ost.isSelected() == false && wszzam.isSelected() == false) {
+            insert = "select * from ZAMOWIENIE Z JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where  login like '" + pracownicy.getSelectedItem().toString() + "' order by id_ZAM";
+        } else if (zreal.isSelected() && pracownicy.getSelectedIndex() == 0 && niezreal.isSelected() == false && wszzam.isSelected() == false && ost.isSelected() == false) {
+            insert = "select * from ZAMOWIENIE Z JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where zrealizowane='T' order by id_ZAM";
+        } else if (niezreal.isSelected() && pracownicy.getSelectedIndex() == 0 && zreal.isSelected() == false && wszzam.isSelected() == false && ost.isSelected() == false) {
+            insert = "select * from ZAMOWIENIE Z JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where zrealizowane='N' order by id_ZAM";
+        } else if (ost.isSelected() && zreal.isSelected() && pracownicy.getSelectedIndex() == 0 && wszzam.isSelected() == false) {
+            insert = "select * from ZAMOWIENIE Z JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where id_zam=(select max(id_zam) from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where zrealizowane='T') order by id_ZAM";
+        } else if (ost.isSelected() && niezreal.isSelected() && pracownicy.getSelectedIndex() == 0 && wszzam.isSelected() == false) {
+            insert = "select * from ZAMOWIENIE Z JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where id_zam=(select max(id_zam) from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where zrealizowane='N') order by id_ZAM";
+        } else if (ost.isSelected() && pracownicy.getSelectedIndex() > 0 && zreal.isSelected() == false && wszzam.isSelected() == false) {
+            insert = "select * from ZAMOWIENIE Z JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE id_zam=(select max(id_zam) from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC  where login like '" + pracownicy.getSelectedItem().toString() + "') order by id_ZAM";
+        } else if (zreal.isSelected() && pracownicy.getSelectedIndex() > 0 && wszzam.isSelected() == false && ost.isSelected() == false) {
+            insert = "select * from ZAMOWIENIE Z JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE login  like '" + pracownicy.getSelectedItem().toString() + "' and zrealizowane='T' order by id_ZAM";
+        } else if (niezreal.isSelected() && pracownicy.getSelectedIndex() > 0 && zreal.isSelected() == false && wszzam.isSelected() == false && ost.isSelected() == false) {
+            insert = "select * from ZAMOWIENIE Z JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE login  like '" + pracownicy.getSelectedItem().toString() + "' and zrealizowane='N' order by id_ZAM";
+        } else if (ost.isSelected() && niezreal.isSelected() && pracownicy.getSelectedIndex() > 0 && zreal.isSelected() == false && wszzam.isSelected() == false) {
+            insert = "select * from ZAMOWIENIE Z JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE  id_zam= (select max(id_zam) from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE login  like '" + pracownicy.getSelectedItem().toString() + "' and zrealizowane='N' ) and login  like '" + pracownicy.getSelectedItem().toString() + "' and zrealizowane='N' order by id_ZAM";
+        } else if (ost.isSelected() && zreal.isSelected() && pracownicy.getSelectedIndex() > 0 && niezreal.isSelected() == false && wszzam.isSelected() == false) {
+            insert = "select * from ZAMOWIENIE Z JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE id_zam= (select max(id_zam) from ZAMOWIENIE Z JOIN KLIENCI K ON Z.ID_KLIENTA=k.ID_KLIENTA JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC WHERE login  like '" + pracownicy.getSelectedItem().toString() + "' and zrealizowane='T' ) and login  like '" + pracownicy.getSelectedItem().toString() + "' and zrealizowane='T'  order by id_ZAM";
         }
 
         try {
@@ -594,9 +607,9 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
         }
         try {
             while (res1.next()) {
-
+                String klient = "";
                 int nr = res1.getInt("id_ZAM");
-                String klient = res1.getString("IMIE_NAZWISKO");
+                //    String klient = res1.getString("IMIE_NAZWISKO");
                 String pracownik = res1.getString("login");
                 String data = res1.getString("data_zam");
                 String oplata = res1.getString("platnosc");
@@ -617,16 +630,39 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
                 if (formazam.equals("D")) {
                     formazam = "w dostawie";
                 } else {
-                    formazam = "w lokaju";
+                    formazam = "w lokalu";
                 }
 
                 String wartosc = res1.getString("wartosc") + " zł";
-                Object[] row = {nr, klient, pracownik, data, oplata, formazam, wartosc, realizuj};
-                model.addRow(row);
+
+                try {
+                    con = DriverManager.getConnection(
+                            "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+                    );
+                    stmt2 = con.createStatement();
+                    res2 = stmt2.executeQuery("select IMIE_NAZWISKO from ZAMOWIENIE Z join klienci K on K.id_klienta=Z.id_klienta JOIN PRACOWNICY P ON z.ID_PRAC=P.ID_PRAC where id_zam=" + nr + " order by id_ZAM");
+                    while (res2.next()) {
+                        klient = res2.getString("IMIE_NAZWISKO");
+
+                    }
+                    if (klient.length() > 1) {
+                        Object[] row = {nr, klient, pracownik, data, oplata, formazam, wartosc, realizuj};
+                        model.addRow(row);
+                    } else {
+                        Object[] row = {nr, "-", pracownik, data, oplata, formazam, wartosc, realizuj};
+                        model.addRow(row);
+                    }
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
+                }
+                // Object[] row = {nr, klient, pracownik, data, oplata, formazam, wartosc, realizuj};
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
         }
+
         tabelka.setModel(model);
     }
 
@@ -634,6 +670,116 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
         for (int i = model.getRowCount() - 1; i >= 0; i--) {
             model.removeRow(i);
         }
+    }
+
+    void usunzamowieniezbazy(int id) {
+        int ileszcznap = 0;
+        int ileskl = 0;
+        int maxidszczpizzy = 0;
+        int ileszczpizzy = 0;
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt = con.createStatement();
+            stmt1 = con.createStatement();
+            res1 = stmt1.executeQuery("select count(id_szcz_o_nap) from szcz_o_napoju where id_zam=" + id);
+            while (res1.next()) {
+                ileszcznap = res1.getInt("1");
+                stmt2 = con.createStatement();
+                res2 = stmt2.executeQuery("select count(id_szcz_o_skl) from szcz_o_skl where id_szcz_o_pizzy in (select id_szcz_o_pizzy from szcz_o_pizzy where id_zam=" + id + ")");
+                while (res2.next()) {
+                    ileskl = res2.getInt("1");
+                    stmt3 = con.createStatement();
+                    res3 = stmt3.executeQuery("select max(id_szcz_o_pizzy) from szcz_o_pizzy where id_zam=" + id);
+                    while (res3.next()) {
+                        maxidszczpizzy = res3.getInt("1");
+                        stmt4 = con.createStatement();
+                        res4 = stmt4.executeQuery("select count(id_szcz_o_pizzy) from szcz_o_pizzy where id_zam=" + id);
+                        while (res4.next()) {
+                            ileszczpizzy = res4.getInt("1");
+                            String naprawidskl1 = "update szcz_o_skl set id_szcz_o_skl=id_szcz_o_skl-" + ileskl + " where id_szcz_o_pizzy>" + maxidszczpizzy;
+                            String naprawidskl2 = "update szcz_o_skl set id_szcz_o_pizzy=id_szcz_o_pizzy-" + ileszczpizzy + " where id_szcz_o_pizzy>" + maxidszczpizzy;
+                            String naprawidpizzy1 = "update szcz_o_pizzy set id_szcz_o_pizzy=id_szcz_o_pizzy-" + ileszczpizzy + " where id_zam>" + id;
+                            String naprawidpizzy2 = "update szcz_o_pizzy set id_zam=id_zam-1 where id_zam>" + id;
+                            String naprawidnap1 = "update szcz_o_napoju set id_szcz_o_nap=id_szcz_o_nap-" + ileszcznap + " where id_zam>" + id;
+                            String naprawidnap2 = "update szcz_o_napoju set id_zam=id_zam-1 where id_zam>" + id;
+                            String naprawidzam = "update zamowienie set id_zam=id_zam-1 where id_zam>" + id;
+                            stmt.executeUpdate(
+                                    "delete from szcz_o_skl where id_szcz_o_pizzy in (select id_szcz_o_pizzy from szcz_o_pizzy where id_zam=" + id + ")"
+                            );
+                            stmt.executeUpdate(
+                                    "delete from szcz_o_pizzy where id_zam=" + id
+                            );
+                            stmt.executeUpdate(
+                                    "delete from szcz_o_napoju where id_zam=" + id
+                            );
+                            stmt.executeUpdate(
+                                    "delete from zamowienie where id_zam=" + id
+                            );
+                            stmt6 = con.createStatement();
+                            res5 = stmt6.executeQuery("select count(*) from zamowienie");
+                            while (res5.next()) {
+                                int ile = res5.getInt("1");                                
+                                if (ile > 0) {
+                                    stmt.executeUpdate("insert into ZAMOWIENIE (ID_ZAM, DATA_ZAM, PLATNOSC, ZREALIZOWANE, FORMA, WARTOSC, ID_PRAC) \n"
+                                            + "	VALUES ((select max(id_zam)+1 from ZAMOWIENIE), '', '', 'N', '',0, " + sprawdzid() + ")");
+                                }
+                            }
+
+                            stmt.executeUpdate(naprawidzam);
+                            stmt.executeUpdate(naprawidnap1);
+                            stmt.executeUpdate(naprawidnap2);
+                            stmt5 = con.createStatement();
+                            res6 = stmt5.executeQuery("select count(*) from szcz_o_pizzy");
+                            while (res6.next()) {
+                                int ilewpizzy = res6.getInt("1");
+                                if (ilewpizzy > 0) {
+                                    stmt.executeUpdate("insert into szcz_o_pizzy values ((select max(id_szcz_o_pizzy)+1 from szcz_o_pizzy),(select max(id_zam) from zamowienie),1,0)");
+                                }
+                            }
+                            stmt.executeUpdate(naprawidpizzy1);
+                            stmt.executeUpdate(naprawidpizzy2);
+                            stmt.executeUpdate(naprawidskl1);
+                            stmt.executeUpdate(naprawidskl2);
+                            stmt7 = con.createStatement();
+                            res7 = stmt7.executeQuery("select count(*) from zamowienie");
+                            while (res7.next()) {
+                                int ilezam = res7.getInt("1");
+                                if (ilezam > 0) {
+                                    stmt.executeUpdate("delete from szcz_o_pizzy where id_szcz_o_pizzy=(select max(id_szcz_o_pizzy) from szcz_o_pizzy)");
+                                    stmt.executeUpdate("delete from zamowienie where id_zam=(select max(id_zam) from zamowienie)");
+                                }
+                            }
+                            break;
+                        }
+                        break;
+                    }
+                    break;
+                }
+                break;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    int sprawdzid() {
+        int id = 0;
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
+            );
+            stmt6 = con.createStatement();
+            res1 = stmt6.executeQuery("select * from LOGOWANIE L join PRACOWNICY P on L.id_prac=P.id_prac where id_log=(select max(id_log) from LOGOWANIE)");
+            while (res1.next()) {
+                id = res1.getInt("id_prac");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Zamowienia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
     }
 
 
@@ -649,7 +795,7 @@ public class Edycja_zamowienia extends javax.swing.JFrame {
     private javax.swing.JToggleButton ost;
     private javax.swing.JPanel panel_tabelka;
     private javax.swing.JToggleButton powrot;
-    private javax.swing.JComboBox pracowniki;
+    private javax.swing.JComboBox pracownicy;
     private javax.swing.JToggleButton przegladaj;
     private javax.swing.JTable tabelka;
     private javax.swing.JButton usun;

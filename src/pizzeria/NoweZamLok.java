@@ -144,11 +144,6 @@ public class NoweZamLok extends javax.swing.JFrame {
                 listawybpizzyItemStateChanged(evt);
             }
         });
-        listawybpizzy.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                listawybpizzyActionPerformed(evt);
-            }
-        });
         panelpizza.add(listawybpizzy, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 31, 150, -1));
 
         napisrozmiarpizzy.setText("Rozmiar:");
@@ -158,11 +153,6 @@ public class NoweZamLok extends javax.swing.JFrame {
         listawybrozmpizzy.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 listawybrozmpizzyItemStateChanged(evt);
-            }
-        });
-        listawybrozmpizzy.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                listawybrozmpizzyActionPerformed(evt);
             }
         });
         panelpizza.add(listawybrozmpizzy, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 77, 150, -1));
@@ -198,11 +188,6 @@ public class NoweZamLok extends javax.swing.JFrame {
 
         dodajs.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
         dodajs.setToolTipText("");
-        dodajs.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dodajsActionPerformed(evt);
-            }
-        });
 
         dodajw.setText("Dodaj wybrany");
         dodajw.addActionListener(new java.awt.event.ActionListener() {
@@ -717,6 +702,7 @@ public class NoweZamLok extends javax.swing.JFrame {
             Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
         }
         Zamowienia zam = new Zamowienia();
+        zam.setLocationRelativeTo(null);
         zam.setVisible(true);
         dispose();
     }//GEN-LAST:event_powrotActionPerformed
@@ -776,18 +762,6 @@ public class NoweZamLok extends javax.swing.JFrame {
             opisnapoju.setText("");
         }
     }//GEN-LAST:event_pokazopisnapojuActionPerformed
-
-    private void dodajsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dodajsActionPerformed
-
-    private void listawybpizzyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listawybpizzyActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_listawybpizzyActionPerformed
-
-    private void listawybrozmpizzyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listawybrozmpizzyActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_listawybrozmpizzyActionPerformed
 
     private void listawybrodznapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listawybrodznapActionPerformed
 
@@ -943,6 +917,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                         Edycja_klientow ek = new Edycja_klientow();
                         ek.setCzyzamtrwa(true);
                         ek.pokazpanel();
+                        ek.setLocationRelativeTo(null);
                         ek.setVisible(true);
                         setVisible(false);
                         break;
@@ -951,6 +926,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 }
             } else if (wlokalu.isSelected()) {
                 Szczegoly_zamowienia sz = new Szczegoly_zamowienia();
+                sz.setLocationRelativeTo(null);
                 sz.setVisible(true);
                 dispose();
             }

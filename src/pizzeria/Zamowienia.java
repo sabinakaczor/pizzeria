@@ -213,7 +213,7 @@ public class Zamowienia extends javax.swing.JFrame {
         menu_zamowienia.setText("Zamówienia");
         menu_zamowienia.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
-        menuzamowienia.setText("Zamówienia");
+        menuzamowienia.setText("Zarządzaj zamówieniami");
         menuzamowienia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuzamowieniaActionPerformed(evt);
@@ -297,6 +297,7 @@ public class Zamowienia extends javax.swing.JFrame {
 
             }
             NoweZamLok nzl = new NoweZamLok();
+            nzl.setLocationRelativeTo(null);
             nzl.setVisible(true);
             dispose();
         } catch (SQLException ex) {

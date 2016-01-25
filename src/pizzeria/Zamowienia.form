@@ -84,7 +84,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="menuzamowienia">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Zam&#xf3;wienia"/>
+                <Property name="text" type="java.lang.String" value="Zarz&#x105;dzaj zam&#xf3;wieniami"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuzamowieniaActionPerformed"/>

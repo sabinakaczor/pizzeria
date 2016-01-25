@@ -28,6 +28,7 @@ public class Szczegoly_zamowienia extends javax.swing.JFrame {
 
     public Szczegoly_zamowienia() {
         initComponents();
+        setLocationRelativeTo(null);
         pobierzdane();
         // model.addElement("gddf");
         // panel_klient.setVisible(false);
@@ -62,7 +63,7 @@ public class Szczegoly_zamowienia extends javax.swing.JFrame {
         anuluj = new javax.swing.JButton();
         panelszczeg = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        listazamowionych = new javax.swing.JList<>();
+        listazamowionych = new javax.swing.JList<String>();
         imnazw1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -187,6 +188,7 @@ public class Szczegoly_zamowienia extends javax.swing.JFrame {
     private void potwierdzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_potwierdzActionPerformed
         JOptionPane.showMessageDialog(null, "Zamówienie zostało przekazane do realizacji");
         Zamowienia zam = new Zamowienia();
+        zam.setLocationRelativeTo(null);
         zam.setVisible(true);
         dispose();
     }//GEN-LAST:event_potwierdzActionPerformed
@@ -214,6 +216,7 @@ public class Szczegoly_zamowienia extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Nie udało się!");
         }
         Zamowienia zam = new Zamowienia();
+        zam.setLocationRelativeTo(null);
         zam.setVisible(true);
         dispose();
     }//GEN-LAST:event_anulujActionPerformed

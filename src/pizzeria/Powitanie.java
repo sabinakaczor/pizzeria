@@ -25,6 +25,7 @@ public class Powitanie extends javax.swing.JFrame {
     
     public Powitanie() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -144,10 +145,12 @@ public class Powitanie extends javax.swing.JFrame {
        }
        if(ile==0) {
            WybierzNazwe wn = new WybierzNazwe();
+           wn.setLocationRelativeTo(null);
            wn.setVisible(true);
            dispose();
        } else {      
                     Project_pizzeria pp = new Project_pizzeria();
+                    pp.setLocationRelativeTo(null);
                     pp.setVisible(true);
                     dispose();}
     }
