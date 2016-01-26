@@ -105,12 +105,12 @@ public class WybierzNazwe extends javax.swing.JFrame {
                 stmt1.executeUpdate(
                         "insert into NAZWA_PIZZERII values (1,'" + nazwap + "')"
                 );
+                Project_pizzeria projekt_pizzeria = new Project_pizzeria();
+                projekt_pizzeria.setVisible(true);
+                dispose();
             } catch (SQLException ex) {
-                Logger.getLogger(WybierzNazwe.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
             }
-            Project_pizzeria projekt_pizzeria = new Project_pizzeria();
-            projekt_pizzeria.setVisible(true);
-            dispose();
         } else {
             JOptionPane.showMessageDialog(null, "Brak nazwy. Spróbuj ponownie.");
         }

@@ -196,8 +196,7 @@ public class Project_pizzeria extends javax.swing.JFrame {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
-
+             JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
         }
 
 
@@ -282,8 +281,7 @@ public class Project_pizzeria extends javax.swing.JFrame {
             while(result2.next()) {
             nazwa = result2.getString("nazwa");
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) { JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
         }
         return nazwa;
     }

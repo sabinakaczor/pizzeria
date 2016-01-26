@@ -287,7 +287,7 @@ public class Edycja_napojow extends javax.swing.JFrame {
                         "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
                 );
             } catch (SQLException ex) {
-                Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
             }
             try {
                 stmt5 = con.createStatement();
@@ -300,7 +300,7 @@ public class Edycja_napojow extends javax.swing.JFrame {
                 }
 
             } catch (SQLException ex) {
-                Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
+              JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");
@@ -356,7 +356,7 @@ public class Edycja_napojow extends javax.swing.JFrame {
         String objetosc="";
         if (POLEOBJETOSC.getText().equals("")) {
             objetosc="-";
-        } else //if (POLEOBJETOSC.getText() != null && POLEOBJETOSC.getText().length() > 0)
+        } else 
         {
             try {
                 objetosc = Float.parseFloat(POLEOBJETOSC.getText())+" l";
@@ -521,7 +521,7 @@ public class Edycja_napojow extends javax.swing.JFrame {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
         }
     }
 
@@ -556,7 +556,7 @@ public class Edycja_napojow extends javax.swing.JFrame {
                 model.addRow(row);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
         }
         tabelka.setModel(model);
     }

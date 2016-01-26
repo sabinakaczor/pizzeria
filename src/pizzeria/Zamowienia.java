@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -259,7 +258,6 @@ public class Zamowienia extends javax.swing.JFrame {
             stmt = con.createStatement();
             stmt.executeUpdate("update LOGOWANIE set DATA_GODZ_W='" + datawyl + "' where id_log=(select max(id_log) from LOGOWANIE)");
         } catch (SQLException ex) {
-            Logger.getLogger(Zamowienia.class.getName()).log(Level.SEVERE, null, ex);
         }
         Project_pizzeria pp = new Project_pizzeria();
         pp.setLocationRelativeTo(null);
@@ -294,20 +292,17 @@ public class Zamowienia extends javax.swing.JFrame {
                 stmt5.executeUpdate(
                         "insert into szcz_o_pizzy values ((select count(*)+1 from szcz_o_pizzy),(select max(id_zam) from zamowienie),1,0)"
                 );
-
             }
             NoweZamLok nzl = new NoweZamLok();
             nzl.setLocationRelativeTo(null);
             nzl.setVisible(true);
             dispose();
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Błąd bazy danych!");
         }
     }//GEN-LAST:event_przyciskzlozzamActionPerformed
 
     private void histlogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_histlogActionPerformed
-        // TODO add your handling code here:
         if (histlog.isSelected()) {
             panelHistoriaLogowan.setVisible(true);
             czysctabelke();
@@ -318,7 +313,6 @@ public class Zamowienia extends javax.swing.JFrame {
     }//GEN-LAST:event_histlogActionPerformed
 
     private void dodajpracActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajpracActionPerformed
-
         int a = sprawdzdostep();
         if (a == 1) {
             Nowy_pracownik nowy_pracownik = new Nowy_pracownik(this);
@@ -328,7 +322,6 @@ public class Zamowienia extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Brak dostępu");
         }
-
     }//GEN-LAST:event_dodajpracActionPerformed
 
     private void menu_pizzaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_pizzaActionPerformed
@@ -343,7 +336,6 @@ public class Zamowienia extends javax.swing.JFrame {
     }//GEN-LAST:event_zamknijActionPerformed
 
     private void menu_skladnikiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_skladnikiActionPerformed
-        //Edycja_skladnikow edycja_skladnikow = new Edycja_skladnikow(this);
         Edycja_skladnikow edycja_skladnikow = new Edycja_skladnikow(this);
         edycja_skladnikow.setLocationRelativeTo(null);
         edycja_skladnikow.setVisible(true);
@@ -380,7 +372,7 @@ public class Zamowienia extends javax.swing.JFrame {
                 setTitle("Pizzeria \"" + sprawdznazwe() + "\"");
                 JOptionPane.showMessageDialog(null, "Nazwa została zmieniona.");
             } catch (SQLException ex) {
-                Logger.getLogger(WybierzNazwe.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Brak nazwy! Spróbuj ponownie później.");
@@ -464,7 +456,7 @@ public class Zamowienia extends javax.swing.JFrame {
                 login = res2.getString("LOGIN");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Zamowienia.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
         }
         return login;
     }
@@ -491,7 +483,7 @@ public class Zamowienia extends javax.swing.JFrame {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Zamowienia.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
         }
         return dst;
     }
@@ -511,7 +503,7 @@ public class Zamowienia extends javax.swing.JFrame {
                 nazwa = result2.getString("nazwa");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
         }
         return nazwa;
     }
@@ -526,10 +518,6 @@ public class Zamowienia extends javax.swing.JFrame {
             res4 = stmt4.executeQuery(
                     "select * from LOGOWANIE L join PRACOWNICY P on L.id_prac=P.id_prac where id_log>(select max(id_log)-10 from LOGOWANIE) order by id_log DESC"
             );
-        } catch (Exception e) {
-
-        }
-        try {
             while (res4.next()) {
                 String login = res4.getString("LOGIN");
                 String data = res4.getString("DATA_GODZ_Z");
@@ -537,9 +525,9 @@ public class Zamowienia extends javax.swing.JFrame {
                 model.addRow(row);
                 nr++;
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(Zamowienia.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
+        }        
         listahistoriilogowan.setModel(model);
     }
 
@@ -561,7 +549,7 @@ public class Zamowienia extends javax.swing.JFrame {
                 id = res.getInt("id_prac");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Zamowienia.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
         }
         return id;
     }

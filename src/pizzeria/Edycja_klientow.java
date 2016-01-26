@@ -43,7 +43,6 @@ public class Edycja_klientow extends javax.swing.JFrame {
         model = (DefaultTableModel) tabelka.getModel();
         paneledytujdodaj.setVisible(false);
         panel_tabelka.setVisible(false);
-
     }
 
     public void pokazpanel() {
@@ -337,7 +336,7 @@ public class Edycja_klientow extends javax.swing.JFrame {
                         "delete from ZAMOWIENIE where id_zam=(select max(id_zam) from ZAMOWIENIE)"
                 );
             } catch (SQLException ex) {
-                Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+               JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
             }
         }
         dispose();
@@ -345,7 +344,6 @@ public class Edycja_klientow extends javax.swing.JFrame {
 
     private void przegladajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_przegladajActionPerformed
         if (przegladaj.isSelected() == true) {
-
             panel_tabelka.setVisible(true);
             paneledytujdodaj.setVisible(false);
             czysctabelke();
@@ -363,14 +361,13 @@ public class Edycja_klientow extends javax.swing.JFrame {
         if (tabelka.getSelectedRowCount() > 0) {
             int wiersz = tabelka.getSelectedRow();
             String s = tabelka.getValueAt(wiersz, 0).toString();
-
             String usunwiersz = "delete from klienci where id_klienta=" + s;
             try {
                 con = DriverManager.getConnection(
                         "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
                 );
             } catch (SQLException ex) {
-                Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
+               JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych"); 
             }
             try {
                 stmt5 = con.createStatement();
@@ -383,12 +380,11 @@ public class Edycja_klientow extends javax.swing.JFrame {
                 }
 
             } catch (SQLException ex) {
-                Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
+               JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
             }
-        } else {//zmienilam
-            JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");//zmienilam
-        }//zmienilam
-
+        } else {
+            JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");
+        }
         czysctabelke();
         przegladaj(model);
 
@@ -405,7 +401,6 @@ public class Edycja_klientow extends javax.swing.JFrame {
             int wybrwiersz = tabelka.getSelectedRow();
             int numer = Integer.parseInt(tabelka.getValueAt(wybrwiersz, 0).toString());
             POLENR.setText(numer + "");
-
         } else {
             JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");
         }
@@ -510,7 +505,7 @@ public class Edycja_klientow extends javax.swing.JFrame {
                         "update ZAMOWIENIE set id_klienta=" + nr + " where id_zam=(select max(id_zam) from zamowienie)"
                 );
             } catch (SQLException ex) {
-                Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
             }
             Szczegoly_zamowienia sz = new Szczegoly_zamowienia();
             sz.setVisible(true);
@@ -591,7 +586,7 @@ public class Edycja_klientow extends javax.swing.JFrame {
                 model.addRow(row);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
         }
         tabelka.setModel(model);
     }

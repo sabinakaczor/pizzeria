@@ -13,14 +13,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
-import static pizzeria.Nowy_pracownik.zam;
 
 /**
  *
@@ -566,7 +563,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                         );
                     }
                 } catch (SQLException ex) {
-                    Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
                 }
             }
             model.removeElementAt(index);
@@ -605,7 +602,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 model.add(i, wybr);
                 listaskladnikow.setModel(model);
             } catch (SQLException ex) {
-                Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Nie wybrano składnika!");
@@ -699,7 +696,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                     "delete from zamowienie where id_zam=(select max(id_zam) from zamowienie)"
             );
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
         Zamowienia zam = new Zamowienia();
         zam.setLocationRelativeTo(null);
@@ -749,7 +746,6 @@ public class NoweZamLok extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Nic nie zamówiono!");
         }
-        //dodajnapojdozamowienia();
     }//GEN-LAST:event_dodajdomenunapActionPerformed
 
     private void pokazopisnapojuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pokazopisnapojuActionPerformed
@@ -769,7 +765,6 @@ public class NoweZamLok extends javax.swing.JFrame {
     }//GEN-LAST:event_listawybrodznapActionPerformed
 
     private void listawybrodznapItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listawybrodznapItemStateChanged
-        //  if(listawybrodznap.getSelectedIndex() > 0) {
         listawybnazwynap.removeAllItems();
         listawybnazwynap.addItem(" ");
         String rodzaj = listawybrodznap.getSelectedItem().toString();
@@ -905,7 +900,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                         "delete from szcz_o_napoju where id_szcz_o_nap=(select max(id_szcz_o_nap) from szcz_o_napoju)"
                 );
             } catch (SQLException ex) {
-                Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+               JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
             }
             if (wdostawie.isSelected()) {
                 String[] opcje = new String[2];
@@ -1080,7 +1075,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
         try {
             if (listawybrozmpizzy.getItemCount() == 1) {
@@ -1090,7 +1085,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
 
         try {
@@ -1101,7 +1096,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
 
     }
@@ -1135,7 +1130,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
 
         try {
@@ -1167,7 +1162,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Project_pizzeria.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
     }
 
@@ -1189,10 +1184,9 @@ public class NoweZamLok extends javax.swing.JFrame {
                 while (res6.next()) {
                     listawybrodznap.addItem(res6.getString("rodzaj"));
                 }
-
             }
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
 
     }
@@ -1240,7 +1234,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                     "select distinct(nazwa_napoju) from MENU_NAPOJE where rodzaj like '" + rodzaj + "'"
             );
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
         try {
             if (listawybnazwynap.getItemCount() == 1) {
@@ -1249,7 +1243,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
     }
 
@@ -1264,7 +1258,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                     "select * from MENU_NAPOJE where nazwa_napoju like '" + nazwa + "'"
             );
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
         try {
             while (res8.next()) {
@@ -1284,7 +1278,7 @@ public class NoweZamLok extends javax.swing.JFrame {
             }
             opisnapoju.setText(opis);
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
     }
 
@@ -1303,7 +1297,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 cena = res9.getDouble("cena_pizza");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
         return cena;
     }
@@ -1323,7 +1317,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 cena = res9.getDouble("cena");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
         return cena;
     }
@@ -1343,14 +1337,14 @@ public class NoweZamLok extends javax.swing.JFrame {
                     + "%' and ciasto like '%" + ciasto + "%'"
             );
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
         try {
             while (res9.next()) {
                 cenaa += res9.getDouble("cena_pizza");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
         return cenaa;
     }
@@ -1396,7 +1390,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
         return kosztskl;
     }
@@ -1436,14 +1430,14 @@ public class NoweZamLok extends javax.swing.JFrame {
             );
 
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
         try {
             while (res10.next()) {
                 cenanap += res10.getDouble("cena");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
         return cenanap;
     }
@@ -1474,7 +1468,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                     "insert into szcz_o_pizzy values ((select max(id_szcz_o_pizzy)+1 from szcz_o_pizzy),(select max(id_zam) from zamowienie),1,0)"
             );
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
     }
 
@@ -1493,7 +1487,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                     "insert into szcz_o_napoju (id_szcz_o_nap, id_zam, id_napoju, ile_sztuk_nap) values ((select max(id_szcz_o_nap)+1 from szcz_o_napoju),(select max(id_zam) from zamowienie), 1, 0)"
             );
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
     }
 
@@ -1535,7 +1529,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 id = res.getInt("id_prac");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Zamowienia.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
         return id;
     }
@@ -1616,7 +1610,7 @@ public class NoweZamLok extends javax.swing.JFrame {
                 skladnik += "+ " + res4.getString("nazwa") + ", ";
             }
         } catch (SQLException ex) {
-            System.out.println("Jakiś błąd");
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
         if (skladnik.length() > 0) {
             return skladnik.substring(0, skladnik.length() - 2);
@@ -1711,7 +1705,7 @@ public class NoweZamLok extends javax.swing.JFrame {
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
     }
 
@@ -1751,7 +1745,7 @@ public class NoweZamLok extends javax.swing.JFrame {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
     }
 }

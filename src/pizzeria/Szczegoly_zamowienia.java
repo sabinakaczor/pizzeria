@@ -10,8 +10,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -30,8 +28,6 @@ public class Szczegoly_zamowienia extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         pobierzdane();
-        // model.addElement("gddf");
-        // panel_klient.setVisible(false);
     }
 
     /**
@@ -63,7 +59,7 @@ public class Szczegoly_zamowienia extends javax.swing.JFrame {
         anuluj = new javax.swing.JButton();
         panelszczeg = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        listazamowionych = new javax.swing.JList<String>();
+        listazamowionych = new javax.swing.JList<>();
         imnazw1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -390,7 +386,7 @@ public class Szczegoly_zamowienia extends javax.swing.JFrame {
                 skladnik += "+ " + res4.getString("nazwa") + ", ";
             }
         } catch (SQLException ex) {
-            System.out.println("dcnbskbkjv");
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
         }
         if (skladnik.length() > 0) {
             return skladnik.substring(0, skladnik.length() - 2);

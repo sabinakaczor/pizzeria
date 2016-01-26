@@ -13,10 +13,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import static pizzeria.Edycja_pizzy.zam;
 
 /**
  *
@@ -33,7 +31,6 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
     float cenas = 0;
     float cenad = 0;
 
-    //DefaultListModel<String> model1 = new DefaultListModel<>();
     /**
      * Creates new form Edycja_skladnikow
      */
@@ -291,7 +288,7 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void powrotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_powrotActionPerformed
-         zam.setVisible(true);
+        zam.setVisible(true);
         dispose();
     }//GEN-LAST:event_powrotActionPerformed
 
@@ -344,7 +341,7 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
                         "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
                 );
             } catch (SQLException ex) {
-                Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
             }
             try {
                 stmt5 = con.createStatement();
@@ -355,14 +352,12 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
                     String naprawid = "UPDATE skladniki SET id_skladnika =" + (i - 1) + " WHERE id_skladnika =" + i;
                     stmt5.executeUpdate(naprawid);
                 }
-
             } catch (SQLException ex) {
-                Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
+               JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
             }
-        } else {//zmienilam
-            JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");//zmienilam
-        }//zmienilam
-
+        } else {
+            JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");
+        }
         czysctabelke();
         przegladaj(model);
 
@@ -371,7 +366,7 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
 
     private void edytujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edytujActionPerformed
         if (tabelka.getSelectedRowCount() > 0) {
-             wypiszrodzajdostepnosc();
+            wypiszrodzajdostepnosc();
             POLE_NAZWA.setText("");
             komunikat.setText("");
             POLE_NOWA_DOST.setText("");
@@ -391,7 +386,6 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
             int wybrwiersz = tabelka.getSelectedRow();
             int numer = Integer.parseInt(tabelka.getValueAt(wybrwiersz, 0).toString());
             POLE_NUMER.setText(numer + "");
-           
         } else {
             JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");
         }
@@ -411,7 +405,7 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
         POLE_NOWA_DOST.setVisible(false);
         int numer = tabelka.getRowCount() + 1;
         POLE_NUMER.setText(numer + "");
-        wypiszrodzajdostepnosc();       
+        wypiszrodzajdostepnosc();
         POLE_RODZAJ.setSelectedIndex(0);
         pole_dost_skl.setSelectedIndex(0);
         nowa_opcja1.setSelected(false);
@@ -468,17 +462,17 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
                     insert = "INSERT INTO skladniki VALUES(" + numer + "," + cenam + "," + cenas + "," + cenad + ",'" + rodzaj + "','" + nazwa + "','" + dost + "')";
                     stmt3.executeUpdate(insert);
                     numer++;
-                POLE_NUMER.setText(numer + "");
+                    POLE_NUMER.setText(numer + "");
                 } else {
                     int wiersz = tabelka.getSelectedRow();
                     String s = tabelka.getValueAt(wiersz, 0).toString();
                     insert = "UPDATE skladniki SET cena_skl_mala=" + cenam + ", cena_skl_srednia=" + cenas + ", cena_skl_duza=" + cenad
-                            + ", rodzaj='" + rodzaj + "', nazwa='" + nazwa + "', dostepnosc='" + dost +"' WHERE id_skladnika=" + s;
+                            + ", rodzaj='" + rodzaj + "', nazwa='" + nazwa + "', dostepnosc='" + dost + "' WHERE id_skladnika=" + s;
                     stmt3.executeUpdate(insert);
                 }
                 czyscpola();
                 komunikat.setText("Nowy składnik został dodany do bazy systemu");
-                komunikat.setForeground(Color.DARK_GRAY);   
+                komunikat.setForeground(Color.DARK_GRAY);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Błąd zapisu!");
             }
@@ -571,7 +565,7 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
         }
 
     }
@@ -611,7 +605,7 @@ public class Edycja_skladnikow extends javax.swing.JFrame {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
         }
         tabelka.setModel(model);
 

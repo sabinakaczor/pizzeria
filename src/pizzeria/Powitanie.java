@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -92,7 +93,6 @@ public class Powitanie extends javax.swing.JFrame {
 
     private void dalejActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dalejActionPerformed
        sprawdznazwe();
-      // System.out.println(""+ policzkosztskladnikow2());
     }//GEN-LAST:event_dalejActionPerformed
 
     /**
@@ -141,7 +141,7 @@ public class Powitanie extends javax.swing.JFrame {
                ile = res.getInt("1");
            }
        } catch (SQLException ex) {
-           Logger.getLogger(WybierzNazwe.class.getName()).log(Level.SEVERE, null, ex);
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
        }
        if(ile==0) {
            WybierzNazwe wn = new WybierzNazwe();
@@ -154,47 +154,6 @@ public class Powitanie extends javax.swing.JFrame {
                     pp.setVisible(true);
                     dispose();}
     }
-   /* double policzkosztskladnikow2() {
-        double kosztskl = 0;
-        String polmalej = "SELECT sum(cena_skl_mala) from skladniki as s\n"
-                + "join szcz_o_skl as ss on s.ID_SKLADNIKA=ss.ID_SKLADNIKA join szcz_o_pizzy as sp on ss.ID_SZCZ_O_PIZZY=sp.ID_SZCZ_O_PIZZY \n"
-                + "join zamowienie as z on z.ID_ZAM=sp.ID_ZAM where z.ID_ZAM=(select max(id_zam) from zamowienie)";
-        String polsredniej = "SELECT sum(cena_skl_srednia) from skladniki as s\n"
-                + "join szcz_o_skl as ss on s.ID_SKLADNIKA=ss.ID_SKLADNIKA join szcz_o_pizzy as sp on ss.ID_SZCZ_O_PIZZY=sp.ID_SZCZ_O_PIZZY \n"
-                + "join zamowienie as z on z.ID_ZAM=sp.ID_ZAM where z.ID_ZAM=(select max(id_zam) from zamowienie)";
-        String polduzej = "SELECT sum(cena_skl_duza) from skladniki as s\n"
-                + "join szcz_o_skl as ss on s.ID_SKLADNIKA=ss.ID_SKLADNIKA join szcz_o_pizzy as sp on ss.ID_SZCZ_O_PIZZY=sp.ID_SZCZ_O_PIZZY \n"
-                + "join zamowienie as z on z.ID_ZAM=sp.ID_ZAM where z.ID_ZAM=(select max(id_zam) from zamowienie)";
-        try {
-            con = DriverManager.getConnection(
-                    "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
-            );
-            stmt9 = con.createStatement();
-            res9 = stmt9.executeQuery(
-                    "select rozmiar from MENU_PIZZA as mp join szcz_o_pizzy as sp on mp.ID_PIZZY=sp.ID_PIZZY\n"
-                    + " join zamowienie as z on z.ID_ZAM=sp.ID_ZAM where z.id_zam=(select max(id_zam) from zamowienie)"
-            );
-            while (res9.next()) {
-                String rozm = res9.getString("rozmiar");
-                if (rozm.contains("mała")) {
-                    stmt10 = con.createStatement();
-                    res10 = stmt10.executeQuery(polmalej);
-                } else if (rozm.contains("średnia")) {
-                    stmt10 = con.createStatement();
-                    res10 = stmt10.executeQuery(polsredniej);
-                } else if (rozm.contains("duża")) {
-                    stmt10 = con.createStatement();
-                    res10 = stmt10.executeQuery(polduzej);
-                }
-                while(res10.next()) {
-                kosztskl = res10.getInt("1");
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(NoweZamLok.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return kosztskl;
-    }*/
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton dalej;

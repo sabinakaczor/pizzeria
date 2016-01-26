@@ -427,7 +427,7 @@ public class Nowy_pracownik extends javax.swing.JFrame {
                         "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
                 );
             } catch (SQLException ex) {
-                Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
+               JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
             }
             try {
                 stmtnp5 = con.createStatement();
@@ -440,7 +440,7 @@ public class Nowy_pracownik extends javax.swing.JFrame {
                 }
 
             } catch (SQLException ex) {
-                Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
+               JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Nie wybrano wiersza!");
@@ -551,9 +551,6 @@ public class Nowy_pracownik extends javax.swing.JFrame {
     private javax.swing.JComboBox wybierzstanowisko;
     // End of variables declaration//GEN-END:variables
     void przegladaj(DefaultTableModel model) {
-
-        // model = (DefaultTableModel) tabelka.getModel();
-        // model.removeTableModelListener(tabelka);
         try {
             con = DriverManager.getConnection(
                     "jdbc:derby://localhost:1527/BazaPizzerii", "pizzeria", "pizzeria"
@@ -585,7 +582,7 @@ public class Nowy_pracownik extends javax.swing.JFrame {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(Edycja_pizzy.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych");
         }
         tabelka_pracownikow.setModel(model);
 
