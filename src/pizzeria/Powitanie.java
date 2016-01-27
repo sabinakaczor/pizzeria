@@ -140,10 +140,7 @@ public class Powitanie extends javax.swing.JFrame {
                  while(res.next()) {
                ile = res.getInt("1");
            }
-       } catch (SQLException ex) {
-           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
-       }
-       if(ile==0) {
+                 if(ile==0) {
            WybierzNazwe wn = new WybierzNazwe();
            wn.setLocationRelativeTo(null);
            wn.setVisible(true);
@@ -152,12 +149,19 @@ public class Powitanie extends javax.swing.JFrame {
                     Project_pizzeria pp = new Project_pizzeria();
                     pp.setLocationRelativeTo(null);
                     pp.setVisible(true);
-                    dispose();}
+                    dispose();
+                 }
     }
+      catch (SQLException ex) {
+           JOptionPane.showMessageDialog(null, "Brak połączenia z bazą danych!");
+       }
+
+    }   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton dalej;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
+
 }
